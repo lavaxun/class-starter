@@ -36,9 +36,10 @@ export default function Home() {
         </div>
 
         <div className="mt-10 border-t border-gray-100 pt-6 text-sm leading-relaxed text-gray-500">
-          下一步：<span className="font-semibold text-gray-700">截图保存这个页面</span>
+          下一步：<span className="font-semibold text-gray-700">带这台电脑来上课</span>
+          （就是这一台，加上充电器 — 东西都装在它里面）
           <br />
-          带上这台电脑，我们就从这里开始 👋
+          我们就从这里开始 👋
         </div>
       </div>
     </main>

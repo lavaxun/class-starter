@@ -16,9 +16,9 @@
 **第 2 步 · 一行一行运行下面 4 条**（每条跑完再贴下一条）
 
 ```bash
-npx degit lavaxun/class-starter my-app
+git clone https://github.com/lavaxun/class-starter.git my-app
 ```
-> 把项目下载到一个叫 `my-app` 的文件夹（第一次会问 `Ok to proceed?`，按 `y` 回车）
+> 把项目下载到一个叫 `my-app` 的文件夹
 
 ```bash
 cd my-app
@@ -41,7 +41,7 @@ npm run dev
 
 ![跑起来的样子](docs/success.png)
 
-**第 4 步 · 截图**这个页面**保存好**，第一天带上这台电脑就行 🎉
+**第 4 步 · 带上这台电脑来上课** — 就是这一台，东西都装在它里面 🎉
 
 ---
 
