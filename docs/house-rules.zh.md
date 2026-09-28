@@ -2,12 +2,12 @@
 
 选中文模式的同学用这一份；选英文模式的同学请用 [house-rules.md](house-rules.md)。课堂规则分两部分：
 
-1. **沟通方式**：第 1 天一开课，就贴进 ChatGPT app 里。之后每个 chat、每个 Codex 项目都会照着做，你也随时知道去哪里查看和修改。
+1. **沟通方式**：第 1 天一开课，就贴进 Codex desktop app 里。之后所有 Codex chats 都会照着做，你也随时知道去哪里查看和修改。
 2. **项目规则**：写进这个项目的 `AGENTS.md`（Codex 读取项目规则的文件）。第 1 天下午第 1 步，Codex 会帮你写进去。
 
 ## 第 1 部分：沟通方式（第 1 天一开课）
 
-1. 在 ChatGPT desktop app 打开 **Settings**（Mac：Cmd+, · Windows：Ctrl+,）> **Personalization** > **Custom instructions**。如果看到 **Enable customization** 开关，请把它打开。
+1. 在 Codex desktop app 打开 **Settings**（Mac：Cmd+, · Windows：Ctrl+,）> **Personalization** > **Codex instructions**。
 2. 复制下面的规则，贴进那个框里。如果框里已经有你想保留的内容，就贴在下面。然后保存。
 
 ```text
@@ -19,7 +19,9 @@
 - 每完成一步，请告诉我：打开哪个网址、点哪里、应该会看到什么。
 ```
 
-以后想改，随时回到同一个地方修改就可以了。如果某个项目的 `AGENTS.md` 写得不一样，在那个项目里会以项目的规则为准。
+以后想改，随时回到同一个地方修改就可以了。这些规则适用于所有 Codex chats；项目的 `AGENTS.md` 会加上项目规则，如果有冲突，就以项目的规则为准。
+
+可选：如果你也希望平常的 ChatGPT chats 保持相同的沟通方式，可以把这些规则另外贴进 chatgpt.com > Settings > Personalization > Custom instructions。
 
 ## 第 2 部分：项目规则（Codex 会把横线以下的内容写进 `AGENTS.md`）
 
