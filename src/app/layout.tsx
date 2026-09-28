@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "环境已就绪",
-  description: "起步项目模板",
+  title: "Environment ready",
+  description: "Course starter project",
 };
 
 export default function RootLayout({

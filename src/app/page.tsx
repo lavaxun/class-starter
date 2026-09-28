@@ -1,9 +1,9 @@
-// 环境验证页：这个页面能在 localhost:3000 打开 = 开发环境装好了。
-// 之后我们就在这个项目上，把它一步步长成你部门的系统。
+// Setup check page: if this opens at localhost:3000, the development environment is ready.
+// From Day 1 we grow this project, step by step, into a system for your team.
 export default function Home() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-100 px-6 font-sans">
-      {/* 背景光晕 */}
+      {/* Background glow */}
       <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-indigo-200/40 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-violet-200/40 blur-3xl" />
 
@@ -20,12 +20,9 @@ export default function Home() {
         <p className="mt-4 text-lg font-medium text-gray-700">
           You have successfully set up the development environment.
         </p>
-        <p className="mt-2 text-base text-gray-500">
-          恭喜！你的开发环境已经全部装好了。
-        </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-          {["Node.js 运行正常", "依赖安装成功", "开发服务器已启动"].map((t) => (
+          {["Node.js is running", "Dependencies installed", "Dev server is running"].map((t) => (
             <span
               key={t}
               className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1.5 text-sm font-semibold text-emerald-700 ring-1 ring-emerald-200"
@@ -36,10 +33,10 @@ export default function Home() {
         </div>
 
         <div className="mt-10 border-t border-gray-100 pt-6 text-sm leading-relaxed text-gray-500">
-          下一步：<span className="font-semibold text-gray-700">带这台电脑来上课</span>
-          （就是这一台，加上充电器 — 东西都装在它里面）
+          Next step: <span className="font-semibold text-gray-700">bring this laptop to class</span>
+          {" "}(this exact one, plus its charger, since everything is installed on it)
           <br />
-          我们就从这里开始 👋
+          This is where we start 👋
         </div>
       </div>
     </main>
