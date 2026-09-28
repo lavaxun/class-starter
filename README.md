@@ -1,62 +1,82 @@
-# class-starter · 起步项目
+# class-starter
 
-这是课程的**起步项目**。跑起来会看到一个恭喜页面——第一天我们就在这个项目上，把它一步步长成你部门的系统。
+[Read this in Chinese → README.zh.md](README.zh.md)
 
-**它只有一件事要做：在你电脑上跑起来。** 跑起来 = 你的开发环境（Node、git、编辑器）都装对了，第一天直接开工。
+This is the course's **starter project**. When it runs, you'll see a congratulations page. On Day 1 we build on this same project, step by step, until it becomes a system for your team.
+
+**It has one job: run on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building on Day 1.
+
+**Easiest way: follow your pre-class guide.** Codex (the coding agent inside the ChatGPT Desktop App) downloads this project into `AI Class/class-starter` on your Desktop, installs everything, and opens the page for you. You don't need the commands below.
+
+Use the steps below only if you'd rather do it by hand, or if a helper asks you to.
 
 ---
 
-## 怎么跑起来（4 条命令，约 10 分钟）
+## Doing it by hand (about 10 minutes)
 
-**第 1 步 · 打开终端**
+**Step 1 · Open a terminal**
 
-- **Mac**：按 `Cmd + 空格`，输入 `Terminal`，回车
-- **Windows**：开始菜单搜 `PowerShell`，打开（⚠️ 不是「命令提示符 / cmd」）
+- **Mac**: press `Cmd + Space`, type `Terminal`, press Enter
+- **Windows**: search the Start menu for `PowerShell` and open it (⚠️ not "Command Prompt" / cmd)
 
-**第 2 步 · 一行一行运行下面 4 条**（每条跑完再贴下一条）
+**Step 2 · Go to your course folder** (`AI Class` on your Desktop; this creates it if it's missing)
+
+Mac:
+```bash
+mkdir -p ~/Desktop/"AI Class" && cd ~/Desktop/"AI Class"
+```
+
+Windows (PowerShell):
+```powershell
+New-Item -ItemType Directory -Force "$HOME\Desktop\AI Class"; Set-Location "$HOME\Desktop\AI Class"
+```
+
+**Step 3 · Run these 4 commands one at a time** (wait for each to finish before pasting the next)
 
 ```bash
-git clone https://github.com/lavaxun/class-starter.git my-app
+git clone https://github.com/lavaxun/class-starter.git
 ```
-> 把项目下载到一个叫 `my-app` 的文件夹
+> Downloads the project into a folder called `class-starter`
 
 ```bash
-cd my-app
+cd class-starter
 ```
-> 进入这个文件夹
+> Moves into that folder
 
 ```bash
 npm install
 ```
-> 安装项目需要的零件，**要等几分钟**，滚动很多字是正常的
+> Installs the parts the project needs. **This takes a few minutes**, and lots of scrolling text is normal
 
 ```bash
 npm run dev
 ```
-> 启动！看到 `Local: http://localhost:3000` 就是跑起来了
+> Starts it! When you see `Local: http://localhost:3000`, it's running
 
-**第 3 步 · 打开浏览器**，访问 **http://localhost:3000**
+**Step 4 · Open your browser** and go to **http://localhost:3000**
 
-看到大大的「Congrats! 🎉」恭喜页 = 成功 ✅
+A big "Congrats! 🎉" page = success ✅
 
-![跑起来的样子](docs/success.png)
+![What it looks like when it runs](docs/success.png)
 
-**第 4 步 · 带上这台电脑来上课** — 就是这一台，东西都装在它里面 🎉
+**Step 5 · Bring this laptop to class**: this exact one, since everything is installed on it 🎉
 
 ---
 
-## 常见问题
+## Common problems
 
-| 问题 | 解法 |
+| Problem | Fix |
 |---|---|
-| `npx` 或 `npm` 说「找不到命令」 | Node 没装好——装好 Node 后**重开终端**再试 |
-| `npm install` 卡很久 / 报错 | 换个网络（手机热点常常更快）再跑一次 `npm install` |
-| 页面打不开 | 确认终端还开着、`npm run dev` 还在跑（关了它网页就停了） |
-| 想停下来 | 在终端按 `Ctrl + C`；想再开，进 `my-app` 文件夹跑 `npm run dev` |
-| 卡住超过 10 分钟 | 别自己硬磕，第一天早点到现场，我们当场帮你搞定 |
+| `npx` or `npm` says "command not found" | Node isn't installed properly. Install Node, then **close and reopen the terminal** and try again |
+| `npm install` hangs for a long time or shows errors | Switch networks (a phone hotspot is often faster) and run `npm install` again |
+| The page won't open | Make sure the terminal is still open and `npm run dev` is still running (close it and the page stops) |
+| You want to stop it | Press `Ctrl + C` in the terminal. To start again, go into the `class-starter` folder and run `npm run dev` |
+| Stuck for more than 10 minutes | Don't struggle alone. Come a little early on Day 1 and we'll sort it out with you on the spot |
 
 ---
 
-## 这个文件夹别删
+## Don't delete this folder
 
-第一分钟就用它。想提前点点看也行——改坏了也没关系，重跑一遍上面 4 条命令就有全新的。
+On Day 1 you open this `class-starter` folder in Codex. The workshop house rules are in [docs/house-rules.md](docs/house-rules.md): at the start of class you paste the "how to talk to me" part into the Codex desktop app > Settings > Personalization > Codex instructions. It applies to all Codex chats. Later Codex adds project rules to this project's `AGENTS.md` (the file Codex reads for project rules); those rules win if they conflict. Nothing about house rules needs setting up before class.
+
+Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
