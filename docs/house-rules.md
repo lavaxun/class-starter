@@ -2,12 +2,12 @@
 
 House rules come in two parts:
 
-1. **How to talk to me** goes into the ChatGPT app itself, at the start of Day 1. Every chat and every Codex project then follows it, and you always know where to find and change it.
+1. **How to talk to me** goes into the Codex desktop app at the start of Day 1. It applies to all Codex chats, and you always know where to find and change it.
 2. **Project rules** go into this project's `AGENTS.md` (the file Codex reads for this project's rules). Codex copies them in on Day 1, afternoon step 1. In English mode, `AGENTS.md` stays English only.
 
 ## Part 1: How to talk to me (start of Day 1)
 
-1. In the ChatGPT desktop app, open **Settings** (Mac: Cmd+, · Windows: Ctrl+,) > **Personalization** > **Custom instructions**. If you see an **Enable customization** switch, turn it on.
+1. In the Codex desktop app, open **Settings** (Mac: Cmd+, · Windows: Ctrl+,) > **Personalization** > **Codex instructions**.
 2. Copy the rules below and paste them into the box. If it already has text you want to keep, paste these underneath. Save.
 
 ```text
@@ -19,7 +19,9 @@ House rules come in two parts:
 - After each step, tell me: which address to open, where to click, and what I should see.
 ```
 
-You can change these any time in the same place. If a project's `AGENTS.md` says something different, the project's rule wins inside that project.
+You can change these any time in the same place. They apply to all Codex chats; the project's `AGENTS.md` adds project rules and wins if any rules conflict.
+
+Optional: For the same style in normal ChatGPT chats, also paste these rules into chatgpt.com > Settings > Personalization > Custom instructions.
 
 ## Part 2: Project rules (Codex copies everything below the line into `AGENTS.md`)
 

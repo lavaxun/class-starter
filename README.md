@@ -77,6 +77,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-On Day 1 you open this `class-starter` folder in Codex. The workshop house rules are in [docs/house-rules.md](docs/house-rules.md): at the start of class you paste the "how to talk to me" part into the ChatGPT app's custom instructions, and later Codex adds the project part to the project's `AGENTS.md` (the file Codex reads for your project's rules). Nothing about house rules needs setting up before class.
+On Day 1 you open this `class-starter` folder in Codex. The workshop house rules are in [docs/house-rules.md](docs/house-rules.md): at the start of class you paste the "how to talk to me" part into the Codex desktop app > Settings > Personalization > Codex instructions. It applies to all Codex chats. Later Codex adds project rules to this project's `AGENTS.md` (the file Codex reads for project rules); those rules win if they conflict. Nothing about house rules needs setting up before class.
 
 Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
