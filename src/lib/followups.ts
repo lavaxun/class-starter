@@ -1,12 +1,12 @@
-// ── 数据模型 ─────────────────────────────
+// ── Data model ─────────────────────────────
 export type Customer = {
   id: string;
   name: string;
   purchase_date: string; // YYYY-MM-DD
-  done: Record<string, boolean>; // key = 跟进天数偏移，例如 "1" "3" "5"
+  done: Record<string, boolean>; // key = follow-up day offset, e.g. "1" "3" "5"
 };
 
-// 购买后第几天要跟进（电商客服常见的跟进节奏；可以改成你部门的节奏）
+// Days after purchase to follow up (a common e-commerce customer-service rhythm; change it to fit your team)
 export const FOLLOWUP_OFFSETS = [1, 3, 5, 14, 30];
 
 const LS_KEY = "followups";
@@ -23,7 +23,7 @@ function lsSave(rows: Customer[]) {
   localStorage.setItem(LS_KEY, JSON.stringify(rows));
 }
 
-// ── 统一读写接口（数据存在你浏览器的 localStorage 里）──
+// ── Single read/write interface (data lives in your browser's localStorage) ──
 export const store = {
   configured: false,
 
@@ -44,7 +44,7 @@ export const store = {
     return row;
   },
 
-  // 注意：按 id 定位，不是按 name（同名客户不会串台）
+  // Note: look up by id, not name (so two customers with the same name never get mixed up)
   async toggle(id: string, offset: number): Promise<Customer[]> {
     const rows = lsList();
     const target = rows.find((r) => r.id === id);
