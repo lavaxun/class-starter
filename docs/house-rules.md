@@ -3,7 +3,7 @@
 House rules come in two parts:
 
 1. **How to talk to me** goes into the Codex desktop app at the start of Day 1. It applies to all Codex chats, and you always know where to find and change it.
-2. **Project rules** go into this project's `AGENTS.md` (the file Codex reads for this project's rules). Codex copies them in on Day 1, afternoon step 1. In English mode, `AGENTS.md` stays English only.
+2. **Project rules** are already in this project's [`AGENTS.md`](../AGENTS.md) (the file Codex reads for this project's rules). You only add a short profile of your business in class.
 
 ## Part 1: How to talk to me (start of Day 1)
 
@@ -23,39 +23,14 @@ You can change these any time in the same place. They apply to all Codex chats; 
 
 Optional: For the same style in normal ChatGPT chats, also paste these rules into chatgpt.com > Settings > Personalization > Custom instructions.
 
-## Part 2: Project rules (Codex copies everything below the line into `AGENTS.md`)
+## Part 2: Project rules (already in `AGENTS.md`)
 
----
+[`AGENTS.md`](../AGENTS.md) in the `class-starter` folder already has the house rules for this project: plain language, small steps, ask before deleting or overwriting files, and keep your business data on your laptop. Nothing to copy.
 
-## What this project is
+In class, you fill in the short **About my business** section at the top:
 
-<!-- This section is still empty. -->
+1. Open `AGENTS.md` in the `class-starter` folder (in Codex or any text editor).
+2. Replace each `<fill in>` with a line or two: your name, what your business does, the data files you work with, and who reads what you build.
+3. Save the file.
 
-**⚠️ The first time we talk about this project, don't write code yet.** Ask me the 4 questions below in order, **one at a time**, and wait for my answer before asking the next:
-
-1. Who is this for? (e.g. "the 5 people on my customer service team")
-2. What is the most annoying, time-wasting task right now? (e.g. "we keep forgetting to follow up with customers")
-3. Once it's built, what does success look like? (e.g. "every morning I can see at a glance who to follow up with today")
-4. Do they usually use it on a phone or a computer?
-
-When you're done asking, fill my answers into the blanks below, **delete the questions above and this line's comment**, then show it to me for a quick check. Read this section first every time we start work.
-
-- **Who uses it**: <to fill in>
-- **What it solves**: <to fill in>
-- **What success looks like**: <to fill in>
-- **Phone or computer**: <to fill in>
-
-## Tech stack
-
-- **Next.js (App Router)** + **TypeScript**
-- Styling with **Tailwind**; prefer the ready-made shadcn/ui components in `src/components/ui/`
-- **Mobile-first responsive web**: design the phone layout first, then adapt for desktop (Tailwind responsive classes), since many colleagues use their phones
-- Charts with **recharts** (already installed)
-- All data reads and writes go through `store` in `src/lib/followups.ts`
-- ⚠️ This is **Next.js 16** (quite new), and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
-
-## Ground rules
-
-- Change one small piece at a time, and let me check it before moving on
-- Only touch the files you need to; don't change other things along the way
-- If you're not sure what I want, ask me; don't guess and carry on
+If you skip a line, that's fine: Codex asks you for the missing lines, one at a time, before it starts building.
