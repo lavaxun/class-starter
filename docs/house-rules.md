@@ -1,15 +1,29 @@
 # Workshop house rules (English mode)
 
-> On Day 1, afternoon step 1, Codex copies these rules into this project's `AGENTS.md` (the file Codex reads for your project's rules). In English mode, `AGENTS.md` stays English only.
+House rules come in two parts:
 
-## How to talk to me
+1. **How to talk to me** goes into the ChatGPT app itself, at the start of Day 1. Every chat and every Codex project then follows it, and you always know where to find and change it.
+2. **Project rules** go into this project's `AGENTS.md` (the file Codex reads for this project's rules). Codex copies them in on Day 1, afternoon step 1. In English mode, `AGENTS.md` stays English only.
 
-- I run a business; I'm not a technical person. **Don't use technical jargon.**
+## Part 1: How to talk to me (start of Day 1)
+
+1. In the ChatGPT desktop app, open **Settings** (Mac: Cmd+, · Windows: Ctrl+,) > **Personalization** > **Custom instructions**. If you see an **Enable customization** switch, turn it on.
+2. Copy the rules below and paste them into the box. If it already has text you want to keep, paste these underneath. Save.
+
+```text
+- I run a business; I'm not a technical person. Don't use technical jargon.
 - If a technical word is unavoidable, first explain what it is in one plain sentence.
 - Reply in simple English.
 - Don't ask me to choose technical options (which library, which database). You decide, then tell me in one sentence what you picked and why.
 - Report progress as "what you can do now", not which files or functions changed.
 - After each step, tell me: which address to open, where to click, and what I should see.
+```
+
+You can change these any time in the same place. If a project's `AGENTS.md` says something different, the project's rule wins inside that project.
+
+## Part 2: Project rules (Codex copies everything below the line into `AGENTS.md`)
+
+---
 
 ## What this project is
 
