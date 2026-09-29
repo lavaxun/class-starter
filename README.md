@@ -2,11 +2,11 @@
 
 [Read this in Chinese → README.zh.md](README.zh.md)
 
-This is the course's **starter project**. When it runs, you'll see a congratulations page. On Day 1 we build on this same project, step by step, until it becomes a system for your team.
+This is the **pre-class setup check**. When it runs, you'll see a congratulations page. In class, build each new project in its own folder beside `class-starter`, never inside it. For web apps, Codex can copy this template into the new folder.
 
 **It has one job: run on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building on Day 1.
 
-**Easiest way: follow [Pre-class Part 2](https://pre-class-prep.vercel.app/part2).** Codex (the coding agent inside the ChatGPT Desktop App) downloads this project into `AI Class/class-starter` on your Desktop, installs everything, and opens the page for you. You don't need the commands below.
+**Easiest way: follow [Pre-class Part 2](https://pre-class-prep.vercel.app/part2).** Codex (the coding agent inside the ChatGPT Desktop App) clones this project into `Desktop/AI Class/class-starter`, copies `house-rules/AGENTS.md` to `AI Class/AGENTS.md`, installs everything, and opens the page for you. Keep `AI Class` open in Codex for the whole class; its rules apply to every project folder there. You don't need the commands below.
 
 Use the steps below only if you'd rather do it by hand, or if a helper asks you to.
 
@@ -37,6 +37,8 @@ New-Item -ItemType Directory -Force "$HOME\Desktop\AI Class"; Set-Location "$HOM
 git clone https://github.com/lavaxun/class-starter.git
 ```
 > Downloads the project into a folder called `class-starter`
+
+Before the next command, copy the house rules into `AI Class` if `AGENTS.md` is missing. On Mac: `test -e AGENTS.md || cp class-starter/house-rules/AGENTS.md AGENTS.md`. On Windows (PowerShell): `if (!(Test-Path .\AGENTS.md)) { Copy-Item .\class-starter\house-rules\AGENTS.md .\AGENTS.md }`. If you already have `AI Class/AGENTS.md`, don't overwrite it: keep your copy unless you choose the latest; save your old copy beside it as `AGENTS.backup.md` before replacing it.
 
 ```bash
 cd class-starter
@@ -77,6 +79,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-On Day 1 you open this `class-starter` folder in Codex. The workshop house rules are already in this project's [`AGENTS.md`](AGENTS.md) (the file Codex reads every time it works here): plain language with no jargon, short step-by-step replies, ask before deleting files or spending money, and keep your business data on your laptop. You don't need to edit it. The only thing you add is a short profile of your business in the Codex desktop app > Settings > Personalization > Codex instructions, and the Part 2 steps show you how.
+On Day 1, keep `AI Class` open in Codex, not `class-starter` on its own. `AI Class/AGENTS.md` holds the house rules for every class project. To change those rules at the source, edit [`house-rules/AGENTS.md`](house-rules/AGENTS.md) here. Your business profile belongs in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
 
 Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
