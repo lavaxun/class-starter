@@ -77,6 +77,6 @@ npm run dev
 
 ## 请不要删除这个 folder
 
-上课第 1 天，你会在 Codex 打开这个 `class-starter` folder。课堂规则在 [docs/house-rules.zh.md](docs/house-rules.zh.md)：一开课先把「沟通方式」贴进 Codex desktop app > Settings > Personalization > Codex instructions，所有 Codex chats 都会适用。之后 Codex 会把项目规则写进项目的 `AGENTS.md`（Codex 读取项目规则的文件）；如果有冲突，以项目规则为准。课前不用另外设置这些规则。
+上课第 1 天，你会在 Codex 打开这个 `class-starter` folder。课堂规则已经写在这个项目的 [`AGENTS.md`](AGENTS.md) 里（Codex 每次在这里工作都会读这个文件）：用简单的话、不讲技术术语，一步一步回复，删文件或花钱之前先问你，生意资料只留在你的电脑里。你不需要改它。你只需要在 Codex desktop app > Settings > Personalization > Codex instructions 写一段简短的生意介绍，Part 2 会一步步带你做。AGENTS.md 是英文的，但你用中文跟 Codex 说话，它就会用中文回复。
 
 想提前点点看也完全可以。不小心改坏了也没关系：把旧的 `class-starter` folder 改名为 `class-starter-old`，再重新运行上面的命令，就会有一份全新的。
