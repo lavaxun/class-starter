@@ -6,7 +6,7 @@
 
 **它只有一个任务：在你的电脑上跑起来。** 能跑起来，就代表你的开发工具（Node、git、编辑器）都装好了，第一天可以直接开工。
 
-**最简单的方法：跟着 [课前准备 Part 2](https://pre-class-prep.vercel.app/part2?lang=zh) 做就可以了。** Codex 会把这个项目下载到 `Desktop/AI Class/class-starter`，把 `house-rules/AGENTS.md` 复制到 `AI Class/AGENTS.md`，装好需要的东西，再帮你打开页面。上课时请一直在 Codex 打开 `AI Class`，这里的规则会用于每个课堂项目。下面的命令你不需要自己打。
+**最简单的方法：跟着 [课前准备 Part 2](https://pre-class-prep.vercel.app/part2?lang=zh) 做就可以了。** Codex 会把这个项目下载到 `Desktop/AI Class/class-starter`，把课堂规则下载到 `AI Class/AGENTS.md`，装好需要的东西，再帮你打开页面。上课时请一直在 Codex 打开 `AI Class`，这里的规则会用于每个课堂项目。下面的命令你不需要自己打。
 
 只有在你想自己动手，或者助教请你这样做的时候，才需要看下面的步骤。
 
@@ -38,7 +38,7 @@ git clone https://github.com/lavaxun/class-starter.git
 ```
 > 把项目下载到一个叫 `class-starter` 的 folder
 
-继续下一条命令前，如果 `AI Class/AGENTS.md` 还不存在，请复制课堂规则。Mac 输入：`test -e AGENTS.md || cp class-starter/house-rules/AGENTS.md AGENTS.md`。Windows（PowerShell）输入：`if (!(Test-Path .\AGENTS.md)) { Copy-Item .\class-starter\house-rules\AGENTS.md .\AGENTS.md }`。如果已经有这份文件，请不要直接覆盖；除非你决定使用新版，否则保留自己的版本。要换新版时，先把旧版保存在同一 folder，命名为 `AGENTS.backup.md`。
+继续下一条命令前，如果 `AI Class/AGENTS.md` 还不存在，请下载课堂规则。Mac 输入：`test -e AGENTS.md || curl -fsSL https://preclass.aiclassmalaysia.com/house-rules.md -o AGENTS.md`。Windows（PowerShell）输入：`if (!(Test-Path .\AGENTS.md)) { Invoke-WebRequest https://preclass.aiclassmalaysia.com/house-rules.md -OutFile .\AGENTS.md -UseBasicParsing }`。如果已经有这份文件，请不要直接覆盖；除非你决定使用新版，否则保留自己的版本。要换新版时，先把旧版保存在同一 folder，命名为 `AGENTS.backup.md`。
 
 ```bash
 cd class-starter
@@ -79,6 +79,6 @@ npm run dev
 
 ## 请不要删除这个 folder
 
-上课第 1 天，请在 Codex 一直打开 `AI Class`，不要单独打开 `class-starter`。`AI Class/AGENTS.md` 的课堂规则适用于这里的每个项目。要更改规则，请修改这里的 [`house-rules/AGENTS.md`](house-rules/AGENTS.md)，这是规则的唯一原稿。你的生意介绍则放在 `Settings › Personalization › Custom instructions › Codex`，Part 1 会带你完成。AGENTS.md 虽然是英文，你用中文跟 Codex 说话，它就会用中文回复。
+上课第 1 天，请在 Codex 一直打开 `AI Class`，不要单独打开 `class-starter`。`AI Class/AGENTS.md` 的课堂规则适用于这里的每个项目；这个项目自己的 `AGENTS.md` 只负责指引 Codex 去读它。老师要更改规则，请修改 pre-class-prep repo 里的唯一原稿 [`site/house-rules.md`](https://github.com/lavaxun/pre-class-prep/blob/main/site/house-rules.md)；学生重新运行 Part 2 setup，就会更新自己的副本。你的生意介绍则放在 `Settings › Personalization › Custom instructions › Codex`，Part 1 会带你完成。AGENTS.md 虽然是英文，你用中文跟 Codex 说话，它就会用中文回复。
 
 想提前点点看也完全可以。不小心改坏了也没关系：把旧的 `class-starter` folder 改名为 `class-starter-old`，再重新运行上面的命令，就会有一份全新的。

@@ -6,7 +6,7 @@ This is the **pre-class setup check**. When it runs, you'll see a congratulation
 
 **It has one job: run on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building on Day 1.
 
-**Easiest way: follow [Pre-class Part 2](https://pre-class-prep.vercel.app/part2).** Codex (the coding agent inside the ChatGPT Desktop App) clones this project into `Desktop/AI Class/class-starter`, copies `house-rules/AGENTS.md` to `AI Class/AGENTS.md`, installs everything, and opens the page for you. Keep `AI Class` open in Codex for the whole class; its rules apply to every project folder there. You don't need the commands below.
+**Easiest way: follow [Pre-class Part 2](https://pre-class-prep.vercel.app/part2).** Codex (the coding agent inside the ChatGPT Desktop App) clones this project into `Desktop/AI Class/class-starter`, downloads the class house rules into `AI Class/AGENTS.md`, installs everything, and opens the page for you. Keep `AI Class` open in Codex for the whole class; its rules apply to every project folder there. You don't need the commands below.
 
 Use the steps below only if you'd rather do it by hand, or if a helper asks you to.
 
@@ -38,7 +38,7 @@ git clone https://github.com/lavaxun/class-starter.git
 ```
 > Downloads the project into a folder called `class-starter`
 
-Before the next command, copy the house rules into `AI Class` if `AGENTS.md` is missing. On Mac: `test -e AGENTS.md || cp class-starter/house-rules/AGENTS.md AGENTS.md`. On Windows (PowerShell): `if (!(Test-Path .\AGENTS.md)) { Copy-Item .\class-starter\house-rules\AGENTS.md .\AGENTS.md }`. If you already have `AI Class/AGENTS.md`, don't overwrite it: keep your copy unless you choose the latest; save your old copy beside it as `AGENTS.backup.md` before replacing it.
+Before the next command, download the house rules into `AI Class` if `AGENTS.md` is missing. On Mac: `test -e AGENTS.md || curl -fsSL https://preclass.aiclassmalaysia.com/house-rules.md -o AGENTS.md`. On Windows (PowerShell): `if (!(Test-Path .\AGENTS.md)) { Invoke-WebRequest https://preclass.aiclassmalaysia.com/house-rules.md -OutFile .\AGENTS.md -UseBasicParsing }`. If you already have `AI Class/AGENTS.md`, don't overwrite it: keep your copy unless you choose the latest; save your old copy beside it as `AGENTS.backup.md` before replacing it.
 
 ```bash
 cd class-starter
@@ -79,6 +79,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-On Day 1, keep `AI Class` open in Codex, not `class-starter` on its own. `AI Class/AGENTS.md` holds the house rules for every class project. To change those rules at the source, edit [`house-rules/AGENTS.md`](house-rules/AGENTS.md) here. Your business profile belongs in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
+On Day 1, keep `AI Class` open in Codex, not `class-starter` on its own. `AI Class/AGENTS.md` holds the house rules for every class project; this project's own `AGENTS.md` only points Codex to it. Instructors change the rules at the source, [`site/house-rules.md` in the pre-class-prep repo](https://github.com/lavaxun/pre-class-prep/blob/main/site/house-rules.md), and students' copies are updated by re-running Part 2 setup. Your business profile belongs in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
 
 Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
