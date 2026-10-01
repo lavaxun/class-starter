@@ -2,13 +2,13 @@
 
 [English → README.md](README.md)
 
-这是**课前准备检查项目**。跑起来后，你会看到一个恭喜页面。第一天的仪表板（dashboard）就直接在 `class-starter` 里做。之后的项目（例如 `AI HR`）各有一份自己的副本，放在 `class-starter` 旁边，Codex 会帮你复制。
+这是一个**起步项目**，你可以用它来做自己想做的东西。跑起来后，你会看到一个恭喜页面。
 
-**它只有一个任务：在你的电脑上跑起来。** 能跑起来，就代表你的开发工具（Node、git、编辑器）都装好了，第一天可以直接开工。
+**先确认它能在你的电脑上跑起来。** 能跑起来，就代表你的开发工具（Node、git、编辑器）都装好了，可以开始做项目。
 
-**最简单的方法：跟着你的课前准备指南做就可以了。** Codex 会把这个项目下载到你个人主 folder 里的 `AI Class/class-starter`，下载 `AI Class/AGENTS.md`（你直接在 `AI Class` 开工时，它会先帮你建好新项目的 folder），装好需要的东西，再帮你打开页面。下面的命令你不需要自己打。
+你可以请你的编程助手帮你下载并设置这个项目，也可以自己照着下面的步骤做。
 
-只有在你想自己动手，或者助教请你这样做的时候，才需要看下面的步骤。
+在你的编程助手里打开这个 folder。里面的 `AGENTS.md` 会让它在写代码前，先问清楚这个项目是做什么的。
 
 ---
 
@@ -19,17 +19,9 @@
 - **Mac**：按 `Cmd + Space`，输入 `Terminal`，按 Enter
 - **Windows**：在 Start 菜单搜索 `PowerShell` 并打开（⚠️ 不是「Command Prompt / cmd」哦）
 
-**第 2 步 · 进入课程 folder**（个人主 folder 里的 `AI Class`，不要放在 Desktop 或 OneDrive；还没有的话这条命令会帮你建好）
+**第 2 步 · 进入你平时放项目的 folder**
 
-Mac：
-```bash
-mkdir -p ~/"AI Class" && cd ~/"AI Class"
-```
-
-Windows（PowerShell）：
-```powershell
-New-Item -ItemType Directory -Force "$HOME\AI Class"; Set-Location "$HOME\AI Class"
-```
+在 Terminal 输入 `cd `（后面留一个空格），再输入这个 folder 的位置，然后按 Enter。请选择这台电脑上的 folder，不要用云端同步的 folder。
 
 **第 3 步 · 一条一条运行下面 4 条命令**（等上一条跑完，再贴下一条）
 
@@ -59,7 +51,7 @@ npm run dev
 
 ![跑起来的样子](docs/success.png)
 
-**第 5 步 · 上课时带上这台电脑**：就是这一台，所有东西都装在它里面 🎉
+**第 5 步 · 在你的编程助手里打开这个 folder**，告诉它你想做什么。
 
 ---
 
@@ -71,12 +63,12 @@ npm run dev
 | `npm install` 卡很久或出现错误 | 换个网络（手机热点通常会快一些），再运行一次 `npm install` |
 | 页面打不开 | 请确认 Terminal 还开着，`npm run dev` 还在运行（关掉它，网页就会停） |
 | 想停下来 | 在 Terminal 按 `Ctrl + C`。想再开启时，进入 `class-starter` folder 运行 `npm run dev` |
-| 卡住超过 10 分钟 | 不用一个人硬撑。第一天早一点到，我们当场帮你搞定 😊 |
+| 卡住超过 10 分钟 | 请找帮你设置的人，把错误信息给对方看 |
 
 ---
 
 ## 请不要删除这个 folder
 
-`AI Class` 里每个项目各有一个 folder，并排放着：`class-starter`，还有你的课堂项目，例如 `AI HR`、`AI CRM`。每个项目都在自己的 folder 里做。这个项目的 `AGENTS.md` 自带完整规则（tech stack、怎样保护 `data/` 里的资料），你直接在 Codex 打开 `class-starter` 时，Codex 就会照着做。`AI Class/AGENTS.md` 只当「接待处」：如果你直接在 `AI Class` 开工，Codex 会先问你这个项目要放在哪里，建好它的 folder 和它自己的 `AGENTS.md`，再开始做。你的生意介绍，以及 Codex 该怎么跟你说话（用简单的话、不用技术术语），都放在 `Settings › Personalization › Custom instructions › Codex`，Part 1 会带你完成。AGENTS.md 虽然是英文，你用中文跟 Codex 说话，它就会用中文回复。
+请在这个 folder 里继续做项目。里面的 `AGENTS.md` 自带项目规则，包括 tech stack 和怎样保护 `data/` 里的资料。`AGENTS.md` 虽然是英文，你用中文跟编程助手说话，它就会用中文回复。
 
-想提前点点看也完全可以。不小心改坏了也没关系：把旧的 `class-starter` folder 改名为 `class-starter-old`，再重新运行上面的命令，就会有一份全新的。
+想点点看也完全可以。如果想要一份全新的，先停止运行，把旧的 `class-starter` folder 改名为 `class-starter-old`，再从它的上一级 folder 重新运行上面的命令。确认需要的代码和资料都保留好之前，不要删除旧 folder。

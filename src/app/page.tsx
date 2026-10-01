@@ -1,5 +1,5 @@
 // Setup check page: if this opens at localhost:3000, the development environment is ready.
-// From Day 1 we grow this project, step by step, into a system for your team.
+// What this project grows into is set by "What this project is" in AGENTS.md.
 export default function Home() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-100 px-6 font-sans">
@@ -33,8 +33,8 @@ export default function Home() {
         </div>
 
         <div className="mt-10 border-t border-gray-100 pt-6 text-sm leading-relaxed text-gray-500">
-          Next step: <span className="font-semibold text-gray-700">bring this laptop to class</span>
-          {" "}(this exact one, plus its charger, since everything is installed on it)
+          Next step: <span className="font-semibold text-gray-700">open this folder in your coding agent</span>
+          {" "}and tell it what you want to build.
           <br />
           This is where we start 👋
         </div>
