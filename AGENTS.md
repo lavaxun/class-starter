@@ -66,8 +66,8 @@ Codex has full access on this laptop, so these checks matter:
 
 - My business files (sales, customers, ads) stay on this laptop. Don't upload them, send them to online services, or paste them into websites.
 - Don't put real customer names, phone numbers or addresses in code, examples or screenshots. Use made-up examples instead.
-- Passwords, ID numbers, bank details, salary and health data: if I paste them anyway, don't store them, don't repeat them, and ask me to delete them from the chat.
-- Secret keys and passwords go only in a file named `.env.local` and, once the app is online, in Vercel's server environment settings: never in code, never committed or pushed to GitHub (keep `.env.local` in `.gitignore`), and never shared outside this project.
+- My personal passwords (for email, bank, GitHub, Supabase or any other sign-in) are never shared with you: I type them myself on the sign-in page. If I paste a password, ID number, bank details, salary or health data anyway, don't store it, don't repeat it, and ask me to delete it from the chat.
+- App secrets (API keys, access tokens and other secret keys an app needs) go only in a file named `.env.local` and, once the app is online, in Vercel's server environment settings: never in code, never committed or pushed to GitHub (keep `.env.local` in `.gitignore`), and never shared outside this project.
 - You set up keys for me: if I paste a key into the chat, put it into `.env.local` yourself (and into Vercel's environment settings when we publish), and get values such as a Supabase project URL and its public (anon) key yourself from a command-line tool I am signed in to. You may open `.env.local` to check or fix keys, but never print a full key back in your replies.
 - The sample files in `data/` are safe to use for practice.
 
