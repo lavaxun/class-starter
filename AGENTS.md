@@ -13,6 +13,8 @@
 
 ## What this project is
 
+Read this section first every time we start work.
+
 <!-- This section is still empty. -->
 
 **The first time we talk about this project, don't write code yet.** Ask me the 4 questions below in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
@@ -22,7 +24,7 @@
 3. Once it's built, what does success look like? (e.g. "every morning I can see at a glance who to follow up with today")
 4. Do they usually use it on a phone or a computer?
 
-When you're done asking, fill my answers into the blanks below, **delete the 4 questions above, this paragraph and the comment line**, then show it to me for a quick check. Read this section first every time we start work.
+When you're done asking, fill my answers into the blanks below, **delete the comment line, the "first time" paragraph, the 4 questions and this paragraph**, then show it to me for a quick check.
 
 - **Who uses it**: <to fill in>
 - **What it solves**: <to fill in>

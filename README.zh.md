@@ -69,6 +69,6 @@ npm run dev
 
 ## 请不要删除这个 folder
 
-请在这个 folder 里继续做项目。里面的 `AGENTS.md` 自带项目规则，包括 tech stack 和怎样保护 `data/` 里的资料。`AGENTS.md` 虽然是英文，你用中文跟编程助手说话，它就会用中文回复。
+请在这个 folder 里继续做项目。里面的 `AGENTS.md` 自带项目说明，包括 tech stack 和基本规则。`AGENTS.md` 虽然是英文，你用中文跟编程助手说话，它就会用中文回复。
 
 想点点看也完全可以。如果想要一份全新的，先停止运行，把旧的 `class-starter` folder 改名为 `class-starter-old`，再从它的上一级 folder 重新运行上面的命令。确认需要的代码和资料都保留好之前，不要删除旧 folder。
