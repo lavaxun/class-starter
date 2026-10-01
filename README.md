@@ -38,8 +38,6 @@ git clone https://github.com/lavaxun/class-starter.git
 ```
 > Downloads the project into a folder called `class-starter`
 
-Before the next command, download the house rules into `AI Class` if `AGENTS.md` is missing. On Mac: `test -e AGENTS.md || curl -fsSL [link removed] -o AGENTS.md`. On Windows (PowerShell): `if (!(Test-Path .\AGENTS.md)) { Invoke-WebRequest [link removed] -OutFile .\AGENTS.md -UseBasicParsing }`. If you already have `AI Class/AGENTS.md`, don't overwrite it: keep your copy unless you choose the latest; save your old copy beside it as `AGENTS.backup.md` before replacing it.
-
 ```bash
 cd class-starter
 ```
@@ -79,6 +77,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-`AI Class` holds one folder per project side by side: `class-starter`, then your class projects such as `AI HR` or `AI CRM`. Do each project in its own folder. This project's `AGENTS.md` carries its own complete rules (tech stack, `data/`, `src/`), so Codex follows them when you open `class-starter` itself. `AI Class/AGENTS.md` only acts as a receptionist: if you start a task directly in `AI Class`, Codex asks where the project belongs and creates its folder, with its own `AGENTS.md`, before doing the work. Instructors change that file at the source, `site/house-rules.md` in a private repo. Your business profile and how Codex should talk to you (plain words, no technical jargon) belong in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
+`AI Class` holds one folder per project side by side: `class-starter`, then your class projects such as `AI HR` or `AI CRM`. Do each project in its own folder. This project's `AGENTS.md` carries its own complete rules (tech stack, `data/`, `src/`), so Codex follows them when you open `class-starter` itself. `AI Class/AGENTS.md` only acts as a receptionist: if you start a task directly in `AI Class`, Codex asks where the project belongs and creates its folder, with its own `AGENTS.md`, before doing the work. Your business profile and how Codex should talk to you (plain words, no technical jargon) belong in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
 
 Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
