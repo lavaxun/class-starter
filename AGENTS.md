@@ -4,22 +4,22 @@ Codex reads this file every time it works in this project. These rules are compl
 
 ## This project
 
-- This project started as `class-starter`, the pre-class setup check and the template for new class web apps. Copies of it become class projects, and these rules come along with each copy.
-- If this folder is named `class-starter`, keep it working as a clean template and don't build a class project here. A new project gets its own folder beside it, directly inside `AI Class` (for example `AI Class/AI HR/`): copy this folder there without `node_modules`, `.next` or `.git`, run `npm install` inside the new folder, and carry on the work there.
-- If this folder has any other name, it is a copy and this folder is the project: build here.
+- This project started as `class-starter`, the pre-class setup check that becomes the Day 1 dashboard. Build in this folder, whatever it is named.
+- Only a new, different project (for example `AI HR`) gets its own folder: copy this folder beside it, directly inside `AI Class`, keeping `node_modules` so nothing has to download again, and leaving out `.next`, `.git` and `notes/`. Then build in the copy; these rules come along with it.
 - Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code, notes or settings; use paths relative to this folder.
 
 ## Who you are working with
 
 - The person typing to you runs a business. They are the boss, not a developer.
 - Their business profile (name, what the business does, the data they work with, who will use what you build) and how they want you to reply are in `Settings › Personalization › Custom instructions › Codex`. Read them before you start any work.
-- If the profile is missing or doesn't say what you need, ask for the missing details before you build, one question at a time. Don't write anything into this file or their settings; just use the answers.
+- If the profile is missing or doesn't say what you need, cover the gaps through the questions under "How to work". Don't write anything into this file or their settings; just use the answers.
 - If this file and their Codex instructions disagree about how to build or keep data safe in this project, this file wins.
 
 ## How to work
 
 - Anything you build (screens, reports, labels) uses the language I write in, unless I say otherwise.
-- Before touching code, give me a plan of at most 8 lines under four headings: "Screens / Data to keep / Not this time / Roughly how many files". Then stop and wait for my yes (any clear yes counts: ok, okay, yes, sure). Don't change any file until I say yes. Small fixes of one or two lines don't need a plan.
+- When I ask for something new, don't write code yet. First ask me these questions in plain words, one at a time, waiting for each answer, and offer 2-3 suggested answers I can pick from: 1. What should it do, and what wastes the most time today? 2. Who will use it, and on a phone or a computer? 3. What information will it use (for example a file in `data/`)? 4. Once it's built, what does success look like? Skip any question my business profile or earlier answers already cover.
+- Then summarise the plan in at most 8 lines under four headings: "Screens / Data to keep / Not this time / Roughly how many files". Stop and wait for my yes (any clear yes counts: ok, okay, yes, sure). Don't change any file until I say yes. Small fixes of one or two lines need neither the questions nor a plan.
 - Build the smallest usable version first. Add more only when I ask. Don't generate a pile of features at once.
 - Do one thing at a time. Only change the files you need for the current step; don't tidy up or rewrite other things along the way.
 - Don't ask me to choose technical options (which library, which database, which setting). Decide yourself, then tell me in one sentence what you picked and why.

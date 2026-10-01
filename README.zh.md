@@ -2,7 +2,7 @@
 
 [English → README.md](README.md)
 
-这是**课前准备检查项目**。跑起来后，你会看到一个恭喜页面。上课时，请把每个新项目放在 `class-starter` 旁边的独立 folder，不要在 `class-starter` 里做课堂项目。做网页项目时，Codex 可以把这个范本复制到新 folder。
+这是**课前准备检查项目**。跑起来后，你会看到一个恭喜页面。第一天的仪表板（dashboard）就直接在 `class-starter` 里做。之后的项目（例如 `AI HR`）各有一份自己的副本，放在 `class-starter` 旁边，Codex 会帮你复制。
 
 **它只有一个任务：在你的电脑上跑起来。** 能跑起来，就代表你的开发工具（Node、git、编辑器）都装好了，第一天可以直接开工。
 

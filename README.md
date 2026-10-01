@@ -2,7 +2,7 @@
 
 [Read this in Chinese → README.zh.md](README.zh.md)
 
-This is the **pre-class setup check**. When it runs, you'll see a congratulations page. In class, build each new project in its own folder beside `class-starter`, never inside it. For web apps, Codex can copy this template into the new folder.
+This is the **pre-class setup check**. When it runs, you'll see a congratulations page. On Day 1 you build your dashboard right here in `class-starter`. Later projects (such as `AI HR`) each get their own copy of it, beside `class-starter`; Codex makes the copy for you.
 
 **It has one job: run on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building on Day 1.
 
