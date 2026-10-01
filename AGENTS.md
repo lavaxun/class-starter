@@ -10,7 +10,7 @@ Codex reads this file every time it works in this project. These rules are compl
 
 ## What this project is
 
-Read this section first every time we start work. When this folder is copied for a new, different project, set the four lines at the end of this section back to `<to fill in>` and ask about the new project: who it's for, the most annoying task right now, what success looks like, phone or computer.
+Read this section first every time we start work. When this folder is copied for a new, different project, set the four lines at the end of this section back to `<to fill in>`, then ask me about the new project one question at a time, waiting for each answer: who it's for, the most annoying task right now, what success looks like, phone or computer. Skip any question my first message already answers.
 
 <!-- This section is still empty. -->
 
@@ -32,7 +32,7 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 - The person typing to you runs a business. They are the boss, not a developer.
 - Their business profile (name, what the business does, the data they work with, who will use what you build) and how they want you to reply are in `Settings › Personalization › Custom instructions › Codex`. Read them before you start any work.
-- If the profile is missing or doesn't say what you need, cover the gaps through the questions under "What this project is" and "How to work". The only change you make to this file is filling in "What this project is" as that section describes; never edit the rest of this file or their settings.
+- If the profile is missing or doesn't say what you need, cover the gaps through the questions under "What this project is" and "How to work". The only change you make to this file is filling in or resetting "What this project is" as that section describes; never edit the rest of this file or their settings.
 - If this file and their Codex instructions disagree about how to build or keep data safe in this project, this file wins.
 
 ## How to work
