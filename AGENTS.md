@@ -36,7 +36,7 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - **Next.js 16 (App Router)** + **TypeScript**
 - Styling with **Tailwind**; prefer the ready-made **shadcn/ui** components already in this project
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
-- Charts with **recharts** (already installed)
+- Charts with **recharts**
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
 
 ## Ground rules
