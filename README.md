@@ -6,7 +6,7 @@ This is the **pre-class setup check**. When it runs, you'll see a congratulation
 
 **It has one job: run on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building on Day 1.
 
-**Easiest way: follow your pre-class guide.** Codex (the coding agent inside the ChatGPT Desktop App) clones this project into `Desktop/AI Class/class-starter`, downloads the class house rules into `AI Class/AGENTS.md`, installs everything, and opens the page for you. Keep `AI Class` open in Codex for the whole class; its rules apply to every project folder there. You don't need the commands below.
+**Easiest way: follow your pre-class guide.** Codex (the coding agent inside the ChatGPT Desktop App) clones this project into `AI Class/class-starter` in your home folder, downloads `AI Class/AGENTS.md` (it sets up a new project folder when you start work directly in `AI Class`), installs everything, and opens the page for you. You don't need the commands below.
 
 Use the steps below only if you'd rather do it by hand, or if a helper asks you to.
 
@@ -19,16 +19,16 @@ Use the steps below only if you'd rather do it by hand, or if a helper asks you 
 - **Mac**: press `Cmd + Space`, type `Terminal`, press Enter
 - **Windows**: search the Start menu for `PowerShell` and open it (⚠️ not "Command Prompt" / cmd)
 
-**Step 2 · Go to your course folder** (`AI Class` on your Desktop; this creates it if it's missing)
+**Step 2 · Go to your course folder** (`AI Class` in your home folder, not on the Desktop or in OneDrive; this creates it if it's missing)
 
 Mac:
 ```bash
-mkdir -p ~/Desktop/"AI Class" && cd ~/Desktop/"AI Class"
+mkdir -p ~/"AI Class" && cd ~/"AI Class"
 ```
 
 Windows (PowerShell):
 ```powershell
-New-Item -ItemType Directory -Force "$HOME\Desktop\AI Class"; Set-Location "$HOME\Desktop\AI Class"
+New-Item -ItemType Directory -Force "$HOME\AI Class"; Set-Location "$HOME\AI Class"
 ```
 
 **Step 3 · Run these 4 commands one at a time** (wait for each to finish before pasting the next)
@@ -79,6 +79,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-On Day 1, keep `AI Class` open in Codex, not `class-starter` on its own. `AI Class/AGENTS.md` holds the house rules for every class project; this project's own `AGENTS.md` only points Codex to it. Instructors change the rules at the source, `site/house-rules.md` in a private repo, and students' copies are updated by re-running Part 2 setup. Your business profile belongs in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
+`AI Class` holds one folder per project side by side: `class-starter`, then your class projects such as `AI HR` or `AI CRM`. Do each project in its own folder. This project's `AGENTS.md` carries its own complete rules (tech stack, `data/`, `src/`), so Codex follows them when you open `class-starter` itself. `AI Class/AGENTS.md` only acts as a receptionist: if you start a task directly in `AI Class`, Codex asks where the project belongs and creates its folder, with its own `AGENTS.md`, before doing the work. Instructors change that file at the source, `site/house-rules.md` in a private repo. Your business profile and how Codex should talk to you (plain words, no technical jargon) belong in `Settings › Personalization › Custom instructions › Codex`; Part 1 shows you how.
 
 Feel free to click around beforehand. If you break something, that's fine: rename the old `class-starter` folder to `class-starter-old`, then run the commands above again and you'll get a fresh copy.
