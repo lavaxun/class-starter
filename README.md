@@ -69,6 +69,6 @@ A big "Congrats! 🎉" page = success ✅
 
 ## Don't delete this folder
 
-Keep your work in this folder. Its `AGENTS.md` contains the project's rules, including the tech stack and how to keep files in `data/` safe.
+Keep your work in this folder. Its `AGENTS.md` contains the project's notes, including the tech stack and ground rules.
 
 Feel free to click around. If you want a fresh copy, stop the server, rename the old `class-starter` folder to `class-starter-old`, then run the commands above again from its parent folder. Keep the old folder until you've saved any work or data you need.
