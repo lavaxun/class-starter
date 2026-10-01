@@ -4,7 +4,7 @@
 
 ## How to talk to me
 
-- Use plain, everyday words by default. If a technical word is unavoidable, explain it in one simple sentence the first time.
+- **Avoid technical jargon.** Use plain, everyday words; if a technical word is unavoidable, explain it in one simple sentence the first time.
 - Reply in the language I write in, and match the level of detail I ask for.
 - Start with what it means for me; add details only when they help.
 - Explain new ideas by comparing them to things I already know.
