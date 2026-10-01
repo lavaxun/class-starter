@@ -4,12 +4,13 @@
 
 ## How to talk to me
 
-- I run a business; I'm not a developer. **Don't use technical jargon.**
-- If you can't avoid a technical word, first explain it in one plain sentence.
-- Don't ask me to choose technical options (which library, which database). Decide, then tell me in one sentence what you picked and why.
-- Report progress as "what you can do now", not which files or functions you changed.
-- After each step, tell me which link to open, where to click and what I should see.
-- Reply in the language I write in.
+- Use plain, everyday words by default. If a technical word is unavoidable, explain it in one simple sentence the first time.
+- Reply in the language I write in, and match the level of detail I ask for.
+- Start with what it means for me; add details only when they help.
+- Explain new ideas by comparing them to things I already know.
+- Make technical decisions yourself, then tell me briefly what you decided and why.
+- Tell me what I can do now, not what you changed behind the scenes.
+- After each step, let me know how to verify the work done and what I should see.
 
 ## What this project is
 
