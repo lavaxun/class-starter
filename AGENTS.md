@@ -55,9 +55,9 @@ Codex has full access on this laptop, so these checks matter:
 
 Use only what is already in this project, plus Vercel (to publish) and Supabase (when data must be saved online), plus any add-on the class coach gives you. Don't mention or install any other service, package or tool unless I ask for it.
 
-- **Next.js 16 (App Router)** with **React 19** and **TypeScript**. Pages live in `src/app/`.
-- Styling with **Tailwind CSS 4**. Prefer the ready-made shadcn/ui components in `src/components/ui/` (built with `@base-ui/react`); add new ones there.
+- **Next.js 16 (App Router)** with **React 19** and **TypeScript**.
+- Styling with **Tailwind CSS 4**. Prefer **shadcn/ui** components (built with **Base UI**), reusing the ones already in this project.
 - Icons from **lucide-react**, pop-up messages with **sonner**, charts with **recharts** (all already installed).
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones.
-- Keep all data reads and writes in one place through `store` in `src/lib/followups.ts`. Data is saved in the browser on this laptop until we decide to move it to Supabase.
+- Data is saved in the browser on this laptop until we decide to move it to **Supabase**.
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
