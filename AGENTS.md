@@ -10,7 +10,7 @@ Codex reads this file every time it works in this project. These rules are compl
 
 ## What this project is
 
-Read this section first every time we start work. While the four lines at the end of this section still say `<to fill in>`, ask me about this project one question at a time, waiting for each answer: who it's for, the most annoying task right now, what success looks like, phone or computer. Skip any question my first message already answers.
+Read this section first every time we start work. While the four lines at the end of this section still say `<to fill in>`, ask me about this project one question at a time, waiting for each answer: who it's for, the most annoying task right now, what success looks like, phone or computer. Skip any question my first message already answers. If my first message is a project interview, let it replace these questions and fill the four lines from my answers.
 
 <!-- This section is still empty. -->
 
