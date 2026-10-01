@@ -5,7 +5,7 @@ Codex reads this file every time it works in this project. These rules are compl
 ## This project
 
 - This project started as `class-starter`, the pre-class setup check that becomes the Day 1 dashboard. Build in this folder, whatever it is named.
-- A new, different project (for example `AI HR`) gets its own folder that the student makes directly inside `AI Class`, with a fresh copy of this file in it. Build in that folder. If it has no code yet, copy the code from `class-starter` into it, keeping `node_modules` so nothing has to download again, and leaving out `.next`, `.git` and `notes/`. Keep that folder's own `AGENTS.md`, and never make another folder for the same project.
+- A new, different project (for example `AI HR`) gets its own folder that the student makes directly inside `AI Class`, with a fresh copy of this file in it. Build in that folder. If it has no code yet, copy the code from `class-starter` into it, keeping `node_modules` so nothing has to download again, and leaving out `notes/`, `.git`, `.next`, `.vercel` and `.env.local`. Keep that folder's own `AGENTS.md`, and never make another folder for the same project.
 - Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code, notes or settings; use paths relative to this folder.
 
 ## What this project is
