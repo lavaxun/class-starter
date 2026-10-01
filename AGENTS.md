@@ -1,11 +1,11 @@
-# Project rules for Codex
+# Project rules
 
-Codex reads this file every time it works in this project. These rules are complete on their own and already set up; the student does not need to edit this file.
+Your coding agent reads this file every time it works in this project. These rules are complete on their own and already set up; the person you work with does not need to edit this file.
 
 ## This project
 
-- This project started as `class-starter`, the pre-class setup check that becomes the Day 1 dashboard. Build in this folder, whatever it is named.
-- A new, different project (for example `AI HR`) gets its own folder that the student makes directly inside `AI Class`, with a fresh copy of this file in it. Build in that folder. If it has no code yet, copy the code from `class-starter` into it, keeping `node_modules` so nothing has to download again, and leaving out `notes/`, `.git`, `.next`, `.vercel` and `.env.local`. Keep that folder's own `AGENTS.md`, and never make another folder for the same project.
+- Build in this folder, whatever it is named, and never make another folder for the same project.
+- What gets built here is decided by "What this project is" below, not by the folder's name or where its starting code came from.
 - Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code, notes or settings; use paths relative to this folder.
 
 ## What this project is
@@ -31,14 +31,12 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 ## Who you are working with
 
 - The person typing to you runs a business. They are the boss, not a developer.
-- Their business profile (name, what the business does, the data they work with, who will use what you build) and how they want you to reply are in `Settings › Personalization › Custom instructions › Codex`. Read them before you start any work.
-- If the profile is missing or doesn't say what you need, cover the gaps through the questions under "What this project is" and "How to work". The only change you make to this file is filling in or resetting "What this project is" as that section describes; never edit the rest of this file or their settings.
-- If this file and their Codex instructions disagree about how to build or keep data safe in this project, this file wins.
+- Cover what you need to know through the questions under "What this project is" and "How to work". The only change you make to this file is filling in or resetting "What this project is" as that section describes; never edit the rest of this file.
 
 ## How to work
 
 - Anything you build (screens, reports, labels) uses the language I write in, unless I say otherwise.
-- When I ask for something new, don't write code yet. If "What this project is" still has blanks, ask its 4 questions first, fill it in and show it to me (the one file change allowed before my yes). Then ask me these questions in plain words, one at a time, waiting for each answer, and offer 2-3 suggested answers I can pick from: 1. What should it do, and what wastes the most time today? 2. Who will use it, and on a phone or a computer? 3. What information will it use (for example a file in `data/`)? 4. Once it's built, what does success look like? Skip any question that "What this project is", my business profile or earlier answers already cover.
+- When I ask for something new, don't write code yet. If "What this project is" still has blanks, ask its 4 questions first, fill it in and show it to me (the one file change allowed before my yes). Then ask me these questions in plain words, one at a time, waiting for each answer, and offer 2-3 suggested answers I can pick from: 1. What should it do, and what wastes the most time today? 2. Who will use it, and on a phone or a computer? 3. What information will it use (for example a file in `data/`)? 4. Once it's built, what does success look like? Skip any question that "What this project is" or earlier answers already cover.
 - Then summarise the plan in at most 8 lines under four headings: "Screens / Data to keep / Not this time / Roughly how many files". Stop and wait for my yes (any clear yes counts: ok, okay, yes, sure). Don't change any file until I say yes. Small fixes of one or two lines need neither the questions nor a plan.
 - Build the smallest usable version first. Add more only when I ask. Don't generate a pile of features at once.
 - Do one thing at a time. Only change the files you need for the current step; don't tidy up or rewrite other things along the way.
@@ -50,12 +48,12 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - For Supabase browser login, send the page's 8-character verification code to the still-waiting login command. Don't insist on an Approve button that isn't there, and don't ask for a long-lived token. A new login needs its own code.
 - Keep a short status note in `notes/status.md`, three lines: what's done, what's next, what's stuck. Update it after every step. Keep any other notes you need (plans, decisions) in the same `notes/` folder; the project brief stays in "What this project is" above. I don't need to know the file names.
 - If the chat gets long or you see a usage warning: update the status note, then tell me to start a new chat and type "Next". In a new chat, read "What this project is" and `notes/status.md` first and carry on from there.
-- Keep each task small and focused so my ChatGPT plan's usage lasts through the class.
+- Keep each task small and focused so my usage allowance lasts.
 - If what I describe is really better solved by hiring someone, changing how people work, or buying ready-made software, say so honestly instead of forcing a build.
 
 ## Ask me first
 
-Codex has full access on this laptop, so these checks matter:
+You have full access on this laptop, so these checks matter:
 
 - Before you delete, overwrite, rename or move any file I made or gave you, especially anything in `data/`. Tell me which file and why, then wait for my yes.
 - Before you install any new tool, package or app. Running `npm install` to install this project's existing packages does not need a separate yes.
@@ -73,7 +71,7 @@ Codex has full access on this laptop, so these checks matter:
 
 ## Tech stack
 
-Use only what is already in this project, plus Vercel (to publish) and Supabase (when data must be saved online), plus any add-on the class coach gives you. Don't mention or install any other service, package or tool unless I ask for it.
+Use only what is already in this project, plus Vercel (to publish) and Supabase (when data must be saved online). Don't mention or install any other service, package or tool unless I ask for it.
 
 - **Next.js 16 (App Router)** with **React 19** and **TypeScript**.
 - Styling with **Tailwind CSS 4**. Prefer **shadcn/ui** components (built with **Base UI**), reusing the ones already in this project.
