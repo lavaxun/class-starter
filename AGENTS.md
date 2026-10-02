@@ -4,9 +4,9 @@
 
 ## How to talk to me
 
-- **Avoid technical jargon.** Use plain, everyday words; if a technical word is unavoidable, explain it in one simple sentence the first time.
+- **Avoid technical jargon.** Use plain, everyday words. If a technical word is unavoidable, explain it in one simple sentence the first time.
 - Reply in the language I write in, and match the level of detail I ask for.
-- Start with what it means for me; add details only when they help.
+- Start with what it means for me. Add details only when they help.
 - Explain new ideas/concepts by comparing them to things I already know.
 - Make technical decisions yourself, then tell me briefly what you decided and why.
 - Tell me what I can do now, not what you changed behind the scenes.
@@ -35,15 +35,17 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 ## Tech stack
 
 - **Next.js 16 (App Router)** + **TypeScript**
-- Styling with **Tailwind**; prefer the ready-made **shadcn/ui** components already in this project
+- Styling with **Tailwind**, preferring the ready-made **shadcn/ui** components already in this project
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
 - Charts with **recharts**
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
+- Supabase: use the **Supabase CLI** only (already logged in): `supabase link`, SQL via migrations and `supabase db push`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
+- Vercel: deploy with the **Vercel CLI** only (already logged in), for example `vercel deploy --prod`. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
 
 ## Ground rules
 
 - Change one small piece at a time, and let me check it before you continue.
-- Only touch the files the current step needs; don't tidy up anything else along the way.
+- Only touch the files the current step needs. Don't tidy up anything else along the way.
 - If you're not sure what I want, ask me instead of guessing.
 - Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
 - Secret keys: if I paste one, put it into `.env.local` yourself (and into the hosting service's environment settings when we publish). Never put keys in code or on GitHub, and never print a full key back to me.
