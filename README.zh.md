@@ -76,7 +76,7 @@ npm install
 npm run dev
 ```
 
-等安装完成才启动；任何命令失败就停止，请助手看错误。打开 **http://localhost:3000**；如果 Terminal 显示另一个网址，就用它。
+等安装完成才启动；任何命令失败就停止，请助手看错误。打开 [http://localhost:3000](http://localhost:3000)；如果 Terminal 显示另一个网址，就用它。
 
 ## 跑起来后，开始你的项目
 
