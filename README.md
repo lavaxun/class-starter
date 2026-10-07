@@ -2,141 +2,108 @@
 
 [Read this in Chinese → README.zh.md](README.zh.md)
 
-This is a **starter project** for whatever you want to build. When it runs, you'll see a congratulations page.
-
-**Start by checking that it runs on your laptop.** If it runs, your development tools (Node, git, an editor) are set up correctly, and you can start building.
+A starter for your next project. First get the congratulations page running on your laptop, then tell your coding agent what you want to build.
 
 ## Set up with your coding agent
 
-**Create an empty folder yourself**, anywhere you choose on this laptop. This folder is your project. Choose a local folder rather than a cloud-synced folder if possible.
+1. **Create an empty local folder yourself** on your laptop, preferably outside cloud-synced storage.
+2. Select **that exact folder as the primary LOCAL project folder** in your coding app, then start a **new chat** there.
+3. Paste this prompt:
 
-Select that exact folder as the **primary LOCAL project folder** in your coding app, then start a **new chat** there. You do not need to select another folder after setup.
+```text
+Reply in English; use English for screens, reports and labels unless I ask otherwise.
+Read this chat's actual current working folder and show its full path.
+Wait for my confirmation before downloads or writes.
+If the path is wrong, stop; ask me to select the correct primary LOCAL folder
+and start a new chat. If the folder isn't empty, don't overwrite anything;
+ask me to create and select a new empty folder and start a new chat.
+Install https://github.com/lavaxun/class-starter directly in the confirmed folder,
+never in a nested folder, using the four Git commands below.
+Stop if any setup command fails. Read and preserve the installed AGENTS.md.
+Apply Class house rules below, then run npm install and npm run dev here.
+Help me open the running page. Before building my idea, follow AGENTS.md's
+project-discovery questions one at a time.
+```
 
-Paste this into the chat:
+## Class house rules
 
-> I selected the English guide. Reply in English and use English for screens, reports and labels unless I ask otherwise. Set up https://github.com/lavaxun/class-starter directly in the selected project folder, not in a folder inside it. First show me the full path and wait for me to confirm it. Follow this README's folder checks and house-rules procedure, preserve the starter's AGENTS.md, and help me check http://localhost:3000. Before building my idea, follow AGENTS.md's project-discovery questions.
+Both setup routes use these rules after downloading the starter:
 
-### Folder checks for the agent
+1. Download https://preclass.aiclassmalaysia.com/house-rules.md to a **separate temporary file**, never over `AGENTS.md`. If the download fails, stop and show the error.
+2. Read the installed `AGENTS.md` and the downloaded block, including **both** exact markers:
+   ```html
+   <!-- ai-class-house-rules:start -->
+   <!-- ai-class-house-rules:end -->
+   ```
+3. If the block is absent, append it **once**. If identical, leave it unchanged. If different, ask whether to keep it or replace it; **keep the current block** unless you explicitly approve replacing only that block. Preserve all text outside the block and never overwrite the starter's `AGENTS.md`.
+4. Remove the temporary file after use. Stop on any failed setup command; fix the error before continuing.
 
-1. Read the chat's current folder: Mac `pwd -P`; Windows `(Get-Location).Path`. Call this path `ROOT`. Say **“I will work in ROOT”** using the real path, and wait for confirmation before downloads or writes. If it is wrong, stop and ask the student to select the correct primary local folder and start a new chat there.
-2. Check what is in `ROOT`, ignoring only `.DS_Store`, `Thumbs.db` and `desktop.ini`:
-   - **Empty:** install directly into `ROOT` using the four Git commands in the manual route below.
-   - **Recognized starter:** `git -C "<ROOT>" remote get-url origin` must point to `github.com/lavaxun/class-starter`, using HTTPS or SSH, with or without `.git`. If `git -C "<ROOT>" rev-parse -q --verify HEAD` fails, reuse its origin and run only the fetch and checkout commands below. Otherwise update only with `git -C "<ROOT>" pull --no-rebase --ff-only`. If that fails, keep the current copy; never stash, reset or delete.
-   - **Anything else:** write nothing. This includes unrelated files, an old non-Git copy, or a home/Desktop/Documents folder selected by mistake. Explain what is there and ask the student to create a new empty folder, select it as the primary local project folder and start a new chat there. Never move, rename, delete or overwrite existing work.
-3. Recheck the folder classification before writes if its contents have changed. Stop on any failed setup command; do not continue with the next command blindly.
-4. Keep all project files in `ROOT`. Do not create a starter child folder, a course parent folder or an automatic “AI Class” home. Read the installed `AGENTS.md`, add the house rules below, then run `npm install` and `npm run dev` in the same folder.
+## Optional: set up by hand
 
----
+Use the same empty folder selected above. If you haven't selected it yet, do that and start a new chat first. In that chat, ask your agent to use English for communication, screens, reports and labels unless you request otherwise.
 
-## Add the class house rules
+**1. Open a terminal and go to your folder.** Replace the example with your full path; keep the quotes.
 
-**Ask your agent to do this after installing or updating the starter.** The manual route uses this same procedure. Keep these project instructions standalone and usable in any coding app.
-
-1. Download https://preclass.aiclassmalaysia.com/house-rules.md to a **separate temporary file**, never directly over `AGENTS.md`. If the download fails, remove the temporary file and retry the download; do not invent the rules or continue with missing rules.
-2. Read both `<ROOT>/AGENTS.md` and the downloaded block, from `<!-- ai-class-house-rules:start -->` through `<!-- ai-class-house-rules:end -->`.
-3. Apply only the matching case:
-   - **No `AGENTS.md`:** create it with the downloaded marked block.
-   - **No marked block:** append a blank line and the downloaded block once. Preserve every existing starter instruction.
-   - **Identical marked block:** change nothing.
-   - **Different marked block:** ask, **“Would you like to keep your current class rules (recommended if unsure), or replace only the class rules block with the latest version?”** Wait for the answer. Default to keeping it. Only explicit approval permits replacing that marked section; preserve all text outside it.
-4. Remove the temporary file after use. Never overwrite the whole starter `AGENTS.md`.
-
----
-
-## Doing it by hand (about 10 minutes)
-
-This is optional. Use the **same empty folder you created and selected above**, not a new folder inside it. If you have not done that yet, create the folder, select it as the primary LOCAL project folder and start a new chat before continuing.
-
-**Step 1 · Open a terminal**
-
-- **Mac**: press `Cmd + Space`, type `Terminal`, press Enter
-- **Windows**: search the Start menu for `PowerShell` and open it (⚠️ not "Command Prompt" / cmd)
-
-**Step 2 · Go to your selected project folder**
-
-Replace the example path with your folder's full path. Keep the quotes, especially if the path has spaces. In a PowerShell single-quoted literal path, double every apostrophe (`'`) inside the path.
-
-**Mac:**
+**Mac:** open Terminal with `Cmd + Space`.
 
 ```bash
 cd "/Users/your-name/your-project"
 pwd -P
 ```
 
-**Windows (PowerShell):**
+**Windows:** open PowerShell from Start (not Command Prompt).
 
 ```powershell
 Set-Location -LiteralPath 'C:\Users\your-name\your-project'
 (Get-Location).Path
 ```
 
-Have your agent show the full absolute path as `ROOT`, wait for you to confirm it is your selected project folder, and classify its contents using the **Folder checks** above **without downloads, writes or installation**. Only an empty `ROOT` proceeds to the manual-route Git commands below. If an existing or half-finished starter is there, switch to **Set up with your coding agent** above; do not rerun `git init` or `git remote add`. If there are unrelated files, stop without writes and create a new empty project folder.
+In PowerShell, double any apostrophe inside the quoted path.
 
-**Step 3 · Download into this folder**
+If navigation fails or the shown path isn't your selected folder, **stop before Git**. Ask your agent **only to read the chat's actual current working path, show it, wait for your confirmation, and check that the folder is empty—no downloads, writes or installation yet**. If the chat path is wrong, select the correct primary LOCAL folder and start a new chat. If the folder isn't empty, stop without overwriting anything; create and select a new empty folder and start a new chat.
 
-Run these **four commands one at a time**, on either platform. Wait for each to finish. **If any command fails, stop and show the error to your agent; do not run the next command.** Recheck the folder if its contents changed since the folder checks.
+**2. Download the starter directly into this folder.** Run these four commands **one at a time**. If any fails, stop and show the error to your agent; don't run the next command.
 
 ```bash
 git init -q
-```
-
-```bash
 git remote add origin https://github.com/lavaxun/class-starter.git
-```
-
-```bash
 git fetch -q origin
-```
-
-```bash
 git checkout -q -b main --track origin/main
 ```
-> Downloads the starter directly into your selected folder. No GitHub account or SSH key is needed.
 
-**Step 4 · Add the class house rules**
+No GitHub account or SSH key is needed. Do not create a nested project folder.
 
-In the same chat, ask your agent to read the installed `AGENTS.md` and follow **Add the class house rules** above. It must preserve the starter's instructions, not replace the file.
+**3. Add the house rules.** Ask your agent to read the installed `AGENTS.md` and follow **Class house rules** above, preserving the starter's instructions.
 
-**Step 5 · Install and start**
-
-Run these in the same terminal, still in your selected project folder. Wait for each command to finish successfully before running the next.
+**4. Install and start in the same folder.** Run `npm install` first; if it fails, stop and show the error. Only after it finishes successfully, run `npm run dev`.
 
 ```bash
 npm install
-```
-> Installs the parts the project needs. **This takes a few minutes**, and lots of scrolling text is normal
-
-```bash
 npm run dev
 ```
-> Starts it! When you see `Local: http://localhost:3000`, it's running
 
-**Step 6 · Open your browser** and go to **http://localhost:3000**
+Keep that terminal open while using the app.
 
-A big "Congrats! 🎉" page = success ✅
+## Success: start building
+
+Open **http://localhost:3000**, or the URL shown in your terminal. The congratulations page means the starter is running.
 
 ![What it looks like when it runs](docs/success.png)
 
-**Step 7 · Tell your coding agent what you want to build**, in the same chat and selected folder.
+In the same chat, tell your agent what you want to build. Before writing code, it must read `AGENTS.md` and ask **one question at a time**: who it's for, what problem it solves, what success looks like, and whether people use a phone or computer.
 
-Its `AGENTS.md` asks who the project is for, what problem it solves, what success looks like, and whether people use a phone or computer, one question at a time before writing code. It also records the starter's stack: **Next.js 16 + TypeScript**, **Tailwind + shadcn/ui**, mobile-first layouts and **recharts** for charts.
+Keep the stack notes in `AGENTS.md`: Next.js 16 + TypeScript, Tailwind + shadcn/ui, mobile-first layouts and recharts for charts.
 
----
-
-## Common problems
+## Troubleshooting
 
 | Problem | Fix |
 |---|---|
-| `npx` or `npm` says "command not found" | Node isn't installed properly. Install Node, then **close and reopen the terminal** and try again |
-| `npm install` hangs for a long time or shows errors | Switch networks (a phone hotspot is often faster) and run `npm install` again |
-| The page won't open | Make sure the terminal is still open and `npm run dev` is still running (close it and the page stops) |
-| You want to stop it | Press `Ctrl + C` in the terminal. To start again, go into your selected project folder and run `npm run dev` |
-| Stuck for more than 10 minutes | Ask whoever set this up for you, and show them the error message |
+| `npm` isn't found | Install Node, then close and reopen the terminal. |
+| Download or setup command fails | Stop and show the error to your agent before continuing. For network errors, try another network. |
+| Page won't open | Check the terminal's URL and that `npm run dev` is still running. |
+| Want to stop or restart | Press `Ctrl + C`; restart with `npm run dev` in this same folder. |
+| Still stuck | Show the error to the person helping you. |
 
----
+## Keep the same folder and chat
 
-## Keep this folder for this project
-
-Keep your work in this folder. Its `AGENTS.md` contains the project's notes, including the tech stack and ground rules.
-
-Keep using this same folder for later lessons or changes to **the same project**. For **a different project**, manually create a new empty folder, select it as the primary LOCAL project folder and start a new chat there. Follow the setup steps in that new folder; leave the old project and its files untouched.
+Use this same folder and chat for later lessons or changes to **this project**; `AGENTS.md` holds its notes and ground rules. For **a different project**, manually create a new empty folder, select it as the primary LOCAL project folder and start a new chat. Leave the old project's files untouched.
