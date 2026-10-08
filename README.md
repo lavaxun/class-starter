@@ -24,6 +24,8 @@ The congratulations page means the starter is running.
 
 Tell your coding agent what you want to build. Before writing code, it must read the existing `AGENTS.md` and follow its project-discovery guidance: ask **one question at a time** about who it's for, what problem it solves, what success looks like, and whether people use a phone or computer. Skip questions you have already answered.
 
+Claude Code reads `CLAUDE.md`, which imports the same instructions from `AGENTS.md`.
+
 ## Tech stack
 
 Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, **mobile-first layouts**, and **recharts** for charts.
