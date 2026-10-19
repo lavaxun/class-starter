@@ -49,7 +49,7 @@ When you're done asking, fill my answers into the blanks below, **delete the com
       for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
     ```
     Grant to `anon` only when signed-out visitors really must read the table, and then only `select`. If you see `42501`, add the missing grant in a new migration; never switch RLS off.
-  - **Login is email + password.** Never use magic links or one-time email codes: Supabase's default email sender only reaches the project's own team members, about 2 emails per hour. Sign-up must not wait for an email to arrive.
+  - **Login is email + password.** Never use magic links or one-time email codes: Supabase's default email sender only reaches the project's own team members, about 2 emails per hour. Sign-up must not wait for an email to arrive, so for the class demo turn off email confirmation: set `enable_confirmations = false` under `[auth.email]` in `supabase/config.toml`, then run `supabase config push`. New users can then sign up and log in right away. Before my company uses this for real, remind me to switch confirmation back on and connect our own email sender (custom SMTP).
   - A free Supabase project pauses after about 7 days with no use. If the database stops answering, tell me to open the Supabase dashboard and press **Restore project**.
 - Vercel: deploy with the **Vercel CLI** only (already logged in), for example `vercel deploy --prod`. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
   - Add environment variables with `vercel env add`, as type **Secret** (not Config). Variables only reach **new** deployments, so redeploy (`vercel deploy --prod`) after adding or changing one.

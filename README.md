@@ -32,7 +32,7 @@ Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 1
 
 ## Database and login
 
-Follow `AGENTS.md` and use the **Supabase CLI only**. Every new table gets **GRANT + RLS** in the same migration (since 30 Oct 2026; otherwise the app shows error `42501`). Login is **email + password**, never a magic link. A free Supabase project pauses after about 7 days with no use; press **Restore project** in the Supabase dashboard if that happens.
+Follow `AGENTS.md` and use the **Supabase CLI only**. Every new table gets **GRANT + RLS** in the same migration (since 30 Oct 2026; otherwise the app shows error `42501`). Login is **email + password**, never a magic link. Email confirmation is off for the class demo; switch it back on with your own email sender (custom SMTP) before real company use. A free Supabase project pauses after about 7 days with no use; press **Restore project** in the Supabase dashboard if that happens.
 
 ## Deploy
 

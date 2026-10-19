@@ -32,7 +32,7 @@ npm run dev
 
 ## 数据库和登录
 
-按照 `AGENTS.md`，**只用 Supabase CLI**。每个新的数据表都要在同一个 migration 里加 **GRANT + RLS**（2026 年 10 月 30 日起；否则应用会出现错误 `42501`）。登录用 **email + password**，不用 magic link。免费的 Supabase project 大约 7 天没用就会暂停；遇到时在 Supabase 控制台按 **Restore project**。
+按照 `AGENTS.md`，**只用 Supabase CLI**。每个新的数据表都要在同一个 migration 里加 **GRANT + RLS**（2026 年 10 月 30 日起；否则应用会出现错误 `42501`）。登录用 **email + password**，不用 magic link。课堂示范时关闭 email 确认；公司正式使用前，要重新打开，并接上自己的 email 发送服务（custom SMTP）。免费的 Supabase project 大约 7 天没用就会暂停；遇到时在 Supabase 控制台按 **Restore project**。
 
 ## 部署
 
