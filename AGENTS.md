@@ -36,11 +36,24 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 - **Next.js 16 (App Router)** + **TypeScript**
 - Styling with **Tailwind**, preferring the ready-made **shadcn/ui** components already in this project
-- **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
+- **Responsive web app**: it works in phone and computer browsers. It is never a native phone app (no App Store, Play Store, Expo or React Native). Design first for the device named in "Phone or computer" above.
 - Charts with **recharts**
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
 - Supabase: use the **Supabase CLI** only (already logged in): `supabase link`, SQL via migrations and `supabase db push`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
+  - **Every new table needs GRANT + RLS in the same migration.** Since 30 Oct 2026, Supabase no longer exposes new tables in `public` to the app by default; without grants the app fails with error `42501` ("permission denied for table"). For each new table, in one migration:
+    ```sql
+    grant select, insert, update, delete on public.your_table to authenticated;
+    grant select, insert, update, delete on public.your_table to service_role;
+    alter table public.your_table enable row level security;
+    create policy "users manage their own rows" on public.your_table
+      for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+    ```
+    Grant to `anon` only when signed-out visitors really must read the table, and then only `select`. If you see `42501`, add the missing grant in a new migration; never switch RLS off.
+  - **Login is email + password.** Never use magic links or one-time email codes: Supabase's default email sender only reaches the project's own team members, about 2 emails per hour. Sign-up must not wait for an email to arrive.
+  - A free Supabase project pauses after about 7 days with no use. If the database stops answering, tell me to open the Supabase dashboard and press **Restore project**.
 - Vercel: deploy with the **Vercel CLI** only (already logged in), for example `vercel deploy --prod`. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
+  - Add environment variables with `vercel env add`, as type **Secret** (not Config). Variables only reach **new** deployments, so redeploy (`vercel deploy --prod`) after adding or changing one.
+  - Vercel Hobby (free) is for the class demo only: it is for personal, non-commercial use. Before my company uses this for real, remind me it needs Vercel Pro.
 
 ## Ground rules
 
@@ -48,4 +61,4 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - Only touch the files the current step needs. Don't tidy up anything else along the way.
 - If you're not sure what I want, ask me instead of guessing.
 - Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
-- Secret keys: if I paste one, put it into `.env.local` yourself (and into the hosting service's environment settings when we publish). Never put keys in code or on GitHub, and never print a full key back to me.
+- Secret keys: never ask me to paste a key into the chat. Keys go in `.env.local`, which stays off GitHub, and into Vercel as Secret environment variables when we publish. Never put keys in code, and never print a full key back to me.

@@ -28,11 +28,19 @@ Claude Code reads `CLAUDE.md`, which imports the same instructions from `AGENTS.
 
 ## Tech stack
 
-Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, **mobile-first layouts**, and **recharts** for charts.
+Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, a **responsive web app** (phone and computer browsers, never a native phone app), and **recharts** for charts.
+
+## Database and login
+
+Follow `AGENTS.md` and use the **Supabase CLI only**. Every new table gets **GRANT + RLS** in the same migration (since 30 Oct 2026; otherwise the app shows error `42501`). Login is **email + password**, never a magic link. A free Supabase project pauses after about 7 days with no use; press **Restore project** in the Supabase dashboard if that happens.
 
 ## Deploy
 
 Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy --prod`. Do not use a Vercel plugin, connect GitHub, or use the Vercel dashboard for deployment.
+
+Add keys as environment variables of type **Secret** with `vercel env add`, then redeploy: changes only reach new deployments. Keys stay in `.env.local` on your computer and never go on GitHub.
+
+Vercel Hobby (free) is for the class demo only. Real company use needs Vercel Pro.
 
 ## Troubleshooting
 

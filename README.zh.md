@@ -28,11 +28,19 @@ npm run dev
 
 ## 技术栈
 
-沿用现有项目的写法和 `AGENTS.md` 中的技术栈：**Next.js 16（App Router）+ TypeScript**、**Tailwind + shadcn/ui**、**手机优先布局**，以及用于图表的 **recharts**。
+沿用现有项目的写法和 `AGENTS.md` 中的技术栈：**Next.js 16（App Router）+ TypeScript**、**Tailwind + shadcn/ui**、**响应式网页应用**（手机和电脑浏览器都能用，绝不做手机原生 App），以及用于图表的 **recharts**。
+
+## 数据库和登录
+
+按照 `AGENTS.md`，**只用 Supabase CLI**。每个新的数据表都要在同一个 migration 里加 **GRANT + RLS**（2026 年 10 月 30 日起；否则应用会出现错误 `42501`）。登录用 **email + password**，不用 magic link。免费的 Supabase project 大约 7 天没用就会暂停；遇到时在 Supabase 控制台按 **Restore project**。
 
 ## 部署
 
 按照 `AGENTS.md`，**只用 Vercel CLI** 部署，例如 `vercel deploy --prod`。不要用 Vercel 插件、连接 GitHub，或通过 Vercel 控制台部署。
+
+用 `vercel env add` 把 key 加成 **Secret** 类型的环境变量，然后重新部署：改动只会用在新的部署。key 只放在电脑上的 `.env.local`，绝不放上 GitHub。
+
+Vercel Hobby（免费）只用于课堂示范。公司正式使用需要 Vercel Pro。
 
 ## 常见问题
 
