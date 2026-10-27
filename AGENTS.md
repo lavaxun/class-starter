@@ -49,3 +49,4 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - If you're not sure what I want, ask me instead of guessing.
 - Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
 - Secret keys: if I paste one, put it into `.env.local` yourself (and into the hosting service's environment settings when we publish). Never put keys in code or on GitHub, and never print a full key back to me.
+- Only use libraries, fonts, images and icons that are free to use, even for business (for fonts, use Google Fonts). If something needs a paid or commercial licence and there is truly no free option, stop and ask me before you use it.
