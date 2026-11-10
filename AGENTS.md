@@ -56,3 +56,17 @@ You set these up and run them yourself. Don't explain them or their commands to 
 - Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
 - Secret keys: never ask me to paste a key into the chat. When we need one, create `.env.local` (it is gitignored) with a placeholder line and open it for me, or open a terminal, so I paste the key there myself. When we publish, add it to the hosting service's environment settings yourself. Never put keys in code or on GitHub, and never print a full key back to me. If I paste one into the chat anyway, move it into `.env.local` and tell me to rotate it.
 - Only use libraries, fonts, images and icons that are free to use, even for business (for fonts, use Google Fonts). If something needs a paid or commercial licence and there is truly no free option, stop and ask me before you use it.
+
+## Where truth lives
+
+The code is the truth; each doc below describes it. `desk doccheck` fails a change that touches a
+Truth path without its Doc (`[no-doc]` in a commit message for a pure fix).
+
+| Topic | Truth | Doc |
+| --- | --- | --- |
+| Run the starter and the success page | `package.json`, `next.config.ts`, `src/app/` | `README.md`, `README.zh.md` |
+| Pre-class commands (setup, check, login, doctor) | `scripts/*.mjs` | (none yet) |
+| Course rules written into AI Class | `scripts/house-rules.md` | (it is its own doc) |
+| Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
+| Sample data | `data/` | (none yet) |
+| What is live | nothing deploys from this repo; students deploy their own copy | `desk ctx class-starter` |
