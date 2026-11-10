@@ -275,7 +275,7 @@ export async function runCheck() {
   return {
     code: todo.length === 0 ? 0 : 1,
     text: output.join("\n"),
-    state: { npmOk, supa, vercel, gh, pageUrl, hasModules, modulesCurrent, hasSupabase, hasVercel },
+    state: { okNode, npmOk, supa, vercel, gh, pageUrl, hasModules, modulesCurrent, hasSupabase, hasVercel },
   };
 }
 

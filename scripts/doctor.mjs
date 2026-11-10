@@ -7,11 +7,11 @@ import { applyHouseRules, ensureDevServer } from "./setup.mjs";
 const win = process.platform === "win32";
 const BOOTSTRAP = win
   ? '$f="$env:TEMP\\aiclass-bootstrap.ps1"; iwr https://preclass.aiclassmalaysia.com/bootstrap.ps1 -UseBasicParsing -OutFile $f; powershell -NoProfile -ExecutionPolicy Bypass -File $f'
-  : "curl -fsSL https://preclass.aiclassmalaysia.com/bootstrap.sh -o /tmp/aiclass-bootstrap.sh && bash /tmp/aiclass-bootstrap.sh";
+  : 'curl -fsSL https://preclass.aiclassmalaysia.com/bootstrap.sh -o "${TMPDIR:-/tmp}/aiclass-bootstrap.sh" && bash "${TMPDIR:-/tmp}/aiclass-bootstrap.sh"';
 
 let { state } = await runCheck();
 
-if (!state.npmOk) console.log(`npm is missing. Run the bootstrap line in a new terminal window:\n${BOOTSTRAP}`);
+if (!state.okNode) console.log(`Node.js or npm is missing or too old. Run the bootstrap line in a new terminal window:\n${BOOTSTRAP}`);
 else if (!state.hasModules || !state.modulesCurrent || !state.hasSupabase || !state.hasVercel) {
   console.log("Installing the course tools (npm install)...");
   spawnSync("npm", ["install"], { cwd: root, stdio: "inherit", shell: true });
