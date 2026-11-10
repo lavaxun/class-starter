@@ -3,7 +3,7 @@
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
 import { spawn } from "node:child_process";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -49,7 +49,7 @@ function run(command, seconds) {
 }
 
 const signedOutPattern =
-  /Access token not provided|No existing credentials found|You are not logged in|Not logged in|Logged out|(invalid|expired).*token|token.*(invalid|expired)/i;
+  /Access token not provided|No existing credentials found|You are not logged in|Not logged in|Logged out|(invalid|expired).*token|token.*(invalid|not valid|expired)/i;
 
 // in / out / unknown / missing. "unknown" means the network or the tool did not answer:
 // the student must not be told to sign in again.
@@ -92,13 +92,25 @@ function dependenciesCurrent() {
 
 const cliInstalled = (name) => existsSync(join(root, "node_modules", name, "package.json"));
 
-// Returns the URL of the lowest port that answers, or "". Any HTTP status counts:
-// students may change the page.
+// The supabase package is a small launcher; the real program is in @supabase/cli-<os>-<cpu>.
+function supabaseInstalled() {
+  const scope = join(root, "node_modules", "@supabase");
+  const os = { win32: "windows" }[process.platform] ?? process.platform;
+  return (
+    cliInstalled("supabase") &&
+    existsSync(scope) &&
+    readdirSync(scope).some((name) => name.startsWith(`cli-${os}-${process.arch}`))
+  );
+}
+
+// Returns the URL of the lowest port where a Next.js page answers, or "". Any HTTP status
+// counts: students may change the page. The first answer can take a minute while Next.js
+// builds the page, so a slow answer is waited for, not taken as "not running".
 async function findPage() {
   const answers = await Promise.all(
     ports.map((port) =>
-      fetch(`http://localhost:${port}/`, { redirect: "manual", signal: AbortSignal.timeout(5000) }).then(
-        () => true,
+      fetch(`http://localhost:${port}/`, { redirect: "manual", signal: AbortSignal.timeout(120_000) }).then(
+        (response) => /next\.js/i.test(response.headers.get("x-powered-by") ?? ""),
         () => false,
       ),
     ),
@@ -107,7 +119,7 @@ async function findPage() {
   return index === -1 ? "" : `http://localhost:${ports[index]}`;
 }
 
-const hasSupabase = cliInstalled("supabase");
+const hasSupabase = supabaseInstalled();
 const hasVercel = cliInstalled("vercel");
 const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
   run("npm --version", 15),
