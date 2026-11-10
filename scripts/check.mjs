@@ -213,7 +213,29 @@ export async function runCheck() {
     line,
   ];
 
-  // ---- Next step: always one thing, said plainly
+  const todo = pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent });
+
+  if (todo.length === 0) {
+    output.push(
+      t(
+        `👉 Next step: Everything is ready 🎉 Open ${pageUrl} to see the course page. Bring this computer and its charger to class.`,
+        `👉 下一步：全部好了 🎉 打开 ${pageUrl} 就能看到课程页面。上课那天带这台电脑来 — 就是这一台，加上充电器。`,
+      ),
+    );
+  } else {
+    output.push(t(`👉 Next step: ${todo[0]}`, `👉 下一步：${todo[0]}`));
+    if (todo.length > 1) output.push(t(`   Remaining: ${todo.slice(1).join("; ")}`, `   之后还有：${todo.slice(1).join("；")}`));
+  }
+  output.push(line);
+  return {
+    code: todo.length === 0 ? 0 : 1,
+    text: output.join("\n"),
+    state: { okNode, npmOk, supa, vercel, gh, pageUrl, hasModules, modulesCurrent, hasSupabase, hasVercel },
+  };
+}
+
+// The ordered list of things left to do, each said plainly. The first one is the "next step".
+function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   const installTools = t(
     "Install the course tools — I will run npm install in the course folder; you do not need to do anything",
     "装课程工具 — 我会在课程文件夹里运行 npm install，您不用做什么",
@@ -248,35 +270,17 @@ export async function runCheck() {
         "登录 GitHub — 我帮您开页面；请用您到处都用的同一个 Google email 注册或登录",
       ),
     );
-  if (!okTpl) {
-    if (!modulesCurrent) {
-      if (!todo.includes(installTools)) todo.push(installTools);
-    } else
-      todo.push(
-        t(
-          "Course template — I will start it with npm run dev in a visible window, then check again",
-          "课程模板 — 我会在看得见的窗口里用 npm run dev 启动，然后再检查一次",
-        ),
-      );
-  }
-
-  if (todo.length === 0) {
-    output.push(
+  if (okTpl) return todo;
+  if (!modulesCurrent) {
+    if (!todo.includes(installTools)) todo.push(installTools);
+  } else
+    todo.push(
       t(
-        `👉 Next step: Everything is ready 🎉 Open ${pageUrl} to see the course page. Bring this computer and its charger to class.`,
-        `👉 下一步：全部好了 🎉 打开 ${pageUrl} 就能看到课程页面。上课那天带这台电脑来 — 就是这一台，加上充电器。`,
+        "Course template — I will start it with npm run dev in a visible window, then check again",
+        "课程模板 — 我会在看得见的窗口里用 npm run dev 启动，然后再检查一次",
       ),
     );
-  } else {
-    output.push(t(`👉 Next step: ${todo[0]}`, `👉 下一步：${todo[0]}`));
-    if (todo.length > 1) output.push(t(`   Remaining: ${todo.slice(1).join("; ")}`, `   之后还有：${todo.slice(1).join("；")}`));
-  }
-  output.push(line);
-  return {
-    code: todo.length === 0 ? 0 : 1,
-    text: output.join("\n"),
-    state: { okNode, npmOk, supa, vercel, gh, pageUrl, hasModules, modulesCurrent, hasSupabase, hasVercel },
-  };
+  return todo;
 }
 
 // `node scripts/check.mjs` prints the box and sets the exit code; doctor and setup import runCheck.

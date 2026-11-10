@@ -24,19 +24,22 @@ function withLine(text, line) {
 // Only the text between the markers is ever replaced; class-starter/AGENTS.md is never touched.
 export function applyHouseRules(aiRoot = ROOT) {
   const block = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "house-rules.md"), "utf8").trim();
-  const agents = join(aiRoot, "AGENTS.md");
-  let text = readText(agents);
-  const s = text.indexOf(START);
-  const e = text.indexOf(END, s);
-  if (s !== -1 && e !== -1) text = text.slice(0, s) + block + text.slice(e + END.length);
-  else text = text ? `${text.trimEnd()}\n\n${block}\n` : `${block}\n`;
-  text = withLine(text, PROJECT_LINE);
-  if (text !== readText(agents)) writeFileSync(agents, text);
+  writeIfChanged(join(aiRoot, "AGENTS.md"), (text) => withLine(withHouseRulesBlock(text, block), PROJECT_LINE));
+  writeIfChanged(join(aiRoot, "CLAUDE.md"), (text) => withLine(withLine(text, "@AGENTS.md"), "@class-starter/AGENTS.md"));
+}
 
-  const claude = join(aiRoot, "CLAUDE.md");
-  const before = readText(claude);
-  const after = withLine(withLine(before, "@AGENTS.md"), "@class-starter/AGENTS.md");
-  if (after !== before) writeFileSync(claude, after);
+// Replaces the text between the markers, or appends the block when the markers are not there.
+function withHouseRulesBlock(text, block) {
+  const start = text.indexOf(START);
+  const end = text.indexOf(END, start);
+  if (start !== -1 && end !== -1) return text.slice(0, start) + block + text.slice(end + END.length);
+  return text ? `${text.trimEnd()}\n\n${block}\n` : `${block}\n`;
+}
+
+function writeIfChanged(path, update) {
+  const before = readText(path);
+  const after = update(before);
+  if (after !== before) writeFileSync(path, after);
 }
 
 // Starts `npm run dev` in its own place and waits up to 30 s for it to answer. Does nothing if it already does.

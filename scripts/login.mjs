@@ -74,9 +74,9 @@ async function github() {
   };
   child.stdout.on("data", scan);
   child.stderr.on("data", scan);
-  const code0 = await exited(child);
-  if (code0 === "timeout") return "timeout";
-  if (code0 !== 0) return "failed";
+  const exitCode = await exited(child);
+  if (exitCode === "timeout") return "timeout";
+  if (exitCode !== 0) return "failed";
   await new Promise((r) => spawn("gh", ["auth", "setup-git"], { stdio: "inherit" }).on("close", r).on("error", r));
   return "done";
 }
