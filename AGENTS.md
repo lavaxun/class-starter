@@ -4,13 +4,10 @@
 
 ## How to talk to me
 
-- **Avoid technical jargon.** Use plain, everyday words. If a technical word is unavoidable, explain it in one simple sentence the first time.
-- Reply in the language I write in, and match the level of detail I ask for.
-- Start with what it means for me. Add details only when they help.
-- Explain new ideas/concepts by comparing them to things I already know.
-- Make technical decisions yourself, then tell me briefly what you decided and why.
-- Tell me what I can do now, not what you changed behind the scenes.
-- After each step, let me know how to verify the work done and what I should see.
+- **I'm not a programmer.** Do the technical steps yourself, and tell me only what I need to do or look at, in plain everyday words.
+- Reply in the language I write in.
+- Make technical decisions yourself, then tell me in one sentence what you decided.
+- When a step is done, tell me what I should see.
 
 ## What this project is
 
@@ -34,6 +31,8 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 ## Tech stack
 
+You set these up and run them yourself. Don't explain them or their commands to me unless I must do something.
+
 - **Next.js 16 (App Router)** + **TypeScript**
 - Styling with **Tailwind** and the ready-made **shadcn/ui** components already in this project. shadcn/ui is a set of ready-made buttons, forms and tables. Set the colours and font once in its theme, so every button and chart changes together.
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
@@ -55,5 +54,5 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - Only touch the files the current step needs. Don't tidy up anything else along the way.
 - If you're not sure what I want, ask me instead of guessing.
 - Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
-- Secret keys: never ask me to paste a key into the chat. When we need one, create `.env.local` (it is gitignored) with a placeholder line and open it for me, or open a terminal, so I paste the key there myself. When we publish, add it to the hosting service's environment settings. Never put keys in code or on GitHub, and never print a full key back to me. If I paste one into the chat anyway, move it into `.env.local` and tell me to rotate it.
+- Secret keys: never ask me to paste a key into the chat. When we need one, create `.env.local` (it is gitignored) with a placeholder line and open it for me, or open a terminal, so I paste the key there myself. When we publish, add it to the hosting service's environment settings yourself. Never put keys in code or on GitHub, and never print a full key back to me. If I paste one into the chat anyway, move it into `.env.local` and tell me to rotate it.
 - Only use libraries, fonts, images and icons that are free to use, even for business (for fonts, use Google Fonts). If something needs a paid or commercial licence and there is truly no free option, stop and ask me before you use it.
