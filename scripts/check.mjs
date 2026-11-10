@@ -1,0 +1,249 @@
+// Pre-class checklist: `npm run check`. Language from PRECLASS_LANG=en|zh, default en.
+// Prints five rows and one next step. Exit code 0 only when all five pass.
+// Read-only: it runs each tool's own status command and asks the course page on
+// ports 3000-3010. It never starts or stops the course page.
+import { spawn } from "node:child_process";
+import { existsSync, statSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+const en = !process.env.PRECLASS_LANG || process.env.PRECLASS_LANG === "en";
+const t = (english, chinese) => (en ? english : chinese);
+const ports = Array.from({ length: 11 }, (_, i) => 3000 + i); // Next moves to the next free port.
+
+// Runs a fixed command in the project folder with no keyboard input and a time limit,
+// so a login prompt or a slow network cannot hang the checklist.
+function run(command, seconds) {
+  return new Promise((resolve) => {
+    let out = "";
+    let err = "";
+    let timedOut = false;
+    const child = spawn(command, {
+      cwd: root,
+      shell: true,
+      stdio: ["ignore", "pipe", "pipe"],
+      windowsHide: true,
+      env: { ...process.env, CI: "1", NO_UPDATE_NOTIFIER: "1", npm_config_update_notifier: "false" },
+    });
+    child.stdout.on("data", (d) => (out += d));
+    child.stderr.on("data", (d) => (err += d));
+    let done = false;
+    const finish = (code) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve({ code: timedOut ? -1 : code, out, err, timedOut });
+    };
+    // Too slow: report "unknown" and stop waiting. The command is left to end by itself.
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.stdout.destroy();
+      child.stderr.destroy();
+      child.unref();
+      finish(-1);
+    }, seconds * 1000);
+    child.on("error", () => finish(-1));
+    child.on("close", finish);
+  });
+}
+
+const signedOutPattern =
+  /Access token not provided|No existing credentials found|You are not logged in|Not logged in|Logged out|(invalid|expired).*token|token.*(invalid|expired)/i;
+
+// in / out / unknown / missing. "unknown" means the network or the tool did not answer:
+// the student must not be told to sign in again.
+function signInState(result) {
+  if (result.code === 0) return "in";
+  if (result.timedOut) return "unknown";
+  return signedOutPattern.test(`${result.out}\n${result.err}`) ? "out" : "unknown";
+}
+
+function signInNote(state) {
+  if (state === "missing") return t("Not installed", "还没装");
+  if (state === "unknown") return t("Could not check — sign-in status is unknown", "暂时查不到（登录状态未能确认）");
+  return t("Not signed in", "还没登录");
+}
+
+function lastLine(text) {
+  return text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("<") && !line.startsWith(">"))
+    .pop() ?? "";
+}
+
+// The course template needs Node ^20.19.0 || ^22.13.0 || >=24.
+function nodeSupported(version) {
+  const [major, minor] = version.replace(/^v/, "").split(".").map(Number);
+  return major >= 24 || (major === 22 && minor >= 13) || (major === 20 && minor >= 19);
+}
+
+// npm writes node_modules/.package-lock.json last; changed package files need a new install.
+function dependenciesCurrent() {
+  const installed = join(root, "node_modules", ".package-lock.json");
+  if (!existsSync(installed)) return false;
+  const installedTime = statSync(installed).mtimeMs;
+  return ["package.json", "package-lock.json"].every((name) => {
+    const path = join(root, name);
+    return !existsSync(path) || statSync(path).mtimeMs <= installedTime;
+  });
+}
+
+const cliInstalled = (name) => existsSync(join(root, "node_modules", name, "package.json"));
+
+// Returns the URL of the lowest port that answers, or "". Any HTTP status counts:
+// students may change the page.
+async function findPage() {
+  const answers = await Promise.all(
+    ports.map((port) =>
+      fetch(`http://localhost:${port}/`, { redirect: "manual", signal: AbortSignal.timeout(5000) }).then(
+        () => true,
+        () => false,
+      ),
+    ),
+  );
+  const index = answers.indexOf(true);
+  return index === -1 ? "" : `http://localhost:${ports[index]}`;
+}
+
+const hasSupabase = cliInstalled("supabase");
+const hasVercel = cliInstalled("vercel");
+const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
+  run("npm --version", 15),
+  hasSupabase ? run("npx --no supabase whoami", 30) : null,
+  hasVercel ? run("npx --no vercel whoami", 30) : null,
+  run("gh --version", 15),
+  run("gh auth status", 30),
+  findPage(),
+]);
+
+// ---- 1. Node.js + npm
+const nodeV = process.version;
+const npmV = npmRun.code === 0 ? npmRun.out.trim() : "";
+const npmOk = /^\d+\.\d+\.\d+/.test(npmV);
+const okNode = nodeSupported(nodeV) && npmOk;
+const noteNode = !nodeSupported(nodeV)
+  ? t(`${nodeV} — needs v20.19+, v22.13+ or v24+`, `${nodeV} 版本不符合要求，需要 v20.19+、v22.13+ 或 v24+`)
+  : !npmOk
+    ? t(`${nodeV} — npm failed or did not return a valid version`, `${nodeV}，但 npm 执行失败或没有返回有效版本`)
+    : `${nodeV} / ${npmV}`;
+
+// ---- 2. Supabase signed in (npx supabase from this project)
+const supa = supaRun ? signInState(supaRun) : "missing";
+const okSupa = supa === "in";
+const noteSupa = okSupa ? "" : signInNote(supa);
+
+// ---- 3. Vercel signed in (npx vercel from this project)
+const vercel = vercelRun ? signInState(vercelRun) : "missing";
+const who = vercelRun && vercel === "in" ? lastLine(vercelRun.out) : "";
+const okVercel = vercel === "in";
+const noteVercel = okVercel ? who : signInNote(vercel);
+
+// ---- 4. GitHub CLI signed in
+const ghVersion = ghVersionRun.out.match(/^gh version (\S+)/m)?.[1] ?? "";
+const ghMessage = `${ghRun.out}\n${ghRun.err}`;
+let gh;
+if (!ghVersion) gh = "missing";
+else if (ghRun.code === 0) gh = "in";
+else if (ghRun.timedOut) gh = "unknown";
+// gh only suggests `gh auth login` when signed out or the token expired; a network failure does not.
+else gh = /not logged in|gh auth login|(invalid|expired).*token|token.*(invalid|expired)/i.test(ghMessage) ? "out" : "unknown";
+const okGh = gh === "in";
+const ghWho = ghMessage.match(/Logged in to \S+ (?:account|as) ([A-Za-z0-9-]+)/)?.[1] ?? "";
+let noteGh = okGh ? (ghWho ? `v${ghVersion} · ${ghWho}` : `v${ghVersion}`) : signInNote(gh);
+if (!okGh && ghVersion) noteGh = `v${ghVersion} · ${noteGh}`;
+
+// ---- 5. Course template opens
+const hasModules = existsSync(join(root, "node_modules"));
+const modulesCurrent = dependenciesCurrent();
+const okTpl = Boolean(pageUrl);
+const noteTpl = okTpl
+  ? pageUrl
+  : !hasModules
+    ? t("The files needed by the course template are not installed yet", "课程模板需要的文件还没安装")
+    : !modulesCurrent
+      ? t("The files needed by the course template need updating; I will handle it", "课程模板需要的文件要更新；我会处理")
+      : t("The course page is not running yet (ports 3000–3010)", "课程页面还没开（3000–3010 都没有回应）");
+
+// ---- Print the checklist
+const mark = (ok) => (ok ? "✅" : "⬜");
+const computer = { win32: "Windows", darwin: "macOS" }[process.platform] ?? "Linux";
+const line = "=========================================";
+const rows = [
+  [t("Node.js + npm          ", "Node.js + npm          "), okNode, noteNode],
+  [t("Supabase signed in     ", "Supabase 已登录     "), okSupa, noteSupa],
+  [t("Vercel CLI signed in   ", "Vercel CLI 已登录       "), okVercel, noteVercel],
+  [t("GitHub CLI signed in   ", "GitHub CLI 已登录       "), okGh, noteGh],
+  [t("Course template opens  ", "课程模板打得开          "), okTpl, noteTpl],
+];
+const output = [
+  line,
+  `✅ ${t("AI for Business · Pre-class checklist", "AI for Business · 课前准备完成清单")}`,
+  line,
+  t(`Computer: ${computer}`, `电脑：${computer}`),
+  ...rows.map(([label, ok, note], i) => `${i + 1}. ${label}${mark(ok)}  ${note}`.trimEnd()),
+  line,
+];
+
+// ---- Next step: always one thing, said plainly
+const installTools = t(
+  "Install the course tools — I will run npm install in the course folder; you do not need to do anything",
+  "装课程工具 — 我会在课程文件夹里运行 npm install，您不用做什么",
+);
+const unknownNote = (name) =>
+  t(
+    `${name} sign-in could not be confirmed. Please do not sign in again yet; I will check the connection and any sign-in still in progress`,
+    `${name} 登录状态暂时未能确认。请先不要重新登录；我会检查连接和还在进行的登录`,
+  );
+const todo = [];
+if (!okNode)
+  todo.push(
+    t(
+      "Set up Node.js — I will check and install it; if an installer or approval window appears, I will tell you what to click",
+      "设置 Node.js — 我来检查和安装；如果出现安装窗口或批准窗口，我会告诉您要按什么",
+    ),
+  );
+if (supa === "missing" || vercel === "missing") todo.push(installTools);
+if (supa === "unknown") todo.push(unknownNote("Supabase"));
+if (supa === "out")
+  todo.push(t("Sign in to Supabase — I will open the page; choose Continue with GitHub when it asks", "登录 Supabase — 我帮您开页面；请选 Continue with GitHub 登录"));
+if (vercel === "unknown") todo.push(unknownNote("Vercel"));
+if (vercel === "out")
+  todo.push(t("Sign in to Vercel — I will open the page; choose Continue with GitHub when it asks", "登录 Vercel — 我帮您开页面；请选 Continue with GitHub 登录"));
+if (gh === "missing")
+  todo.push(t("Install the GitHub CLI — I will handle it; you do not need to do anything", "装 GitHub CLI — 我来装，您不用做什么"));
+if (gh === "unknown") todo.push(unknownNote("GitHub"));
+if (gh === "out")
+  todo.push(
+    t(
+      "Sign in to GitHub — I will open the page; sign up or sign in with the same Google email you use everywhere",
+      "登录 GitHub — 我帮您开页面；请用您到处都用的同一个 Google email 注册或登录",
+    ),
+  );
+if (!okTpl) {
+  if (!modulesCurrent) {
+    if (!todo.includes(installTools)) todo.push(installTools);
+  } else
+    todo.push(
+      t(
+        "Course template — I will start it with npm run dev in a visible window, then check again",
+        "课程模板 — 我会在看得见的窗口里用 npm run dev 启动，然后再检查一次",
+      ),
+    );
+}
+
+if (todo.length === 0) {
+  output.push(
+    t(
+      `👉 Next step: Everything is ready 🎉 Open ${pageUrl} to see the course page. Bring this computer and its charger to class.`,
+      `👉 下一步：全部好了 🎉 打开 ${pageUrl} 就能看到课程页面。上课那天带这台电脑来 — 就是这一台，加上充电器。`,
+    ),
+  );
+} else {
+  output.push(t(`👉 Next step: ${todo[0]}`, `👉 下一步：${todo[0]}`));
+  if (todo.length > 1) output.push(t(`   Remaining: ${todo.slice(1).join("; ")}`, `   之后还有：${todo.slice(1).join("；")}`));
+}
+output.push(line);
+console.log(output.join("\n"));
+process.exitCode = todo.length === 0 ? 0 : 1;
