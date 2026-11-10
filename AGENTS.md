@@ -42,6 +42,14 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 - Supabase: use the **Supabase CLI** only (already logged in): `supabase link`, SQL via migrations and `supabase db push`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
 - Vercel: deploy with the **Vercel CLI** only (already logged in), for example `vercel deploy --prod`. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
 
+## Look and feel
+
+- Make it look like a well-known app used by this kind of business, one the owner would be proud to show.
+- Before you build, choose a main colour, a font and a style that suit the business.
+- Set the colours and font once in the shadcn theme, so every button and chart changes together.
+- Keep it clean: a light background, dark text, and the main colour only where it matters most.
+- Show lists of items in a neat table or list, not big boxes.
+
 ## Ground rules
 
 - Change one small piece at a time, and let me check it before you continue.
