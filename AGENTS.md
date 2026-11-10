@@ -35,7 +35,7 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 ## Tech stack
 
 - **Next.js 16 (App Router)** + **TypeScript**
-- Styling with **Tailwind**, preferring the ready-made **shadcn/ui** components already in this project
+- Styling with **Tailwind** and the ready-made **shadcn/ui** components already in this project. shadcn/ui is a set of ready-made buttons, forms and tables. Set the colours and font once in its theme, so every button and chart changes together.
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
 - Charts with **recharts**
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
@@ -46,7 +46,6 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 - Make it look like a well-known app used by this kind of business, one the owner would be proud to show.
 - Before you build, choose a main colour, a font and a style that suit the business.
-- Set the colours and font once in the shadcn theme, so every button and chart changes together.
 - Keep it clean: a light background, dark text, and the main colour only where it matters most.
 - Show lists of items in a neat table or list, not big boxes.
 
