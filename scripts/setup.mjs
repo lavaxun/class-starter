@@ -5,7 +5,7 @@ import { spawn } from "node:child_process";
 import { existsSync, openSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findPage, root as STARTER, runCheck } from "./check.mjs";
+import { findPage, reportCheck, root as STARTER, runCheck } from "./check.mjs";
 
 const ROOT = dirname(STARTER);
 const START = "<!-- ai-class-house-rules:start -->";
@@ -67,7 +67,5 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   applyHouseRules();
   console.log(`House rules written to ${ROOT}`);
   await ensureDevServer();
-  const result = await runCheck();
-  console.log(result.text);
-  process.exitCode = result.code;
+  reportCheck(await runCheck());
 }

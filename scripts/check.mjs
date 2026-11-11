@@ -3,7 +3,8 @@
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
 import { spawn } from "node:child_process";
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -283,9 +284,41 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   return todo;
 }
 
+// Shows the box in its own window, so an AI app that folds or summarises its tool output cannot hide it.
+// Only when nobody is watching a terminal (an AI ran the script); a person in a terminal already sees the box.
+function showChecklistWindow(text) {
+  if (process.stdout.isTTY) return;
+  const file = join(tmpdir(), "ai-class-checklist.txt");
+  if (process.platform === "win32") {
+    writeFileSync(file, `\uFEFF${text}\n`);
+    // The path and title go through env vars, so spaces need no quoting. -NoExit keeps the window open.
+    spawn(
+      "powershell.exe",
+      [
+        "-NoProfile",
+        "-Command",
+        "Start-Process powershell.exe -ArgumentList '-NoProfile','-NoExit','-Command','$Host.UI.RawUI.WindowTitle = $env:AICLASS_TITLE; [Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-Content -Raw -Encoding UTF8 -LiteralPath $env:AICLASS_CHECKLIST'",
+      ],
+      { env: { ...process.env, AICLASS_CHECKLIST: file, AICLASS_TITLE: "AI Class - Pre-class checklist" }, stdio: "ignore", windowsHide: true },
+    ).on("error", () => {});
+  } else if (process.platform === "darwin") {
+    writeFileSync(file, `${text}\n`);
+    // Terminal keeps the window open after the script ends.
+    const command = join(tmpdir(), "ai-class-checklist.command");
+    writeFileSync(command, `#!/bin/bash\nclear\ncat '${file.replaceAll("'", "'\\''")}'\n`);
+    chmodSync(command, 0o755);
+    spawn("open", ["-a", "Terminal", command], { stdio: "ignore" }).on("error", () => {});
+  }
+}
+
+// The final report of check, setup and doctor: prints the box, shows it in a window, sets the exit code.
+export function reportCheck(result) {
+  console.log(result.text);
+  showChecklistWindow(result.text);
+  process.exitCode = result.code;
+}
+
 // `node scripts/check.mjs` prints the box and sets the exit code; doctor and setup import runCheck.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const result = await runCheck();
-  console.log(result.text);
-  process.exitCode = result.code;
+  reportCheck(await runCheck());
 }
