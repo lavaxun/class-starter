@@ -238,8 +238,8 @@ export async function runCheck() {
 // The ordered list of things left to do, each said plainly. The first one is the "next step".
 function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   const installTools = t(
-    "Install the course tools — I will run npm install in the course folder; you do not need to do anything",
-    "装课程工具 — 我会在课程文件夹里运行 npm install，您不用做什么",
+    "Install the course tools — I will handle it; you do not need to do anything",
+    "装课程工具 — 我来装，您不用做什么",
   );
   const unknownNote = (name) =>
     t(
@@ -277,8 +277,8 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   } else
     todo.push(
       t(
-        "Course template — I will start it with npm run dev in a visible window, then check again",
-        "课程模板 — 我会在看得见的窗口里用 npm run dev 启动，然后再检查一次",
+        "Course template — I will start it in a new window, then check again",
+        "课程模板 — 我会在一个新窗口里启动它，然后再检查一次",
       ),
     );
   return todo;
