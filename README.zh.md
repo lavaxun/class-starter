@@ -32,7 +32,7 @@ npm run dev
 
 ## 部署
 
-按照 `AGENTS.md`，**只用 Vercel CLI** 部署，例如 `npx vercel deploy --prod`。不要用 Vercel 插件、连接 GitHub，或通过 Vercel 控制台部署。
+按照 `AGENTS.md`，**只用 Vercel CLI** 部署，例如 `vercel deploy --prod`。不要用 Vercel 插件、连接 GitHub，或通过 Vercel 控制台部署。
 
 ## 常见问题
 

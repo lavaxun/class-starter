@@ -38,8 +38,8 @@ You set these up and run them yourself. Don't explain them or their commands to 
 - **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
 - Charts with **recharts**
 - Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
-- Supabase: use the **Supabase CLI** only (signed in before class; if a command says not logged in, run `npm run login -- supabase` in this folder, Windows `npm.cmd run login -- supabase`, and never `supabase login` or an access token). It comes with this project, so run it with `npx` from this folder: `npx supabase link`, SQL via migrations and `npx supabase db push`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
-- Vercel: deploy with the **Vercel CLI** only (already logged in). It comes with this project, so run it with `npx` from this folder, for example `npx vercel deploy --prod`. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
+- Supabase: use the **Supabase CLI** only (signed in before class; if a command says not logged in, run `npm run login -- supabase` in this folder, Windows `npm.cmd run login -- supabase`, and never `supabase login` or an access token). It is installed for the whole computer, so run plain `supabase` from this folder: `supabase link`, SQL via migrations and `supabase db push`. Never use `npx supabase`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
+- Vercel: deploy with the **Vercel CLI** only (already logged in). It is installed for the whole computer, so run plain `vercel` from this folder, for example `vercel deploy --prod`. Never use `npx vercel`. If `supabase` or `vercel` is not found, run the setup guide's Step 2 bootstrap line again; it installs both. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
 
 ## Look and feel
 
