@@ -2,8 +2,9 @@
 // Prints five rows and one next step. Exit code 0 only when all five pass.
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
-import { spawn } from "node:child_process";
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -137,8 +138,21 @@ export async function serviceState(name) {
   return signInState(await run(`npx --no ${name} whoami`, 30));
 }
 
+// Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
+// saved PATH proves the tools work in any new window, so the student never has to open one to check.
+function useSavedWindowsPath() {
+  if (process.platform !== "win32") return;
+  const saved = spawnSync(
+    "powershell.exe",
+    ["-NoProfile", "-Command", "[Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')"],
+    { encoding: "utf8", windowsHide: true, timeout: 15000 },
+  );
+  if (saved.status === 0 && saved.stdout.trim()) process.env.Path = saved.stdout.trim();
+}
+
 // Runs the five checks. Returns { code, text, state }: text is the printed box, code is 0 only when all pass.
 export async function runCheck() {
+  useSavedWindowsPath();
   const hasSupabase = supabaseInstalled();
   const hasVercel = cliInstalled("vercel");
   const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
@@ -237,8 +251,8 @@ export async function runCheck() {
 // The ordered list of things left to do, each said plainly. The first one is the "next step".
 function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   const installTools = t(
-    "Install the course tools — I will run npm install in the course folder; you do not need to do anything",
-    "装课程工具 — 我会在课程文件夹里运行 npm install，您不用做什么",
+    "Install the course tools — I will handle it; you do not need to do anything",
+    "装课程工具 — 我来装，您不用做什么",
   );
   const unknownNote = (name) =>
     t(
@@ -276,16 +290,48 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   } else
     todo.push(
       t(
-        "Course template — I will start it with npm run dev in a visible window, then check again",
-        "课程模板 — 我会在看得见的窗口里用 npm run dev 启动，然后再检查一次",
+        "Course template — I will start it in a new window, then check again",
+        "课程模板 — 我会在一个新窗口里启动它，然后再检查一次",
       ),
     );
   return todo;
 }
 
+// Shows the box in its own window, so an AI app that folds or summarises its tool output cannot hide it.
+// Only when nobody is watching a terminal (an AI ran the script); a person in a terminal already sees the box.
+function showChecklistWindow(text) {
+  if (process.stdout.isTTY) return;
+  const file = join(tmpdir(), "ai-class-checklist.txt");
+  if (process.platform === "win32") {
+    writeFileSync(file, `\uFEFF${text}\n`);
+    // The path and title go through env vars, so spaces need no quoting. -NoExit keeps the window open.
+    spawn(
+      "powershell.exe",
+      [
+        "-NoProfile",
+        "-Command",
+        "Start-Process powershell.exe -ArgumentList '-NoProfile','-NoExit','-Command','$Host.UI.RawUI.WindowTitle = $env:AICLASS_TITLE; [Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-Content -Raw -Encoding UTF8 -LiteralPath $env:AICLASS_CHECKLIST'",
+      ],
+      { env: { ...process.env, AICLASS_CHECKLIST: file, AICLASS_TITLE: "AI Class - Pre-class checklist" }, stdio: "ignore", windowsHide: true },
+    ).on("error", () => {});
+  } else if (process.platform === "darwin") {
+    writeFileSync(file, `${text}\n`);
+    // Terminal keeps the window open after the script ends.
+    const command = join(tmpdir(), "ai-class-checklist.command");
+    writeFileSync(command, `#!/bin/bash\nclear\ncat '${file.replaceAll("'", "'\\''")}'\n`);
+    chmodSync(command, 0o755);
+    spawn("open", ["-a", "Terminal", command], { stdio: "ignore" }).on("error", () => {});
+  }
+}
+
+// The final report of check, setup and doctor: prints the box, shows it in a window, sets the exit code.
+export function reportCheck(result) {
+  console.log(result.text);
+  showChecklistWindow(result.text);
+  process.exitCode = result.code;
+}
+
 // `node scripts/check.mjs` prints the box and sets the exit code; doctor and setup import runCheck.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const result = await runCheck();
-  console.log(result.text);
-  process.exitCode = result.code;
+  reportCheck(await runCheck());
 }
