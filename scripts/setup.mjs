@@ -47,10 +47,11 @@ export async function ensureDevServer() {
   if (await findPage()) return;
   if (process.platform === "win32") {
     // A new visible PowerShell window; the path goes through an env var so spaces need no quoting.
+    // Not `detached`: that gives this PowerShell no console and its Start-Process then starts nothing.
     spawn(
       "powershell.exe",
       ["-NoProfile", "-Command", "Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','npm.cmd run dev'"],
-      { env: { ...process.env, AICLASS_DIR: STARTER }, stdio: "ignore", detached: true, windowsHide: true },
+      { env: { ...process.env, AICLASS_DIR: STARTER }, stdio: "ignore", windowsHide: true },
     ).unref();
   } else {
     const log = openSync(join(ROOT, "class-dev.log"), "a");
