@@ -59,7 +59,7 @@ You set these up and run them yourself. Don't explain them or their commands to 
 
 ## Where truth lives
 
-The code is the truth; each doc below describes it. `desk doccheck` fails a change that touches a
+The code is the truth, and each doc below describes it. `desk doccheck` fails a change that touches a
 Truth path without its Doc (`[no-doc]` in a commit message for a pure fix).
 
 | Topic | Truth | Doc |
@@ -69,4 +69,4 @@ Truth path without its Doc (`[no-doc]` in a commit message for a pure fix).
 | Course rules written into AI Class | `scripts/house-rules.md` | (it is its own doc) |
 | Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
 | Sample data | `data/` | (none yet) |
-| What is live | nothing deploys from this repo; students deploy their own copy | `desk ctx class-starter` |
+| What is live | nothing deploys from this repo, because students deploy their own copy | `desk ctx class-starter` |
