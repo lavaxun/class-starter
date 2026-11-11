@@ -2,7 +2,7 @@
 // Prints five rows and one next step. Exit code 0 only when all five pass.
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -138,8 +138,21 @@ export async function serviceState(name) {
   return signInState(await run(`npx --no ${name} whoami`, 30));
 }
 
+// Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
+// saved PATH proves the tools work in any new window, so the student never has to open one to check.
+function useSavedWindowsPath() {
+  if (process.platform !== "win32") return;
+  const saved = spawnSync(
+    "powershell.exe",
+    ["-NoProfile", "-Command", "[Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')"],
+    { encoding: "utf8", windowsHide: true, timeout: 15000 },
+  );
+  if (saved.status === 0 && saved.stdout.trim()) process.env.Path = saved.stdout.trim();
+}
+
 // Runs the five checks. Returns { code, text, state }: text is the printed box, code is 0 only when all pass.
 export async function runCheck() {
+  useSavedWindowsPath();
   const hasSupabase = supabaseInstalled();
   const hasVercel = cliInstalled("vercel");
   const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
