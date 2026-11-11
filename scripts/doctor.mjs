@@ -10,7 +10,7 @@ const BOOTSTRAP = win
   : 'curl -fsSL https://preclass.aiclassmalaysia.com/bootstrap.sh -o "${TMPDIR:-/tmp}/aiclass-bootstrap.sh" && bash "${TMPDIR:-/tmp}/aiclass-bootstrap.sh"';
 
 // Update class-starter first, so an old copy gets the latest login fixes. Doctor starts login.mjs as a child, which reads the new file.
-const pull = spawnSync("git", ["pull", "--ff-only"], { cwd: root, stdio: "inherit" });
+const pull = spawnSync("git", ["pull", "--ff-only"], { cwd: root, stdio: "inherit", env: { ...process.env, GIT_TERMINAL_PROMPT: "0" } });
 if (pull.status !== 0) console.log("Could not update class-starter automatically; continuing with this copy.");
 
 let { state } = await runCheck();
