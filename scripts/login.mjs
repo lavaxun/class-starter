@@ -104,7 +104,7 @@ async function supabase() {
     writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && npx supabase login --agent no\n`);
     chmodSync(file, 0o755);
     spawn("open", ["-a", "Terminal", file], { stdio: "ignore" }).on("error", () => {});
-  } else say(`Run this in a terminal: cd "${STARTER}" && npx supabase login`);
+  } else say(`No window can be opened here. A person must run this in their own terminal (an AI must not run it itself): cd "${STARTER}" && npx supabase login --agent no`);
   say("A new terminal window opened for Supabase. In that window:");
   say("  1. Press Enter (a browser page opens).");
   say("  2. Sign in with GitHub and click Authorize.");
@@ -116,6 +116,10 @@ async function supabase() {
   }
   return "timeout";
 }
+
+// Said to the AI, not the student: the sign-in did not finish.
+const SUPABASE_AI_HINT =
+  "For the AI: retry `npm run login -- supabase` in class-starter (Windows: `npm.cmd run login -- supabase`). Never run `supabase login` yourself (without its own window Supabase refuses and asks for a token) and never use or ask for an access token. If the Supabase window showed an error, run `npm run doctor` (Windows: `npm.cmd run doctor`) once.";
 
 const flows = { github, vercel, supabase };
 const labels = { github: "GitHub", vercel: "Vercel", supabase: "Supabase" };
@@ -141,6 +145,7 @@ export async function login(names) {
     else {
       failed++;
       say(result === "timeout" ? `⬜ ${label}: did not finish within 10 minutes` : `⬜ ${label}: sign-in did not complete`);
+      if (name === "supabase") say(SUPABASE_AI_HINT);
     }
   }
   return failed === 0 ? 0 : 1;

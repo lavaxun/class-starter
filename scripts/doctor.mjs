@@ -9,6 +9,10 @@ const BOOTSTRAP = win
   ? '$f="$env:TEMP\\aiclass-bootstrap.ps1"; iwr https://preclass.aiclassmalaysia.com/bootstrap.ps1 -UseBasicParsing -OutFile $f; powershell -NoProfile -ExecutionPolicy Bypass -File $f'
   : 'curl -fsSL https://preclass.aiclassmalaysia.com/bootstrap.sh -o "${TMPDIR:-/tmp}/aiclass-bootstrap.sh" && bash "${TMPDIR:-/tmp}/aiclass-bootstrap.sh"';
 
+// Update class-starter first, so an old copy gets the latest login fixes. Doctor starts login.mjs as a child, which reads the new file.
+const pull = spawnSync("git", ["pull", "--ff-only"], { cwd: root, stdio: "inherit", env: { ...process.env, GIT_TERMINAL_PROMPT: "0" } });
+if (pull.status !== 0) console.log("Could not update class-starter automatically; continuing with this copy.");
+
 let { state } = await runCheck();
 
 if (!state.okNode) console.log(`Node.js or npm is missing or too old. Run the bootstrap line in a new terminal window:\n${BOOTSTRAP}`);

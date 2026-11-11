@@ -241,9 +241,14 @@ export async function runCheck() {
     if (todo.length > 1) output.push(t(`   Remaining: ${todo.slice(1).join("; ")}`, `   之后还有：${todo.slice(1).join("；")}`));
   }
   output.push(line);
+  const signedOut = [["github", gh], ["vercel", vercel], ["supabase", supa]].filter(([, s]) => s === "out").map(([n]) => n);
+  const aiHint = signedOut.length
+    ? `For the AI: run ${signedOut.map((n) => `npm run login -- ${n}`).join(" and ")} in class-starter (Windows: ${signedOut.map((n) => `npm.cmd run login -- ${n}`).join(" and ")}). ${signedOut.includes("supabase") ? "Supabase opens its own window; never run supabase login yourself or use an access token." : "Never run the service's own login command yourself or use an access token."}`
+    : "";
   return {
     code: todo.length === 0 ? 0 : 1,
     text: output.join("\n"),
+    aiHint,
     state: { okNode, npmOk, supa, vercel, gh, pageUrl, hasModules, modulesCurrent, hasSupabase, hasVercel },
   };
 }
@@ -327,6 +332,7 @@ function showChecklistWindow(text) {
 // The final report of check, setup and doctor: prints the box, shows it in a window, sets the exit code.
 export function reportCheck(result) {
   console.log(result.text);
+  if (result.aiHint) console.log(result.aiHint);
   showChecklistWindow(result.text);
   process.exitCode = result.code;
 }
