@@ -47,9 +47,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   applyHouseRules();
   console.log(`House rules written to ${ROOT}`);
   const result = await runCheck();
-  const { okNode, hasModules, modulesCurrent } = result.state;
-  // Real failures only. Sign-in rows (GitHub, Vercel, Supabase) and the course-page row may still be pending.
-  const code = okNode && hasModules && modulesCurrent ? 0 : 1;
+  const { okNode, hasModules, modulesCurrent, hasSupabase, hasVercel } = result.state;
+  // Real failures only: Node/npm, the npm install, or a missing Supabase/Vercel CLI.
+  // Sign-in rows (GitHub, Vercel, Supabase) and the course-page row may still be pending.
+  const code = okNode && hasModules && modulesCurrent && hasSupabase && hasVercel ? 0 : 1;
   result.aiHint = [
     result.aiHint,
     "For the AI: pending sign-in rows and a pending course-page row are normal after setup (exit 0 is success). Next: run the sign-ins, one at a time. The last step, after all three sign-ins, is `npm run finish` (Windows: `npm.cmd run finish`).",
