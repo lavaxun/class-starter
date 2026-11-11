@@ -1,7 +1,7 @@
 // `npm run doctor`: runs the check, repairs each failed row, then prints the check again.
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
-import { INSTALL_HINT, reportCheck, root, runCheck } from "./check.mjs";
+import { INSTALL_HINT, UPGRADE_HINT, reportCheck, root, runCheck } from "./check.mjs";
 import { applyHouseRules, ensureDevServer } from "./setup.mjs";
 
 const win = process.platform === "win32";
@@ -25,6 +25,8 @@ else if (!state.hasModules || !state.modulesCurrent) {
 applyHouseRules();
 
 if (!state.hasSupabase || !state.hasVercel) console.log(`The Supabase or Vercel CLI is missing. ${INSTALL_HINT}\nBootstrap line, for a new terminal window:\n${BOOTSTRAP}`);
+
+if (state.supa === "old") console.log(UPGRADE_HINT);
 
 if (state.gh === "missing") console.log(`The GitHub CLI is missing. Run the bootstrap line in a new terminal window:\n${BOOTSTRAP}`);
 

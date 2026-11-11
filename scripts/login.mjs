@@ -5,7 +5,7 @@ import { chmodSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { computerSupabase, INSTALL_HINT, root as STARTER, serviceState, vercelCommand } from "./check.mjs";
+import { computerSupabase, INSTALL_HINT, UPGRADE_HINT, root as STARTER, serviceState, vercelCommand } from "./check.mjs";
 
 const win = process.platform === "win32";
 const mac = process.platform === "darwin";
@@ -137,6 +137,11 @@ export async function login(names) {
     }
     if (state === "missing") {
       say(`⬜ ${label}: not installed. ${name === "github" ? "Run the bootstrap line again to install the GitHub CLI." : INSTALL_HINT}`);
+      failed++;
+      continue;
+    }
+    if (state === "old") {
+      say(`⬜ ${label}: too old to sign in. ${UPGRADE_HINT}`);
       failed++;
       continue;
     }
