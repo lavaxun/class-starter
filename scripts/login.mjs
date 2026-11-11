@@ -5,7 +5,7 @@ import { chmodSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { root as STARTER, serviceState } from "./check.mjs";
+import { root as STARTER, serviceState, vercelCommand } from "./check.mjs";
 
 const win = process.platform === "win32";
 const mac = process.platform === "darwin";
@@ -84,7 +84,7 @@ async function github() {
 // vercel opens the browser itself with the code filled in; its own lines say where.
 async function vercel() {
   // One command string: Node warns (DEP0190) when separate args go through a shell.
-  const child = spawn("npx --no vercel login", { cwd: STARTER, shell: true, stdio: ["ignore", "pipe", "pipe"], windowsHide: true });
+  const child = spawn(vercelCommand("login"), { cwd: STARTER, shell: true, stdio: ["ignore", "pipe", "pipe"], windowsHide: true });
   child.stdout.pipe(process.stdout, { end: false });
   child.stderr.pipe(process.stderr, { end: false });
   const code = await exited(child);
