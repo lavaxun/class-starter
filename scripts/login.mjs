@@ -5,7 +5,7 @@ import { chmodSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { computerSupabase, root as STARTER, serviceState, vercelCommand } from "./check.mjs";
+import { computerSupabase, INSTALL_HINT, UPGRADE_HINT, root as STARTER, serviceState, vercelCommand } from "./check.mjs";
 
 const win = process.platform === "win32";
 const mac = process.platform === "darwin";
@@ -92,22 +92,21 @@ async function vercel() {
 }
 
 // supabase login only accepts its verification code from a real terminal, so it gets its own window. --agent no: Claude sets CLAUDECODE, which makes the CLI switch to JSON output and fail with NonInteractiveError.
-// It uses the program the check asks first (computer-wide, else the class copy): on a Mac only that program reads the Keychain sign-in without an Allow window.
+// It runs the computer-wide program, the same one the check asks: on a Mac only that program reads the Keychain sign-in without an Allow window.
 async function supabase() {
   const computer = computerSupabase();
   if (win) {
-    const login = computer ? "& $env:AICLASS_SUPABASE login --agent no" : "npx.cmd supabase login --agent no";
     spawn(
       "powershell.exe",
-      ["-NoProfile", "-Command", `Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','${login}'`],
+      ["-NoProfile", "-Command", "Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','& $env:AICLASS_SUPABASE login --agent no'"],
       { env: { ...process.env, AICLASS_DIR: STARTER, AICLASS_SUPABASE: computer }, stdio: "ignore", windowsHide: true },
     ).on("error", () => {});
   } else if (mac) {
     const file = join(process.env.TMPDIR || tmpdir(), "supabase-login.command");
-    writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && ${computer ? `"${computer}"` : "npx supabase"} login --agent no\n`);
+    writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && "${computer}" login --agent no\n`);
     chmodSync(file, 0o755);
     spawn("open", ["-a", "Terminal", file], { stdio: "ignore" }).on("error", () => {});
-  } else say(`No window can be opened here. A person must run this in their own terminal (an AI must not run it itself): cd "${STARTER}" && ${computer ? `"${computer}"` : "npx supabase"} login --agent no`);
+  } else say(`No window can be opened here. A person must run this in their own terminal (an AI must not run it itself): cd "${STARTER}" && "${computer}" login --agent no`);
   say("A new terminal window opened for Supabase. In that window:");
   say("  1. Press Enter (a browser page opens).");
   say("  2. Sign in with GitHub and click Authorize.");
@@ -137,7 +136,12 @@ export async function login(names) {
       continue;
     }
     if (state === "missing") {
-      say(`⬜ ${label}: not installed. ${name === "github" ? "Run the bootstrap line again to install the GitHub CLI." : "Run npm install in class-starter first."}`);
+      say(`⬜ ${label}: not installed. ${name === "github" ? "Run the bootstrap line again to install the GitHub CLI." : INSTALL_HINT}`);
+      failed++;
+      continue;
+    }
+    if (state === "old") {
+      say(`⬜ ${label}: too old to sign in. ${UPGRADE_HINT}`);
       failed++;
       continue;
     }

@@ -3,8 +3,8 @@
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
 import { spawn, spawnSync } from "node:child_process";
-import { chmodSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { homedir, tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -31,8 +31,11 @@ function claudeAppConfig() {
 }
 const claudeApp = claudeAppConfig();
 if (claudeApp.gh) process.env.GH_CONFIG_DIR = claudeApp.gh; // every gh this process starts uses it
-// `npx --no vercel <sub>` with Vercel pointed at the Claude copy when that applies.
-export const vercelCommand = (sub) => `npx --no vercel ${sub}${claudeApp.vercel ? ` --global-config "${claudeApp.vercel}"` : ""}`;
+// The computer-wide `vercel <sub>` command line, with Vercel pointed at the Claude copy when that applies. "" when Vercel is not installed.
+export function vercelCommand(sub) {
+  const program = computerProgram("vercel");
+  return program ? `"${program}" ${sub}${claudeApp.vercel ? ` --global-config "${claudeApp.vercel}"` : ""}` : "";
+}
 
 // Runs a fixed command in the project folder with no keyboard input and a time limit,
 // so a login prompt or a slow network cannot hang the checklist.
@@ -83,6 +86,7 @@ export function signInState(result) {
 
 function signInNote(state) {
   if (state === "missing") return t("Not installed", "还没装");
+  if (state === "old") return t("Too old", "版本太旧");
   if (state === "unknown") return t("Could not check — sign-in status is unknown", "暂时查不到（登录状态未能确认）");
   return t("Not signed in", "还没登录");
 }
@@ -112,61 +116,61 @@ export function dependenciesCurrent() {
   });
 }
 
-export const cliInstalled = (name) => existsSync(join(root, "node_modules", name, "package.json"));
+// Message for the AI when Supabase or Vercel is not installed on the computer.
+export const INSTALL_HINT =
+  "For the AI: refresh PATH first (see AGENTS.md); if still missing, run the setup guide's Step 2 bootstrap line again; it installs the Supabase and Vercel CLIs for the whole computer.";
 
-// The supabase package is a small launcher; the real program is in @supabase/cli-<os>-<cpu>.
-export function supabaseInstalled() {
-  const scope = join(root, "node_modules", "@supabase");
-  const os = { win32: "windows" }[process.platform] ?? process.platform;
-  return (
-    cliInstalled("supabase") &&
-    existsSync(scope) &&
-    readdirSync(scope).some((name) => name.startsWith(`cli-${os}-${process.arch}`))
-  );
-}
-
-// The class copy's version, e.g. "2.119.0". Older computer-wide copies may lack `login --agent no`.
-const { dependencies, devDependencies } = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
-const classSupabaseVersion = ({ ...dependencies, ...devDependencies }.supabase ?? "0.0.0").replace(/^\D*/, "");
-function atLeast(version, minimum) {
+// The bootstrap installs Supabase only when none exists and never upgrades it, so an old computer-wide copy can stay.
+// 2.119.0 is the version class-starter used to pin; older ones may lack `login --agent no`.
+const MIN_SUPABASE = "2.119.0";
+const olderThan = (version, minimum) => {
   const [a, b] = [version, minimum].map((v) => v.split(".").map(Number));
   const i = a.findIndex((part, index) => part !== b[index]);
-  return i === -1 || a[i] > b[i];
+  return i !== -1 && a[i] < b[i];
+};
+export const UPGRADE_HINT = `For the AI: the Supabase CLI is too old (needs ${MIN_SUPABASE} or newer). Run \`${
+  process.platform === "win32" ? "scoop update supabase" : "brew upgrade supabase/tap/supabase"
+}\`, then \`npm run login -- supabase\` again.`;
+
+// Windows: the Claude app's private copy of %APPDATA%\npm (see claudeAppConfig), where `npm install -g` lands when Claude runs the bootstrap.
+function claudeAppNpmFolder() {
+  if (process.platform !== "win32" || !process.env.LOCALAPPDATA) return "";
+  const packages = join(process.env.LOCALAPPDATA, "Packages");
+  const app = existsSync(packages) ? readdirSync(packages).find((name) => name.startsWith("Claude_")) : undefined;
+  return app ? join(packages, app, "LocalCache", "Roaming", "npm") : "";
 }
 
-// Full path of the computer-wide supabase (Homebrew, Scoop) when it is at least the class copy's version, else "".
-// `npm run` puts this project's node_modules/.bin first on PATH, so folders inside node_modules are skipped.
-// An app opened from the Mac Dock may not have Homebrew's folders on PATH, so they are always searched.
-let computerSupabaseFound;
-export function computerSupabase() {
-  if (computerSupabaseFound !== undefined) return computerSupabaseFound;
+// Full path of the computer-wide supabase (Scoop, Homebrew) or vercel (npm install -g), or "" when it is not installed.
+// There is no copy inside this project. `npm run` puts this project's node_modules/.bin first on PATH, so folders
+// containing node_modules are skipped. Folders where the installers put the programs are always searched too: an app
+// opened from the Mac Dock may not have Homebrew's folders on PATH, and a Windows window may not have Scoop's or npm's.
+const programFound = {};
+export function computerProgram(name) {
+  if (programFound[name]) return programFound[name];
   useSavedWindowsPath();
-  const name = process.platform === "win32" ? "supabase.exe" : "supabase";
-  const homebrew = process.platform === "darwin" ? ["/opt/homebrew/bin", "/usr/local/bin"] : [];
-  const path = [...(process.env.PATH ?? process.env.Path ?? "").split(delimiter), ...homebrew]
+  const win = process.platform === "win32";
+  const file = win ? (name === "vercel" ? "vercel.cmd" : "supabase.exe") : name;
+  const known = win
+    ? [join(process.env.SCOOP || join(homedir(), "scoop"), "shims"), process.env.APPDATA && join(process.env.APPDATA, "npm"), claudeAppNpmFolder()]
+    : ["/opt/homebrew/bin", "/usr/local/bin"];
+  const found = [...(process.env.PATH ?? process.env.Path ?? "").split(delimiter), ...known]
     .filter((folder) => folder && !folder.includes("node_modules"))
-    .map((folder) => join(folder, name))
-    .find((file) => existsSync(file));
-  const version = path
-    ? spawnSync(path, ["--version"], { encoding: "utf8", timeout: 10000, windowsHide: true, stdio: ["ignore", "pipe", "ignore"] }).stdout?.match(/\d+\.\d+\.\d+/)?.[0]
-    : "";
-  computerSupabaseFound = version && atLeast(version, classSupabaseVersion) ? path : "";
-  return computerSupabaseFound;
+    .map((folder) => join(folder, file))
+    .find((candidate) => existsSync(candidate));
+  if (found) programFound[name] = found;
+  return found ?? "";
 }
+export const computerSupabase = () => computerProgram("supabase");
 
-// Supabase sign-in: in / out / unknown / missing. Asks the computer-wide supabase first, then the class copy.
-// On a Mac the sign-in sits in the Keychain, which lets only the program that saved it read it freely; any other
-// program makes macOS show an Allow/Deny window and wait. So login.mjs signs in with the program asked first here,
-// and each ask has a time limit.
+// Supabase sign-in: in / out / unknown / missing / old, from the computer-wide supabase (with a time limit).
+// On a Mac the sign-in sits in the Keychain, which lets only the program that saved it read it freely, so
+// login.mjs signs in with this same program.
 export async function supabaseState() {
   const computer = computerSupabase();
-  const programs = [computer && `"${computer}"`, supabaseInstalled() && "npx --no supabase"].filter(Boolean);
-  const states = [];
-  for (const program of programs) {
-    states.push(signInState(await run(`${program} whoami`, 20)));
-    if (states.at(-1) === "in") return "in";
-  }
-  return states.length === 0 ? "missing" : states.includes("unknown") ? "unknown" : "out";
+  if (!computer) return "missing";
+  const version = (await run(`"${computer}" --version`, 15)).out.match(/\d+\.\d+\.\d+/)?.[0];
+  if (version && olderThan(version, MIN_SUPABASE)) return "old";
+  return signInState(await run(`"${computer}" whoami`, 20));
 }
 
 // Returns the URL of the lowest port where a Next.js page answers, or "". Any HTTP status
@@ -200,8 +204,8 @@ export async function serviceState(name) {
     return ghState(v.out.match(/^gh version (\S+)/m)?.[1] ?? "", r);
   }
   if (name === "supabase") return supabaseState();
-  if (!cliInstalled("vercel")) return "missing";
-  return signInState(await run(vercelCommand("whoami"), 30));
+  const whoami = vercelCommand("whoami");
+  return whoami ? signInState(await run(whoami, 30)) : "missing";
 }
 
 // Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
@@ -219,8 +223,8 @@ function useSavedWindowsPath() {
 // Runs the five checks. Returns { code, text, state }: text is the printed box, code is 0 only when all pass.
 export async function runCheck() {
   useSavedWindowsPath();
-  const hasSupabase = supabaseInstalled();
-  const hasVercel = cliInstalled("vercel");
+  const hasSupabase = Boolean(computerSupabase());
+  const hasVercel = Boolean(computerProgram("vercel"));
   const [npmRun, supa, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
     run("npm --version", 15),
     supabaseState(),
@@ -241,11 +245,11 @@ export async function runCheck() {
       ? t(`${nodeV} — npm failed or did not return a valid version`, `${nodeV}，但 npm 执行失败或没有返回有效版本`)
       : `${nodeV} / ${npmV}`;
 
-  // ---- 2. Supabase signed in (computer-wide supabase, else the one in this project)
+  // ---- 2. Supabase signed in (computer-wide supabase)
   const okSupa = supa === "in";
   const noteSupa = okSupa ? "" : signInNote(supa);
 
-  // ---- 3. Vercel signed in (npx vercel from this project)
+  // ---- 3. Vercel signed in (computer-wide vercel)
   const vercel = vercelRun ? signInState(vercelRun) : "missing";
   const who = vercelRun && vercel === "in" ? lastLine(vercelRun.out) : "";
   const okVercel = vercel === "in";
@@ -310,9 +314,10 @@ export async function runCheck() {
   }
   output.push(line);
   const signedOut = [["github", gh], ["vercel", vercel], ["supabase", supa]].filter(([, s]) => s === "out").map(([n]) => n);
-  const aiHint = signedOut.length
+  const signInHint = signedOut.length
     ? `For the AI: run ${signedOut.map((n) => `npm run login -- ${n}`).join(" and ")} in class-starter (Windows: ${signedOut.map((n) => `npm.cmd run login -- ${n}`).join(" and ")}). ${signedOut.includes("supabase") ? "Supabase opens its own window; never run supabase login yourself or use an access token." : "Never run the service's own login command yourself or use an access token."}`
     : "";
+  const aiHint = [!hasSupabase || !hasVercel ? INSTALL_HINT : "", supa === "old" ? UPGRADE_HINT : "", signInHint].filter(Boolean).join("\n");
   return {
     code: todo.length === 0 ? 0 : 1,
     text: output.join("\n"),
@@ -342,6 +347,7 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
       ),
     );
   if (supa === "missing" || vercel === "missing") todo.push(installTools);
+  if (supa === "old") todo.push(t("Update the Supabase CLI — your AI assistant does this; you do not need to do anything", "更新 Supabase CLI — 您的 AI 助手会处理，您不用做什么"));
   if (supa === "unknown") todo.push(unknownNote("Supabase"));
   if (supa === "out")
     todo.push(t("Sign in to Supabase — your AI assistant opens the page; choose Continue with GitHub when it asks", "登录 Supabase — 您的 AI 助手会开页面；请选 Continue with GitHub 登录"));
