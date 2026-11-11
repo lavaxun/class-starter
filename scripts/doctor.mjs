@@ -14,7 +14,7 @@ let { state } = await runCheck();
 if (!state.okNode) console.log(`Node.js or npm is missing or too old. Run the bootstrap line in a new terminal window:\n${BOOTSTRAP}`);
 else if (!state.hasModules || !state.modulesCurrent || !state.hasSupabase || !state.hasVercel) {
   console.log("Installing the course tools (npm install)...");
-  spawnSync("npm", ["install"], { cwd: root, stdio: "inherit", shell: true });
+  spawnSync("npm install", { cwd: root, stdio: "inherit", shell: true });
   ({ state } = await runCheck());
 }
 
