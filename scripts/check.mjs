@@ -204,7 +204,7 @@ export async function runCheck() {
     : !hasModules
       ? t("The files needed by the course template are not installed yet", "课程模板需要的文件还没安装")
       : !modulesCurrent
-        ? t("The files needed by the course template need updating; I will handle it", "课程模板需要的文件要更新；我会处理")
+        ? t("The files needed by the course template need updating; your AI assistant will update them", "课程模板需要的文件要更新；您的 AI 助手会更新")
         : t("The course page is not running yet (ports 3000–3010)", "课程页面还没开（3000–3010 都没有回应）");
 
   // ---- Print the checklist
@@ -218,9 +218,12 @@ export async function runCheck() {
     [t("GitHub CLI signed in   ", "GitHub CLI 已登录       "), okGh, noteGh],
     [t("Course template opens  ", "课程模板打得开          "), okTpl, noteTpl],
   ];
+  const allPass = rows.every(([, ok]) => ok);
   const output = [
     line,
-    `✅ ${t("AI for Business · Pre-class checklist", "AI for Business · 课前准备完成清单")}`,
+    allPass
+      ? `✅ ${t("AI for Business · Pre-class checklist", "AI for Business · 课前准备完成清单")}`
+      : `⬜ ${t("AI for Business · Pre-class checklist · not finished yet", "AI for Business · 课前准备清单 · 还没完成")}`,
     line,
     t(`Computer: ${computer}`, `电脑：${computer}`),
     ...rows.map(([label, ok, note], i) => `${i + 1}. ${label}${mark(ok)}  ${note}`.trimEnd()),
@@ -253,40 +256,41 @@ export async function runCheck() {
   };
 }
 
-// The ordered list of things left to do, each said plainly. The first one is the "next step".
+// The ordered list of things left to do, said to the student (never "I": the box also shows in the student's
+// own window, where nobody speaks). The first one is the "next step".
 function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   const installTools = t(
-    "Install the course tools — I will handle it; you do not need to do anything",
-    "装课程工具 — 我来装，您不用做什么",
+    "Install the course tools — your AI assistant does this; you do not need to do anything",
+    "装课程工具 — 您的 AI 助手会装，您不用做什么",
   );
   const unknownNote = (name) =>
     t(
-      `${name} sign-in could not be confirmed. Please do not sign in again yet; I will check the connection and any sign-in still in progress`,
-      `${name} 登录状态暂时未能确认。请先不要重新登录；我会检查连接和还在进行的登录`,
+      `${name} sign-in could not be confirmed. Please do not sign in again yet; ask your AI assistant to run the check again in a few minutes`,
+      `${name} 登录状态暂时未能确认。请先不要重新登录；过几分钟请您的 AI 助手再检查一次`,
     );
   const todo = [];
   if (!okNode)
     todo.push(
       t(
-        "Set up Node.js — I will check and install it; if an installer or approval window appears, I will tell you what to click",
-        "设置 Node.js — 我来检查和安装；如果出现安装窗口或批准窗口，我会告诉您要按什么",
+        "Set up Node.js — your AI assistant checks and installs it; if an installer or approval window appears, it tells you what to click",
+        "设置 Node.js — 您的 AI 助手会检查和安装；如果出现安装窗口或批准窗口，它会告诉您要按什么",
       ),
     );
   if (supa === "missing" || vercel === "missing") todo.push(installTools);
   if (supa === "unknown") todo.push(unknownNote("Supabase"));
   if (supa === "out")
-    todo.push(t("Sign in to Supabase — I will open the page; choose Continue with GitHub when it asks", "登录 Supabase — 我帮您开页面；请选 Continue with GitHub 登录"));
+    todo.push(t("Sign in to Supabase — your AI assistant opens the page; choose Continue with GitHub when it asks", "登录 Supabase — 您的 AI 助手会开页面；请选 Continue with GitHub 登录"));
   if (vercel === "unknown") todo.push(unknownNote("Vercel"));
   if (vercel === "out")
-    todo.push(t("Sign in to Vercel — I will open the page; choose Continue with GitHub when it asks", "登录 Vercel — 我帮您开页面；请选 Continue with GitHub 登录"));
+    todo.push(t("Sign in to Vercel — your AI assistant opens the page; choose Continue with GitHub when it asks", "登录 Vercel — 您的 AI 助手会开页面；请选 Continue with GitHub 登录"));
   if (gh === "missing")
-    todo.push(t("Install the GitHub CLI — I will handle it; you do not need to do anything", "装 GitHub CLI — 我来装，您不用做什么"));
+    todo.push(t("Install the GitHub CLI — your AI assistant does this; you do not need to do anything", "装 GitHub CLI — 您的 AI 助手会装，您不用做什么"));
   if (gh === "unknown") todo.push(unknownNote("GitHub"));
   if (gh === "out")
     todo.push(
       t(
-        "Sign in to GitHub — I will open the page; sign up or sign in with the same Google email you use everywhere",
-        "登录 GitHub — 我帮您开页面；请用您到处都用的同一个 Google email 注册或登录",
+        "Sign in to GitHub — your AI assistant opens the page; sign up or sign in with the same Google email you use everywhere",
+        "登录 GitHub — 您的 AI 助手会开页面；请用您到处都用的同一个 Google email 注册或登录",
       ),
     );
   if (okTpl) return todo;
@@ -295,8 +299,8 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   } else
     todo.push(
       t(
-        "Course template — I will start it in a new window, then check again",
-        "课程模板 — 我会在一个新窗口里启动它，然后再检查一次",
+        "Course template — your AI assistant starts it in a new window, then checks again",
+        "课程模板 — 您的 AI 助手会在一个新窗口里启动它，然后再检查一次",
       ),
     );
   return todo;
@@ -329,10 +333,16 @@ function showChecklistWindow(text) {
   }
 }
 
+// Printed after the box when an AI ran the script: AI apps fold tool output, and the student only sees the reply.
+const PASTE_NOTE =
+  "AI assistant: the student cannot see this output. In your reply, paste the checklist block above word for word, " +
+  "from the first ===== line to the last, inside a code block, whether it passed or not. Never summarise it or say \"see the checklist above\".";
+
 // The final report of check, setup and doctor: prints the box, shows it in a window, sets the exit code.
 export function reportCheck(result) {
   console.log(result.text);
   if (result.aiHint) console.log(result.aiHint);
+  if (!process.stdout.isTTY) console.log(`\n${PASTE_NOTE}`);
   showChecklistWindow(result.text);
   process.exitCode = result.code;
 }
