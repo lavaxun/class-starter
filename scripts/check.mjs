@@ -3,9 +3,9 @@
 // Read-only: it runs each tool's own status command and asks the course page on
 // ports 3000-3010. It never starts or stops the course page.
 import { spawn, spawnSync } from "node:child_process";
-import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -125,6 +125,48 @@ export function supabaseInstalled() {
   );
 }
 
+// The class copy's version, e.g. "2.119.0". Older computer-wide copies may lack `login --agent no`.
+const { dependencies, devDependencies } = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const classSupabaseVersion = ({ ...dependencies, ...devDependencies }.supabase ?? "0.0.0").replace(/^\D*/, "");
+function atLeast(version, minimum) {
+  const [a, b] = [version, minimum].map((v) => v.split(".").map(Number));
+  const i = a.findIndex((part, index) => part !== b[index]);
+  return i === -1 || a[i] > b[i];
+}
+
+// Full path of the computer-wide supabase (Homebrew, Scoop) when it is at least the class copy's version, else "".
+// `npm run` puts this project's node_modules/.bin first on PATH, so folders inside node_modules are skipped.
+let computerSupabaseFound;
+export function computerSupabase() {
+  if (computerSupabaseFound !== undefined) return computerSupabaseFound;
+  const name = process.platform === "win32" ? "supabase.exe" : "supabase";
+  const path = (process.env.PATH ?? process.env.Path ?? "")
+    .split(delimiter)
+    .filter((folder) => folder && !folder.includes("node_modules"))
+    .map((folder) => join(folder, name))
+    .find((file) => existsSync(file));
+  const version = path
+    ? spawnSync(path, ["--version"], { encoding: "utf8", timeout: 10000, windowsHide: true, stdio: ["ignore", "pipe", "ignore"] }).stdout?.match(/\d+\.\d+\.\d+/)?.[0]
+    : "";
+  computerSupabaseFound = version && atLeast(version, classSupabaseVersion) ? path : "";
+  return computerSupabaseFound;
+}
+
+// Supabase sign-in: in / out / unknown / missing. Asks the computer-wide supabase first, then the class copy.
+// On a Mac the sign-in sits in the Keychain, which lets only the program that saved it read it freely; any other
+// program makes macOS show an Allow/Deny window and wait. So login.mjs signs in with the program asked first here,
+// and each ask has a time limit.
+export async function supabaseState() {
+  const computer = computerSupabase();
+  const programs = [computer && `"${computer}"`, supabaseInstalled() && "npx --no supabase"].filter(Boolean);
+  const states = [];
+  for (const program of programs) {
+    states.push(signInState(await run(`${program} whoami`, 20)));
+    if (states.at(-1) === "in") return "in";
+  }
+  return states.length === 0 ? "missing" : states.includes("unknown") ? "unknown" : "out";
+}
+
 // Returns the URL of the lowest port where a Next.js page answers, or "". Any HTTP status
 // counts: students may change the page. The first answer can take a minute while Next.js
 // builds the page, so a slow answer is waited for, not taken as "not running".
@@ -155,8 +197,9 @@ export async function serviceState(name) {
     const [v, r] = await Promise.all([run("gh --version", 15), run("gh auth status", 30)]);
     return ghState(v.out.match(/^gh version (\S+)/m)?.[1] ?? "", r);
   }
-  if (name === "supabase" ? !supabaseInstalled() : !cliInstalled("vercel")) return "missing";
-  return signInState(await run(name === "vercel" ? vercelCommand("whoami") : "npx --no supabase whoami", 30));
+  if (name === "supabase") return supabaseState();
+  if (!cliInstalled("vercel")) return "missing";
+  return signInState(await run(vercelCommand("whoami"), 30));
 }
 
 // Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
@@ -176,9 +219,9 @@ export async function runCheck() {
   useSavedWindowsPath();
   const hasSupabase = supabaseInstalled();
   const hasVercel = cliInstalled("vercel");
-  const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
+  const [npmRun, supa, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
     run("npm --version", 15),
-    hasSupabase ? run("npx --no supabase whoami", 30) : null,
+    supabaseState(),
     hasVercel ? run(vercelCommand("whoami"), 30) : null,
     run("gh --version", 15),
     run("gh auth status", 30),
@@ -196,8 +239,7 @@ export async function runCheck() {
       ? t(`${nodeV} — npm failed or did not return a valid version`, `${nodeV}，但 npm 执行失败或没有返回有效版本`)
       : `${nodeV} / ${npmV}`;
 
-  // ---- 2. Supabase signed in (npx supabase from this project)
-  const supa = supaRun ? signInState(supaRun) : "missing";
+  // ---- 2. Supabase signed in (computer-wide supabase, else the one in this project)
   const okSupa = supa === "in";
   const noteSupa = okSupa ? "" : signInNote(supa);
 
