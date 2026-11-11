@@ -1,8 +1,8 @@
 // `npm run doctor`: runs the check, repairs each failed row, then prints the check again.
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
-import { INSTALL_HINT, UPGRADE_HINT, reportCheck, root, runCheck } from "./check.mjs";
-import { applyHouseRules, ensureDevServer } from "./setup.mjs";
+import { INSTALL_HINT, UPGRADE_HINT, ensureDevServer, reportCheck, root, runCheck } from "./check.mjs";
+import { applyHouseRules } from "./setup.mjs";
 
 const win = process.platform === "win32";
 const BOOTSTRAP = win
@@ -35,4 +35,4 @@ if (signedOut.length) spawnSync(process.execPath, [join(root, "scripts", "login.
 
 if (state.modulesCurrent) await ensureDevServer();
 
-reportCheck(await runCheck());
+reportCheck(await runCheck(), { window: true });
