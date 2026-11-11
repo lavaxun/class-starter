@@ -104,7 +104,7 @@ async function supabase() {
     writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && npx supabase login --agent no\n`);
     chmodSync(file, 0o755);
     spawn("open", ["-a", "Terminal", file], { stdio: "ignore" }).on("error", () => {});
-  } else say(`Run this in a terminal: cd "${STARTER}" && npx supabase login`);
+  } else say(`No window can be opened here. A person must run this in their own terminal (an AI must not run it itself): cd "${STARTER}" && npx supabase login --agent no`);
   say("A new terminal window opened for Supabase. In that window:");
   say("  1. Press Enter (a browser page opens).");
   say("  2. Sign in with GitHub and click Authorize.");
