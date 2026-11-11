@@ -91,17 +91,17 @@ async function vercel() {
   return code === "timeout" ? "timeout" : code === 0 ? "done" : "failed";
 }
 
-// supabase login only accepts its verification code from a real terminal, so it gets its own window.
+// supabase login only accepts its verification code from a real terminal, so it gets its own window. --agent no: Claude sets CLAUDECODE, which makes the CLI switch to JSON output and fail with NonInteractiveError.
 async function supabase() {
   if (win) {
     spawn(
       "powershell.exe",
-      ["-NoProfile", "-Command", "Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','npx.cmd supabase login'"],
+      ["-NoProfile", "-Command", "Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','npx.cmd supabase login --agent no'"],
       { env: { ...process.env, AICLASS_DIR: STARTER }, stdio: "ignore", windowsHide: true },
     ).on("error", () => {});
   } else if (mac) {
     const file = join(process.env.TMPDIR || tmpdir(), "supabase-login.command");
-    writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && npx supabase login\n`);
+    writeFileSync(file, `#!/bin/bash\ncd "${STARTER}" && npx supabase login --agent no\n`);
     chmodSync(file, 0o755);
     spawn("open", ["-a", "Terminal", file], { stdio: "ignore" }).on("error", () => {});
   } else say(`Run this in a terminal: cd "${STARTER}" && npx supabase login`);
