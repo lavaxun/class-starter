@@ -9,6 +9,7 @@
     "lint": "eslint",
     "check": "node scripts/check.mjs",
     "setup": "node scripts/setup.mjs",
+    "finish": "node scripts/finish.mjs",
     "login": "node scripts/login.mjs",
     "doctor": "node scripts/doctor.mjs"
   },

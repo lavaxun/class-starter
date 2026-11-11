@@ -43,3 +43,6 @@ next-env.d.ts
 
 # local Supabase CLI stack
 supabase/
+
+# course page log written by npm run finish / doctor
+class-dev.log

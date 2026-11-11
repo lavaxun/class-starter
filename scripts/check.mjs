@@ -1,9 +1,9 @@
 // Pre-class checklist: `npm run check`. Language from PRECLASS_LANG=en|zh, default en.
 // Prints five rows and one next step. Exit code 0 only when all five pass.
-// Read-only: it runs each tool's own status command and asks the course page on
-// ports 3000-3010. It never starts or stops the course page.
+// `npm run check` is read-only: it runs each tool's own status command and asks the course page on
+// ports 3000-3010. It never starts or stops the course page (ensureDevServer, used by finish and doctor, does).
 import { spawn, spawnSync } from "node:child_process";
-import { chmodSync, existsSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, openSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { delimiter, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -189,6 +189,35 @@ export async function findPage() {
   return index === -1 ? "" : `http://localhost:${ports[index]}`;
 }
 
+// Starts `npm run dev` hidden (no terminal window) and waits up to 30 s for it to answer. Does nothing if it already does.
+// Output goes to class-dev.log in the project folder. Returns the page URL, or "" if it did not answer in time.
+// Windows: cmd.exe runs npm.cmd with windowsHide, detached so it keeps running after this script ends.
+// Mac/Linux: `npm run dev` detached with its output in the log.
+export async function ensureDevServer() {
+  const running = await findPage();
+  if (running) return running;
+  const log = openSync(join(root, "class-dev.log"), "a");
+  const options = { cwd: root, stdio: ["ignore", log, log], detached: true, windowsHide: true };
+  const child =
+    process.platform === "win32" ? spawn("cmd.exe", ["/c", "npm.cmd run dev"], options) : spawn("npm", ["run", "dev"], options);
+  child.on("error", () => {});
+  child.unref();
+  console.log("Starting the course page (hidden)...");
+  for (let i = 0; i < 15; i++) {
+    await new Promise((r) => setTimeout(r, 2000));
+    const url = await findPage();
+    if (url) return url;
+  }
+  return "";
+}
+
+// Opens the URL in the default browser. Windows: cmd.exe start; Mac: open; Linux: xdg-open.
+export function openInBrowser(url) {
+  const [program, args] =
+    process.platform === "win32" ? ["cmd.exe", ["/c", "start", "", url]] : process.platform === "darwin" ? ["open", [url]] : ["xdg-open", [url]];
+  spawn(program, args, { stdio: "ignore", windowsHide: true }).on("error", () => {});
+}
+
 // gh only suggests `gh auth login` when signed out or the token expired; a network failure does not.
 function ghState(ghVersion, ghRun) {
   if (!ghVersion) return "missing";
@@ -370,8 +399,8 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
   } else
     todo.push(
       t(
-        "Course template — your AI assistant starts it in a new window, then checks again",
-        "课程模板 — 您的 AI 助手会在一个新窗口里启动它，然后再检查一次",
+        "Course template — after all sign-ins, your AI assistant runs `npm run finish`: it starts the course page in the background and opens it in your browser",
+        "课程模板 — 全部登录完成后，您的 AI 助手会运行 `npm run finish`：它在后台启动课程页面，并在浏览器里打开",
       ),
     );
   return todo;
@@ -379,6 +408,7 @@ function pendingSteps({ okNode, supa, vercel, gh, okTpl, modulesCurrent }) {
 
 // Shows the box in its own window, so an AI app that folds or summarises its tool output cannot hide it.
 // Only when nobody is watching a terminal (an AI ran the script); a person in a terminal already sees the box.
+// Callers opt in (reportCheck's { window: true }); setup never does, so no window opens before the sign-ins.
 function showChecklistWindow(text) {
   if (process.stdout.isTTY) return;
   const file = join(tmpdir(), "ai-class-checklist.txt");
@@ -409,16 +439,17 @@ const PASTE_NOTE =
   "AI assistant: the student cannot see this output. In your reply, paste the checklist block above word for word, " +
   "from the first ===== line to the last, inside a code block, whether it passed or not. Never summarise it or say \"see the checklist above\".";
 
-// The final report of check, setup and doctor: prints the box, shows it in a window, sets the exit code.
-export function reportCheck(result) {
+// The final report of check, setup, finish and doctor: prints the box, shows it in a window when { window: true }, sets the exit code.
+// setup passes its own exit code in { code }.
+export function reportCheck(result, { window = false, code = result.code } = {}) {
   console.log(result.text);
   if (result.aiHint) console.log(result.aiHint);
   if (!process.stdout.isTTY) console.log(`\n${PASTE_NOTE}`);
-  showChecklistWindow(result.text);
-  process.exitCode = result.code;
+  if (window) showChecklistWindow(result.text);
+  process.exitCode = code;
 }
 
-// `node scripts/check.mjs` prints the box and sets the exit code; doctor and setup import runCheck.
+// `node scripts/check.mjs` prints the box and sets the exit code; doctor, setup and finish import runCheck.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  reportCheck(await runCheck());
+  reportCheck(await runCheck(), { window: true });
 }

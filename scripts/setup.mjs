@@ -1,11 +1,12 @@
-// `npm run setup`: writes the AI Class house rules, starts the course page if it is not running,
-// then runs the check and exits with its code. Safe to run again.
+// `npm run setup`: writes the AI Class house rules, then runs the check and prints the checklist (stdout only: no
+// checklist window, and it does not start the course page; `npm run finish` does that after the sign-ins).
+// Exit 0 unless Node/npm or the installed course tools fail: pending sign-in rows and the course-page row are normal here.
+// Safe to run again.
 // ROOT is the folder that contains class-starter (C:\AI Class or ~/AI Class); STARTER is this project.
-import { spawn } from "node:child_process";
-import { existsSync, openSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { findPage, reportCheck, root as STARTER, runCheck } from "./check.mjs";
+import { reportCheck, root as STARTER, runCheck } from "./check.mjs";
 
 const ROOT = dirname(STARTER);
 const START = "<!-- ai-class-house-rules:start -->";
@@ -42,31 +43,19 @@ function writeIfChanged(path, update) {
   if (after !== before) writeFileSync(path, after);
 }
 
-// Starts `npm run dev` in its own place and waits up to 30 s for it to answer. Does nothing if it already does.
-export async function ensureDevServer() {
-  if (await findPage()) return;
-  if (process.platform === "win32") {
-    // A new visible PowerShell window; the path goes through an env var so spaces need no quoting.
-    // Not `detached`: that gives this PowerShell no console and its Start-Process then starts nothing.
-    spawn(
-      "powershell.exe",
-      ["-NoProfile", "-Command", "Start-Process powershell.exe -WorkingDirectory $env:AICLASS_DIR -ArgumentList '-NoProfile','-NoExit','-Command','npm.cmd run dev'"],
-      { env: { ...process.env, AICLASS_DIR: STARTER }, stdio: "ignore", windowsHide: true },
-    ).unref();
-  } else {
-    const log = openSync(join(ROOT, "class-dev.log"), "a");
-    spawn("npm", ["run", "dev"], { cwd: STARTER, stdio: ["ignore", log, log], detached: true }).unref();
-  }
-  console.log("Starting the course page...");
-  for (let i = 0; i < 15; i++) {
-    await new Promise((r) => setTimeout(r, 2000));
-    if (await findPage()) return;
-  }
-}
-
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   applyHouseRules();
   console.log(`House rules written to ${ROOT}`);
-  await ensureDevServer();
-  reportCheck(await runCheck());
+  const result = await runCheck();
+  const { okNode, hasModules, modulesCurrent, hasSupabase, hasVercel } = result.state;
+  // Real failures only: Node/npm, the npm install, or a missing Supabase/Vercel CLI.
+  // Sign-in rows (GitHub, Vercel, Supabase) and the course-page row may still be pending.
+  const code = okNode && hasModules && modulesCurrent && hasSupabase && hasVercel ? 0 : 1;
+  result.aiHint = [
+    result.aiHint,
+    "For the AI: pending sign-in rows and a pending course-page row are normal after setup (exit 0 is success). Next: run the sign-ins, one at a time. The last step, after all three sign-ins, is `npm run finish` (Windows: `npm.cmd run finish`).",
+  ]
+    .filter(Boolean)
+    .join("\n");
+  reportCheck(result, { code });
 }
