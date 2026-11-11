@@ -83,7 +83,8 @@ async function github() {
 
 // vercel opens the browser itself with the code filled in; its own lines say where.
 async function vercel() {
-  const child = spawn("npx", ["--no", "vercel", "login"], { cwd: STARTER, shell: win, stdio: ["ignore", "pipe", "pipe"], windowsHide: true });
+  // One command string: Node warns (DEP0190) when separate args go through a shell.
+  const child = spawn("npx --no vercel login", { cwd: STARTER, shell: true, stdio: ["ignore", "pipe", "pipe"], windowsHide: true });
   child.stdout.pipe(process.stdout, { end: false });
   child.stderr.pipe(process.stderr, { end: false });
   const code = await exited(child);
