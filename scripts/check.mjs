@@ -13,6 +13,27 @@ const en = !process.env.PRECLASS_LANG || process.env.PRECLASS_LANG === "en";
 export const t = (english, chinese) => (en ? english : chinese);
 const ports = Array.from({ length: 11 }, (_, i) => 3000 + i); // Next moves to the next free port.
 
+// The Claude desktop app on Windows is a Store-style package: GitHub CLI and Vercel sign-ins made from it are saved
+// in its own private copy of AppData (%LOCALAPPDATA%\Packages\Claude_<id>\LocalCache\Roaming), which a normal
+// window cannot see. Supabase saves to the home folder, which both share. When a person runs these scripts in a
+// normal window (a terminal, not an AI), point both tools at the Claude copy if it exists, so the window checks and
+// signs in the same place Claude reads. Inside Claude (no terminal) the tools already see that copy.
+function claudeAppConfig() {
+  const none = { gh: "", vercel: "" };
+  if (process.platform !== "win32" || !process.stdout.isTTY || !process.env.LOCALAPPDATA) return none;
+  const packages = join(process.env.LOCALAPPDATA, "Packages");
+  const app = existsSync(packages) ? readdirSync(packages).find((name) => name.startsWith("Claude_")) : undefined;
+  if (!app) return none;
+  const roaming = join(packages, app, "LocalCache", "Roaming");
+  const gh = join(roaming, "GitHub CLI");
+  const vercel = join(roaming, "com.vercel.cli", "Data");
+  return { gh: existsSync(gh) ? gh : "", vercel: existsSync(vercel) ? vercel : "" };
+}
+const claudeApp = claudeAppConfig();
+if (claudeApp.gh) process.env.GH_CONFIG_DIR = claudeApp.gh; // every gh this process starts uses it
+// `npx --no vercel <sub>` with Vercel pointed at the Claude copy when that applies.
+export const vercelCommand = (sub) => `npx --no vercel ${sub}${claudeApp.vercel ? ` --global-config "${claudeApp.vercel}"` : ""}`;
+
 // Runs a fixed command in the project folder with no keyboard input and a time limit,
 // so a login prompt or a slow network cannot hang the checklist.
 export function run(command, seconds) {
@@ -135,7 +156,7 @@ export async function serviceState(name) {
     return ghState(v.out.match(/^gh version (\S+)/m)?.[1] ?? "", r);
   }
   if (name === "supabase" ? !supabaseInstalled() : !cliInstalled("vercel")) return "missing";
-  return signInState(await run(`npx --no ${name} whoami`, 30));
+  return signInState(await run(name === "vercel" ? vercelCommand("whoami") : "npx --no supabase whoami", 30));
 }
 
 // Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
@@ -158,7 +179,7 @@ export async function runCheck() {
   const [npmRun, supaRun, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
     run("npm --version", 15),
     hasSupabase ? run("npx --no supabase whoami", 30) : null,
-    hasVercel ? run("npx --no vercel whoami", 30) : null,
+    hasVercel ? run(vercelCommand("whoami"), 30) : null,
     run("gh --version", 15),
     run("gh auth status", 30),
     findPage(),
