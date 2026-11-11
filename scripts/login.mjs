@@ -117,6 +117,10 @@ async function supabase() {
   return "timeout";
 }
 
+// Said to the AI, not the student: the sign-in did not finish.
+const SUPABASE_AI_HINT =
+  "For the AI: retry `npm run login -- supabase` in class-starter (Windows: `npm.cmd run login -- supabase`). Never run `supabase login` yourself (without its own window Supabase refuses and asks for a token) and never use or ask for an access token. If the Supabase window showed an error, run `npm run doctor` (Windows: `npm.cmd run doctor`) once.";
+
 const flows = { github, vercel, supabase };
 const labels = { github: "GitHub", vercel: "Vercel", supabase: "Supabase" };
 
@@ -141,6 +145,7 @@ export async function login(names) {
     else {
       failed++;
       say(result === "timeout" ? `⬜ ${label}: did not finish within 10 minutes` : `⬜ ${label}: sign-in did not complete`);
+      if (name === "supabase") say(SUPABASE_AI_HINT);
     }
   }
   return failed === 0 ? 0 : 1;
