@@ -136,12 +136,14 @@ function atLeast(version, minimum) {
 
 // Full path of the computer-wide supabase (Homebrew, Scoop) when it is at least the class copy's version, else "".
 // `npm run` puts this project's node_modules/.bin first on PATH, so folders inside node_modules are skipped.
+// An app opened from the Mac Dock may not have Homebrew's folders on PATH, so they are always searched.
 let computerSupabaseFound;
 export function computerSupabase() {
   if (computerSupabaseFound !== undefined) return computerSupabaseFound;
+  useSavedWindowsPath();
   const name = process.platform === "win32" ? "supabase.exe" : "supabase";
-  const path = (process.env.PATH ?? process.env.Path ?? "")
-    .split(delimiter)
+  const homebrew = process.platform === "darwin" ? ["/opt/homebrew/bin", "/usr/local/bin"] : [];
+  const path = [...(process.env.PATH ?? process.env.Path ?? "").split(delimiter), ...homebrew]
     .filter((folder) => folder && !folder.includes("node_modules"))
     .map((folder) => join(folder, name))
     .find((file) => existsSync(file));
