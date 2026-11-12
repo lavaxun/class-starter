@@ -120,9 +120,9 @@ export function dependenciesCurrent() {
 export const INSTALL_HINT =
   "For the AI: refresh PATH first (see AGENTS.md); if still missing, run the setup guide's Step 2 bootstrap line again; it installs the Supabase and Vercel CLIs for the whole computer.";
 
-// The bootstrap installs Supabase only when none exists and never upgrades it, so an old computer-wide copy can stay.
-// 2.119.0 is the version class-starter used to pin; older ones may lack `login --agent no`.
-const MIN_SUPABASE = "2.119.0";
+// The pre-class bootstrap upgrades a Scoop/Homebrew copy; a copy from another installer can stay old and needs the hint below.
+// 3.0.0 is the first v3 CLI: `db push` and `db query` need `--remote` to reach the hosted project.
+const MIN_SUPABASE = "3.0.0";
 const olderThan = (version, minimum) => {
   const [a, b] = [version, minimum].map((v) => v.split(".").map(Number));
   const i = a.findIndex((part, index) => part !== b[index]);
