@@ -32,11 +32,11 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 You set these up and run them yourself. Don't explain them to me unless I must do something.
 
-- **Next.js 16 (App Router)** + **TypeScript**. Next.js 16 is new; when unsure, follow the patterns already in this project.
+- **Next.js 16 (App Router)** + **TypeScript**. Next.js 16 is new. When unsure, follow the patterns already in this project.
 - **Frontend:** use Tailwind and shadcn/ui. Use your own design skills and tools to make it look good.
 - Design the website for both mobile and desktop view.
 - Charts can use **Recharts**.
-- **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`; run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
+- **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
 - **Publishing:** Vercel, through the `vercel` CLI only (already signed in), for example `vercel deploy --prod`.
 
 ## Look and feel
