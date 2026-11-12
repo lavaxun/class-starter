@@ -118,7 +118,7 @@ export function dependenciesCurrent() {
 
 // Message for the AI when Supabase or Vercel is not installed on the computer.
 export const INSTALL_HINT =
-  "For the AI: refresh PATH first (see AGENTS.md); if still missing, run the setup guide's Step 2 bootstrap line again; it installs the Supabase and Vercel CLIs for the whole computer.";
+  "For the AI: refresh PATH first (Windows: $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User'); Mac: eval \"$(/opt/homebrew/bin/brew shellenv)\", Intel Mac /usr/local/bin/brew and export PATH=\"$HOME/.aiclass/bin:$PATH\"); if still missing, run the setup guide's Step 2 bootstrap line again; it installs the Supabase and Vercel CLIs for the whole computer.";
 
 // The pre-class bootstrap upgrades a Scoop/Homebrew copy; a copy from another installer can stay old and needs the hint below.
 // 3.0.0 is the first v3 CLI: `db push` and `db query` need `--remote` to reach the hosted project.

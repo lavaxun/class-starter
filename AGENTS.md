@@ -1,17 +1,16 @@
 # AGENTS.md
 
-> Project notes for the coding agent working in this folder.
+> Notes for the coding agent in this project.
 
-## How to talk to me
+## How to work with me
 
-- **I'm not a programmer.** Do the technical steps yourself, and tell me only what I need to do or look at, in plain everyday words.
+- **I'm not a programmer.** Do the technical work yourself. Tell me only what I need to do or look at, in plain everyday words.
 - Reply in the language I write in.
-- Make technical decisions yourself, then tell me in one sentence what you decided.
-- When a step is done, tell me what I should see.
+- You decide how to build it. Ask me only about what the app should do or how it should look, then tell me in one sentence what you decided.
+- For anything bigger than a small fix, show me a short plan first, then build the whole plan without stopping to check in after each step.
+- When something is ready, tell me what to open and what I should see.
 
 ## What this project is
-
-Read this section first every time we start work.
 
 <!-- This section is still empty. -->
 
@@ -31,15 +30,14 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 ## Tech stack
 
-You set these up and run them yourself. Don't explain them or their commands to me unless I must do something.
+You set these up and run them yourself. Don't explain them to me unless I must do something.
 
-- **Next.js 16 (App Router)** + **TypeScript**
-- Styling with **Tailwind** and the ready-made **shadcn/ui** components already in this project. shadcn/ui is a set of ready-made buttons, forms and tables. Set the colours and font once in its theme, so every button and chart changes together.
-- **Mobile-first**: design the phone layout first, then adapt it for computers, since many people will use it on their phones
-- Charts with **recharts**
-- Next.js 16 is quite new, and some patterns differ from older tutorials online. When unsure, follow the patterns already in this project.
-- Supabase: use the **Supabase CLI** only (signed in before class; if a command says not logged in, run `npm run login -- supabase` in this folder, Windows `npm.cmd run login -- supabase`, and never `supabase login` or an access token). It is installed for the whole computer, so run plain `supabase` from this folder: `supabase link`, SQL via migrations and `supabase db push --remote --yes` (in v3 without `--remote` it goes to a local database; pass `--yes` only after I agreed to the change), and `supabase db query --remote` for one-off SQL (`--read-only` for reads, `--yes` for a change only after I agreed). Never use `npx supabase`. Never use the Supabase plugin or connector, and never send me to the Supabase dashboard.
-- Vercel: deploy with the **Vercel CLI** only (already logged in). It is installed for the whole computer, so run plain `vercel` from this folder, for example `vercel deploy --prod`. Never use `npx vercel`. If `supabase` or `vercel` is "not recognized" / "command not found" in your own shell, first refresh PATH (Windows: `$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')`; Mac: `eval "$(/opt/homebrew/bin/brew shellenv)"`, Intel Mac `/usr/local/bin/brew`, and `export PATH="$HOME/.aiclass/bin:$PATH"` for the Intel Mac Supabase CLI); only if still missing, run the setup guide's Step 2 bootstrap line again. Never use a Vercel plugin, connect GitHub, or send me to the Vercel dashboard.
+- **Next.js 16 (App Router)** + **TypeScript**. Next.js 16 is new; when unsure, follow the patterns already in this project.
+- **Frontend:** use Tailwind and shadcn/ui. Use your own design skills and tools to make it look good.
+- Design the website for both mobile and desktop view.
+- Charts can use **Recharts**.
+- **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`; run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
+- **Publishing:** Vercel, through the `vercel` CLI only (already signed in), for example `vercel deploy --prod`.
 
 ## Look and feel
 
@@ -50,9 +48,5 @@ You set these up and run them yourself. Don't explain them or their commands to 
 
 ## Ground rules
 
-- Change one small piece at a time, and let me check it before you continue.
-- Only touch the files the current step needs. Don't tidy up anything else along the way.
-- If you're not sure what I want, ask me instead of guessing.
-- Build in this folder, whatever it is named. Never write absolute paths (such as `/Users/...` or `C:\Users\...`) into code or settings.
-- Secret keys: never ask me to paste a key into the chat. When we need one, create `.env.local` (it is gitignored) with a placeholder line and open it for me, or open a terminal, so I paste the key there myself. When we publish, add it to the hosting service's environment settings yourself. Never put keys in code or on GitHub, and never print a full key back to me. If I paste one into the chat anyway, move it into `.env.local` and tell me to rotate it.
-- Only use libraries, fonts, images and icons that are free to use, even for business (for fonts, use Google Fonts). If something needs a paid or commercial licence and there is truly no free option, stop and ask me before you use it.
+- **Secret keys** stay out of the chat, the code and GitHub. When we need one, create `.env.local` with a placeholder line and open it, so I paste the key there myself. When we publish, add it to Vercel's environment settings yourself. If I paste a key into the chat anyway, move it into `.env.local` and tell me to replace it with a new one.
+- Use only libraries, fonts, images and icons that are free for business use (fonts: Google Fonts). Ask me before using anything paid.
