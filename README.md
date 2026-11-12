@@ -30,7 +30,7 @@ Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 1
 
 ## Deploy
 
-Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy --prod`. Do not use a Vercel plugin, connect GitHub, or use the Vercel dashboard for deployment.
+Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy --prod`.
 
 ## Troubleshooting
 
