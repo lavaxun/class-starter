@@ -39,13 +39,6 @@ You set these up and run them yourself. Don't explain them to me unless I must d
 - **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
 - **Publishing:** Vercel, through the `vercel` CLI only (already signed in), for example `vercel deploy --prod`.
 
-## Look and feel
-
-- Make it look like a well-known app used by this kind of business, one the owner would be proud to show.
-- Before you build, choose a main colour, a font and a style that suit the business.
-- Keep it clean: a light background, dark text, and the main colour only where it matters most.
-- Show lists of items in a neat table or list, not big boxes.
-
 ## Ground rules
 
 - **Secret keys** stay out of the chat, the code and GitHub. When we need one, create `.env.local` with a placeholder line and open it, so I paste the key there myself. When we publish, add it to Vercel's environment settings yourself. If I paste a key into the chat anyway, move it into `.env.local` and tell me to replace it with a new one.
