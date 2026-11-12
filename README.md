@@ -22,7 +22,7 @@ The congratulations page means the starter is running.
 
 ![What it looks like when it runs](docs/success.png)
 
-Tell your coding agent what you want to build. Before writing code, it reads `AGENTS.md` and asks you a few questions about your project, one at a time.
+Tell your coding agent what you want to build. Before writing code, it reads `AGENTS.md` and asks you its 4 questions about your project, one at a time, skipping any you already answered.
 
 ## Tech stack
 
