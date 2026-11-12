@@ -42,6 +42,8 @@ This repo's `AGENTS.md` is the only rules file students' agents load; students o
 Nothing is written into `AI Class`: Claude Code also loads `AGENTS.md` and `CLAUDE.md` from parent folders, so files
 there would reach every other project inside `AI Class`. Older versions wrote `AI Class/AGENTS.md` and
 `AI Class/CLAUDE.md`; `setup` and `doctor` remove what those versions wrote and keep anything the student added.
+`scripts/house-rules.md` stays as an empty block: an older `doctor` still reads it after its own pull, and crashes
+without it. Its run writes the empty block once more, and the next `doctor` removes it.
 
 ## Sample data
 

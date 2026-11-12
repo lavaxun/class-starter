@@ -24,9 +24,11 @@ export function removeOldHouseRules(aiRoot = ROOT) {
     const path = join(aiRoot, name);
     if (!existsSync(path)) continue;
     const before = readFileSync(path, "utf8");
+    const hasOld = before.includes(START) || before.split(/\r?\n/).some((l) => lines.includes(l.trim()));
+    if (!hasOld) continue;
     const after = withoutLines(withoutBlock(before), lines);
-    if (!after.trim()) rmSync(path);
-    else if (after !== before) writeFileSync(path, after);
+    if (after.trim()) writeFileSync(path, after);
+    else rmSync(path);
   }
 }
 
