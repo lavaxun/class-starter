@@ -39,3 +39,17 @@ Each runs `node scripts/<name>.mjs`; the comment at the top of each file is its 
 
 `data/fb-ads-sample.csv` (daily ad spend per campaign) and `data/shopee-sales-sample.csv` (daily orders and
 revenue per channel) are made-up data for class exercises.
+
+## Where truth lives
+
+The code is the truth, and each doc below describes it. When a change touches a Truth path, update its Doc
+in the same change.
+
+| Topic | Truth | Doc |
+| --- | --- | --- |
+| Run the starter and the success page | `package.json`, `next.config.ts`, `src/app/` | `README.md`, `README.zh.md` |
+| Pre-class commands (setup, check, login, doctor, finish) | `scripts/*.mjs` | `CONTRIBUTING.md` |
+| Course rules written into AI Class | `scripts/house-rules.md` | (it is its own doc) |
+| Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
+| Sample data | `data/` | `CONTRIBUTING.md` |
+| How a change reaches students | nothing deploys from this repo | `CONTRIBUTING.md` |
