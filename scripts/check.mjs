@@ -120,17 +120,26 @@ export function dependenciesCurrent() {
 export const INSTALL_HINT =
   "For the AI: refresh PATH first (see AGENTS.md); if still missing, run the setup guide's Step 2 bootstrap line again; it installs the Supabase and Vercel CLIs for the whole computer.";
 
-// The bootstrap installs Supabase only when none exists and never upgrades it, so an old computer-wide copy can stay.
-// 2.119.0 is the version class-starter used to pin; older ones may lack `login --agent no`.
-const MIN_SUPABASE = "2.119.0";
+// The pre-class bootstrap upgrades a Scoop/Homebrew copy; a copy from another installer can stay old and needs the hint below.
+// 3.0.0 is the first v3 CLI: `db push` and `db query` need `--remote` to reach the hosted project.
+const MIN_SUPABASE = "3.0.0";
+// Intel Mac: Homebrew 7 dropped Intel bottles, so the bootstrap installs the Supabase CLI into ~/.aiclass/bin instead.
+// A Rosetta Terminal on Apple Silicon reports x64 but hw.optional.arm64 = 1, so it stays Apple Silicon.
+export const isIntelMac = (platform = process.platform, arch = process.arch, arm64 = () => spawnSync("sysctl", ["-n", "hw.optional.arm64"], { encoding: "utf8" }).stdout) =>
+  platform === "darwin" && arch === "x64" && String(arm64() ?? "").trim() !== "1";
+export const intelBin = () => join(homedir(), ".aiclass", "bin");
+export const upgradeCommand = (platform = process.platform, intel = isIntelMac(platform)) =>
+  platform === "win32"
+    ? "scoop update; scoop update supabase" // bare `scoop update` pulls the buckets first; alone, the app update can read a stale bucket
+    : intel
+      ? 'curl -fsSL https://preclass.aiclassmalaysia.com/cli.sh -o "${TMPDIR:-/tmp}/aiclass-cli.sh" && bash "${TMPDIR:-/tmp}/aiclass-cli.sh"'
+      : "brew upgrade supabase";
 const olderThan = (version, minimum) => {
   const [a, b] = [version, minimum].map((v) => v.split(".").map(Number));
   const i = a.findIndex((part, index) => part !== b[index]);
   return i !== -1 && a[i] < b[i];
 };
-export const UPGRADE_HINT = `For the AI: the Supabase CLI is too old (needs ${MIN_SUPABASE} or newer). Run \`${
-  process.platform === "win32" ? "scoop update supabase" : "brew upgrade supabase/tap/supabase"
-}\`, then \`npm run login -- supabase\` again.`;
+export const UPGRADE_HINT = `For the AI: the Supabase CLI is too old (needs ${MIN_SUPABASE} or newer). Run \`${upgradeCommand()}\`, then \`npm run login -- supabase\` again.`;
 
 // Windows: the Claude app's private copy of %APPDATA%\npm (see claudeAppConfig), where `npm install -g` lands when Claude runs the bootstrap.
 function claudeAppNpmFolder() {
@@ -140,7 +149,7 @@ function claudeAppNpmFolder() {
   return app ? join(packages, app, "LocalCache", "Roaming", "npm") : "";
 }
 
-// Full path of the computer-wide supabase (Scoop, Homebrew) or vercel (npm install -g), or "" when it is not installed.
+// Full path of the computer-wide supabase (Scoop, Homebrew, or ~/.aiclass/bin on an Intel Mac) or vercel (npm install -g), or "" when it is not installed.
 // There is no copy inside this project. `npm run` puts this project's node_modules/.bin first on PATH, so folders
 // containing node_modules are skipped. Folders where the installers put the programs are always searched too: an app
 // opened from the Mac Dock may not have Homebrew's folders on PATH, and a Windows window may not have Scoop's or npm's.
@@ -153,7 +162,10 @@ export function computerProgram(name) {
   const known = win
     ? [join(process.env.SCOOP || join(homedir(), "scoop"), "shims"), process.env.APPDATA && join(process.env.APPDATA, "npm"), claudeAppNpmFolder()]
     : ["/opt/homebrew/bin", "/usr/local/bin"];
-  const found = [...(process.env.PATH ?? process.env.Path ?? "").split(delimiter), ...known]
+  // Intel Mac: ~/.aiclass/bin comes first, so a stale Homebrew copy on PATH cannot hide the current one; the folder is
+  // searched even when the app's PATH lacks the ~/.zprofile line.
+  const first = isIntelMac() && name === "supabase" ? [intelBin()] : [];
+  const found = [...first, ...(process.env.PATH ?? process.env.Path ?? "").split(delimiter), ...known]
     .filter((folder) => folder && !folder.includes("node_modules"))
     .map((folder) => join(folder, file))
     .find((candidate) => existsSync(candidate));
