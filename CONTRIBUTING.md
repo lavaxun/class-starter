@@ -25,7 +25,7 @@ Each runs `node scripts/<name>.mjs`; the comment at the top of each file is its 
 | --- | --- |
 | `npm run setup` | Writes the course rules into `AI Class`, then prints the checklist. Safe to run again. |
 | `npm run check` | Read-only checklist of five rows: Node.js and npm, the three sign-ins, the course page. Exit 0 only when all pass. |
-| `npm run login -- <service>` | Signs in GitHub, Vercel and Supabase in their own windows. |
+| `npm run login [-- <service>]` | Signs in GitHub, Vercel and Supabase (only the ones still signed out); Supabase gets its own window. |
 | `npm run doctor` | Updates class-starter, repairs each failed row, then shows the checklist again. |
 | `npm run finish` | The last step: starts the course page in the background, opens it and shows the checklist window. |
 
