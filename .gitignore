@@ -49,4 +49,4 @@ class-dev.log
 
 # course project answers, written by the agent; doctor backup of an old AGENTS.md
 PROJECT.md
-AGENTS.before-update.md
+AGENTS.before-update*.md

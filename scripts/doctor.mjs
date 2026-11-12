@@ -26,8 +26,8 @@ function projectSection(text) {
 }
 
 // Student agents used to write their project answers into AGENTS.md, which blocks `git pull`. Before pulling, move
-// edited answers into PROJECT.md (git-ignored), keep any other edits in AGENTS.before-update.md, and restore
-// AGENTS.md. Offline, or already on main's version: AGENTS.md is left untouched.
+// edited answers into PROJECT.md (git-ignored), keep any other edits in a new AGENTS.before-update*.md that PROJECT.md
+// points to, and restore AGENTS.md. Offline, or already on main's version: AGENTS.md is left untouched.
 // Returns true when AGENTS.md now holds no student edits, so it is safe to replace with main's version.
 function prepareAgentsFile() {
   if (git("fetch", "--quiet").status !== 0) return false;
@@ -49,8 +49,13 @@ function prepareAgentsFile() {
       console.log("Moved your project answers from AGENTS.md to PROJECT.md.");
     }
     if ((answers && !moved) || !versions.some((v) => v.rest === mine.rest)) {
-      writeFileSync(join(root, "AGENTS.before-update.md"), text);
-      console.log("Saved your old AGENTS.md as AGENTS.before-update.md.");
+      let name = "AGENTS.before-update.md";
+      for (let n = 2; existsSync(join(root, name)); n++) name = `AGENTS.before-update-${n}.md`;
+      writeFileSync(join(root, name), text);
+      const pointer = `Earlier project notes are in \`${name}\`. Read it, move the project facts into this file, then delete it.`;
+      const project = existsSync(projectFile) ? readFileSync(projectFile, "utf8") : "# What this project is\n";
+      writeFileSync(projectFile, `${project.trimEnd()}\n\n${pointer}\n`);
+      console.log(`Saved your old AGENTS.md as ${name}; PROJECT.md points to it.`);
     }
   }
   return git("checkout", "HEAD", "--", "AGENTS.md").status === 0;
