@@ -130,7 +130,7 @@ export const isIntelMac = (platform = process.platform, arch = process.arch, arm
 export const intelBin = () => join(homedir(), ".aiclass", "bin");
 export const upgradeCommand = (platform = process.platform, intel = isIntelMac(platform)) =>
   platform === "win32"
-    ? "scoop update supabase"
+    ? "scoop update; scoop update supabase" // bare `scoop update` pulls the buckets first; alone, the app update can read a stale bucket
     : intel
       ? 'curl -fsSL https://preclass.aiclassmalaysia.com/cli.sh -o "${TMPDIR:-/tmp}/aiclass-cli.sh" && bash "${TMPDIR:-/tmp}/aiclass-cli.sh"'
       : "brew upgrade supabase";
