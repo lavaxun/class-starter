@@ -16,6 +16,9 @@ what students' agents read, so keep developer notes out of its student sections.
   can always update `AGENTS.md`. Before pulling, `doctor` moves answers from an older, filled-in `AGENTS.md` into
   `PROJECT.md`, saves any other edits as a new `AGENTS.before-update*.md` that `PROJECT.md` points to, and restores `AGENTS.md`. When the pull still
   fails, it checks out main's `AGENTS.md` alone. Offline, it leaves `AGENTS.md` untouched.
+- A copy whose `AGENTS.md` was filled in before this change runs an old `doctor` that cannot pull at all. Fix it once
+  in that copy's `class-starter` folder (PowerShell or Terminal; on Windows use `npm.cmd`); later doctor runs then
+  keep it current: `git fetch`, then `git checkout origin/main -- scripts/doctor.mjs`, then `npm run doctor`.
 - ai-audit-radar's build downloads this repo's `AGENTS.md` and serves it as the class-site download. Its
   `npm run check` fails until the site is rebuilt and redeployed, so an `AGENTS.md` change needs a radar
   redeploy.
