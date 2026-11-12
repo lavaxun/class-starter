@@ -22,7 +22,7 @@ The congratulations page means the starter is running.
 
 ![What it looks like when it runs](docs/success.png)
 
-Tell your coding agent what you want to build. Before writing code, it must read the existing `AGENTS.md` and follow its project-discovery guidance: ask **one question at a time** about who it's for, what problem it solves, what success looks like, and whether people use a phone or computer. Skip questions you have already answered.
+Tell your coding agent what you want to build. Before writing code, it must read the existing `AGENTS.md` and follow its project-discovery guidance: ask **one question at a time** about who it's for, what problem it solves, what success looks like, and whether people use a phone or computer. Skip questions you have already answered. It saves the answers in `PROJECT.md`.
 
 ## Tech stack
 
@@ -42,4 +42,4 @@ Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy -
 
 ## Continue this project
 
-Use the same project folder and chat for later lessons or changes. Read the existing `AGENTS.md` for the project's notes and ground rules.
+Use the same project folder and chat for later lessons or changes. Read `PROJECT.md` for the project's notes and `AGENTS.md` for the ground rules.

@@ -12,6 +12,10 @@ what students' agents read, so keep developer notes out of its student sections.
 
 - Every merge to `main` reaches students: `npm run doctor` runs `git pull --ff-only` in their copy first.
   During class days, merge only what students may load at once.
+- Students' agents write their project answers into `PROJECT.md` (git-ignored), never into `AGENTS.md`, so the pull
+  can always update `AGENTS.md`. Before pulling, `doctor` moves answers from an older, filled-in `AGENTS.md` into
+  `PROJECT.md`, saves any other edits as `AGENTS.before-update.md`, and restores `AGENTS.md`. When the pull still
+  fails, it checks out main's `AGENTS.md` alone. Offline, it leaves `AGENTS.md` untouched.
 - ai-audit-radar's build downloads this repo's `AGENTS.md` and serves it as the class-site download. Its
   `npm run check` fails until the site is rebuilt and redeployed, so an `AGENTS.md` change needs a radar
   redeploy.
