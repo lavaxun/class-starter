@@ -30,17 +30,18 @@ Each runs `node scripts/<name>.mjs`; the comment at the top of each file is its 
 
 | Command | What it does |
 | --- | --- |
-| `npm run setup` | Writes the course rules into `AI Class`, then prints the checklist. Safe to run again. |
+| `npm run setup` | Removes the course rules older versions wrote into `AI Class`, then prints the checklist. Safe to run again. |
 | `npm run check` | Read-only checklist of five rows: Node.js and npm, the three sign-ins, the course page. Exit 0 only when all pass. |
 | `npm run login [-- <service>]` | Signs in GitHub, Vercel and Supabase (only the ones still signed out); Supabase gets its own window. |
 | `npm run doctor` | Updates class-starter, repairs each failed row, then shows the checklist again. |
 | `npm run finish` | The last step: starts the course page in the background, opens it and shows the checklist window. |
 
-## Course rules written into AI Class
+## One rules file
 
-`scripts/house-rules.md` holds the course rules. `setup` and `doctor` copy it between its markers into
-`AI Class/AGENTS.md` and import that file from `AI Class/CLAUDE.md`. They never change this repo's
-`AGENTS.md`.
+This repo's `AGENTS.md` is the only rules file students' agents load; students open `class-starter` itself.
+Nothing is written into `AI Class`: Claude Code also loads `AGENTS.md` and `CLAUDE.md` from parent folders, so files
+there would reach every other project inside `AI Class`. Older versions wrote `AI Class/AGENTS.md` and
+`AI Class/CLAUDE.md`; `setup` and `doctor` remove what those versions wrote and keep anything the student added.
 
 ## Sample data
 
@@ -56,7 +57,6 @@ in the same change.
 | --- | --- | --- |
 | Run the starter and the success page | `package.json`, `next.config.ts`, `src/app/` | `README.md`, `README.zh.md` |
 | Pre-class commands (setup, check, login, doctor) | `scripts/*.mjs` | `CONTRIBUTING.md` |
-| Course rules written into AI Class | `scripts/house-rules.md` | (it is its own doc) |
 | Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
 | Sample data | `data/` | `CONTRIBUTING.md` |
 | What is live | nothing deploys from this repo, because students deploy their own copy | `CONTRIBUTING.md` |

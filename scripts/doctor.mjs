@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { INSTALL_HINT, UPGRADE_HINT, ensureDevServer, reportCheck, root, runCheck } from "./check.mjs";
-import { applyHouseRules } from "./setup.mjs";
+import { removeOldHouseRules } from "./setup.mjs";
 
 const win = process.platform === "win32";
 const BOOTSTRAP = win
@@ -81,7 +81,7 @@ else if (!state.hasModules || !state.modulesCurrent) {
   ({ state } = await runCheck());
 }
 
-applyHouseRules();
+removeOldHouseRules();
 
 if (!state.hasSupabase || !state.hasVercel) console.log(`The Supabase or Vercel CLI is missing. ${INSTALL_HINT}\nBootstrap line, for a new terminal window:\n${BOOTSTRAP}`);
 
