@@ -2,7 +2,7 @@
 
 [Read this in Chinese → README.zh.md](README.zh.md)
 
-For an already-installed standalone starter, run the existing project, check the congratulations page, then tell your coding agent what you want to build.
+Run the project, check the congratulations page, then tell your coding agent what you want to build.
 
 ## Run the project
 
@@ -22,7 +22,7 @@ The congratulations page means the starter is running.
 
 ![What it looks like when it runs](docs/success.png)
 
-Tell your coding agent what you want to build. Before writing code, it must read the existing `AGENTS.md` and follow its project-discovery guidance: ask **one question at a time** about who it's for, what problem it solves, what success looks like, and whether people use a phone or computer. Skip questions you have already answered.
+Tell your coding agent what you want to build. Before writing code, it reads `AGENTS.md` and asks you a few questions about your project, one at a time.
 
 ## Tech stack
 

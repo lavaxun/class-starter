@@ -65,8 +65,8 @@ Truth path without its Doc (`[no-doc]` in a commit message for a pure fix).
 | Topic | Truth | Doc |
 | --- | --- | --- |
 | Run the starter and the success page | `package.json`, `next.config.ts`, `src/app/` | `README.md`, `README.zh.md` |
-| Pre-class commands (setup, check, login, doctor) | `scripts/*.mjs` | (none yet) |
+| Pre-class commands (setup, check, login, doctor, finish) | `scripts/*.mjs` | `CONTRIBUTING.md` |
 | Course rules written into AI Class | `scripts/house-rules.md` | (it is its own doc) |
 | Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
-| Sample data | `data/` | (none yet) |
-| What is live | nothing deploys from this repo, because students deploy their own copy | `desk ctx class-starter` |
+| Sample data | `data/` | `CONTRIBUTING.md` |
+| How a change reaches students | nothing deploys from this repo | `CONTRIBUTING.md` |
