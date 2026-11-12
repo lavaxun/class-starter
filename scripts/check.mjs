@@ -129,7 +129,7 @@ const olderThan = (version, minimum) => {
   return i !== -1 && a[i] < b[i];
 };
 export const UPGRADE_HINT = `For the AI: the Supabase CLI is too old (needs ${MIN_SUPABASE} or newer). Run \`${
-  process.platform === "win32" ? "scoop update supabase" : "brew upgrade supabase/tap/supabase"
+  process.platform === "win32" ? "scoop update supabase" : "brew upgrade supabase"
 }\`, then \`npm run login -- supabase\` again.`;
 
 // Windows: the Claude app's private copy of %APPDATA%\npm (see claudeAppConfig), where `npm install -g` lands when Claude runs the bootstrap.
