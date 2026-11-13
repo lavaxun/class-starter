@@ -12,7 +12,7 @@
 
 ## What this project is
 
-This project's facts live in `PROJECT.md` in this folder. **Read `PROJECT.md` before any work.** Keep project facts there. Never edit this `AGENTS.md`. `npm run doctor` replaces it with the latest course version.
+This project's facts live in `PROJECT.md` in this folder. Read it before any work, and keep it up to date when the facts change.
 
 **If `PROJECT.md` does not exist yet, don't write code yet.** Ask me the 4 questions below in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
 
