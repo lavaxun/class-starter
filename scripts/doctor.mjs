@@ -14,33 +14,57 @@ const gitEnv = { ...process.env, GIT_TERMINAL_PROMPT: "0" };
 const git = (...args) => spawnSync("git", args, { cwd: root, encoding: "utf8", env: gitEnv, timeout: 60_000 });
 const AGENTS = join(root, "AGENTS.md");
 const PROJECT = join(root, "PROJECT.md");
+const SECTION = "## What this project is";
 const BLANK = "<to fill in>";
 const ANSWER = /^(- \*\*(?:Who uses it|What it solves|What success looks like|Phone or computer)\*\*:)[ \t]*(.*)$/;
-const POINTER = /^Earlier project notes are in `[^`]+`\./;
 // A PROJECT.md title that holds no project facts.
 const HEADING = /^#+\s*(what this project is|project|project\.md|project facts|project notes)?\s*$/i;
+// The AGENTS.md versions that kept the answers in PROJECT.md.
+const PROJECT_ERA = /`PROJECT\.md` (in this folder|does not exist)/;
+const pointer = (name) => `Earlier project notes are in \`${name}\`. Read it, move the project facts into this file, then delete it.`;
 
-// The four project answers (keyed by their "- **Label**:" prefix) and any "Earlier project notes" pointer lines.
-function readAnswers(text) {
-  const answers = {};
-  const pointers = [];
-  for (const line of text.split(/\r?\n/)) {
-    const m = line.match(ANSWER);
-    if (m && m[2].trim() && m[2].trim() !== BLANK) answers[m[1]] = m[2].trim();
-    else if (POINTER.test(line)) pointers.push(line.trim());
-  }
-  return { answers, pointers };
+// The "What this project is" section's lines (after the heading, up to the next "## " heading), and the file
+// without them, with LF line endings.
+function splitSection(text) {
+  const lines = text.replace(/\r\n/g, "\n").split("\n");
+  const start = lines.findIndex((l) => l.trim() === SECTION);
+  if (start === -1) return { section: [], rest: lines.join("\n").trimEnd() };
+  let end = lines.findIndex((l, i) => i > start && l.startsWith("## "));
+  if (end === -1) end = lines.length;
+  return { section: lines.slice(start + 1, end), rest: [...lines.slice(0, start + 1), ...lines.slice(end)].join("\n").trimEnd() };
 }
 
-// AGENTS.md with LF line endings, every answer blanked and pointer lines dropped: equal to a course version
-// when the student changed nothing else.
-const normalize = (text) =>
-  text.replace(/\r\n/g, "\n").split("\n").filter((l) => !POINTER.test(l))
-    .map((l) => l.replace(ANSWER, `$1 ${BLANK}`)).join("\n").replace(/\n{3,}/g, "\n\n").trimEnd();
+// Every AGENTS.md the course has shipped, from main's history (this copy's history when it has no upstream):
+// the parts outside "What this project is", and every line ever inside it.
+let shipped;
+function courseVersions() {
+  if (shipped) return shipped;
+  const ref = git("rev-parse", "--verify", "--quiet", "@{u}").status === 0 ? "@{u}" : "HEAD";
+  const blobs = new Set((git("log", "--raw", "--no-abbrev", "--format=", ref, "--", "AGENTS.md").stdout ?? "").match(/[0-9a-f]{40}(?= [AM]\t)/g));
+  const versions = [...blobs].map((blob) => splitSection(git("cat-file", "blob", blob).stdout ?? ""));
+  shipped = { blobs, rests: versions.map((v) => v.rest), lines: new Set(versions.flatMap((v) => v.section.map((l) => l.trim()))) };
+  return shipped;
+}
 
-// Puts each answer into a line that still says <to fill in> and adds missing pointer lines after the answers.
-// Keeps the file's line endings.
-function fillAnswers(text, { answers, pointers }) {
+// The student's project notes in some lines: the 4 answers, and every other line no course version has.
+function readNotes(lines) {
+  const { lines: course } = courseVersions();
+  const notes = { answers: {}, extra: [] };
+  for (const line of lines) {
+    const m = line.trim().match(ANSWER);
+    if (m) {
+      if (m[2].trim() && m[2].trim() !== BLANK) notes.answers[m[1]] = m[2].trim();
+    } else if (line.trim() && !course.has(line.trim()) && !HEADING.test(line.trim())) {
+      // A "#" or "##" title from PROJECT.md would end the section in AGENTS.md: make it a "###" title.
+      notes.extra.push(line.trimEnd().replace(/^#{1,2}\s+/, "### "));
+    }
+  }
+  return notes;
+}
+
+// Puts each answer into its line that still says <to fill in>, and adds the extra lines AGENTS.md lacks after the
+// answers. Keeps the file's line endings.
+function fillNotes(text, { answers, extra }) {
   const eol = text.includes("\r\n") ? "\r\n" : "\n";
   const lines = text.split(/\r?\n/);
   let last = -1;
@@ -50,22 +74,16 @@ function fillAnswers(text, { answers, pointers }) {
     last = i;
     if (m[2].trim() === BLANK && answers[m[1]]) lines[i] = `${m[1]} ${answers[m[1]]}`;
   });
-  const missing = [...new Set(pointers)].filter((p) => !lines.some((l) => l.trim() === p));
-  if (missing.length && last !== -1) lines.splice(last + 1, 0, ...missing.flatMap((p) => ["", p]));
+  const missing = [...new Set(extra)].filter((e) => !lines.some((l) => l.trim() === e.trim()));
+  if (missing.length && last !== -1) lines.splice(last + 1, 0, "", ...missing);
   return lines.join(eol);
 }
 
-// Every AGENTS.md the course has shipped (blob ids), from main's history, or this copy's history when it has no upstream.
-function courseVersions() {
-  const ref = git("rev-parse", "--verify", "--quiet", "@{u}").status === 0 ? "@{u}" : "HEAD";
-  return new Set(git("log", "--raw", "--no-abbrev", "--format=", ref, "--", "AGENTS.md").stdout.match(/[0-9a-f]{40}(?= [AM]\t)/g));
-}
-
-let saved = { answers: {}, pointers: [] };
+let saved = { answers: {}, extra: [] };
 
 // Students' agents write their project answers into AGENTS.md, which blocks `git pull`. Before pulling, keep the
-// answers in memory, save any other edits in a new AGENTS.before-update*.md that AGENTS.md then points to, and restore
-// AGENTS.md. Offline, or already on main's version: AGENTS.md is left untouched.
+// student's project notes in memory, save any edits outside "What this project is" in a new AGENTS.before-update*.md
+// that AGENTS.md then points to, and restore AGENTS.md. Offline, or already on main's version: AGENTS.md is left untouched.
 // Returns true when AGENTS.md now holds no student edits, so it is safe to replace with main's version.
 function prepareAgentsFile() {
   if (git("fetch", "--quiet").status !== 0) return false;
@@ -74,52 +92,49 @@ function prepareAgentsFile() {
   // hash-object applies git's line-ending rules, so a CRLF copy of main's file counts as unchanged.
   const current = git("hash-object", "AGENTS.md").stdout.trim();
   if (current === upstream) return true;
-  const known = courseVersions();
-  if (!known.has(current)) {
+  const { blobs, rests } = courseVersions();
+  if (!blobs.has(current)) {
     const text = readFileSync(AGENTS, "utf8");
-    saved = readAnswers(text);
-    const mine = normalize(text);
-    if (![...known].some((blob) => normalize(git("cat-file", "blob", blob).stdout) === mine)) {
+    const mine = splitSection(text);
+    saved = readNotes(mine.section);
+    if (!rests.includes(mine.rest)) {
       let name = "AGENTS.before-update.md";
       for (let n = 2; existsSync(join(root, name)); n++) name = `AGENTS.before-update-${n}.md`;
       writeFileSync(join(root, name), text);
-      saved.pointers.push(`Earlier project notes are in \`${name}\`. Read it, move the project facts into this file, then delete it.`);
+      saved.extra.push(pointer(name));
       console.log(`Saved your old AGENTS.md as ${name}; AGENTS.md points to it.`);
     }
   }
   return git("checkout", "HEAD", "--", "AGENTS.md").status === 0;
 }
 
-// After the update: put the kept answers back into AGENTS.md. A copy from the PROJECT.md era also gets PROJECT.md's
-// answers. PROJECT.md is deleted when AGENTS.md now holds all of it, otherwise AGENTS.md points to it.
+// After the update: put the kept project notes back into AGENTS.md. Once AGENTS.md is a version that keeps the answers
+// itself, a copy from the PROJECT.md era also gets PROJECT.md's notes, and PROJECT.md is deleted. When an answer there
+// differs from the one in AGENTS.md, PROJECT.md stays and AGENTS.md points to it.
 function restoreAnswers() {
   if (!existsSync(AGENTS)) return;
-  const kept = { answers: { ...saved.answers }, pointers: [...saved.pointers] };
-  const project = existsSync(PROJECT) ? readFileSync(PROJECT, "utf8") : null;
-  const fromProject = project === null ? { answers: {}, pointers: [] } : readAnswers(project);
-  kept.answers = { ...fromProject.answers, ...kept.answers };
-  kept.pointers.push(...fromProject.pointers);
   const before = readFileSync(AGENTS, "utf8");
-  let text = fillAnswers(before, kept);
-  if (project !== null) {
-    const result = readAnswers(text);
-    const courseLines = new Set([...courseVersions()].flatMap((blob) => git("cat-file", "blob", blob).stdout.split(/\r?\n/).map((l) => l.trim())));
-    const carried = project.split(/\r?\n/).map((l) => l.trim()).every((l) => {
-      if (!l || HEADING.test(l) || courseLines.has(l)) return true;
-      const m = l.match(ANSWER);
-      if (m) return m[2].trim() === BLANK || result.answers[m[1]] === m[2].trim();
-      return POINTER.test(l) && result.pointers.includes(l);
-    });
-    if (carried) {
-      rmSync(PROJECT);
-      console.log("Moved your project answers from PROJECT.md into AGENTS.md and deleted PROJECT.md.");
-    } else {
-      text = fillAnswers(text, { answers: {}, pointers: ["Earlier project notes are in `PROJECT.md`. Read it, move the project facts into this file, then delete it."] });
+  const notes = { answers: { ...saved.answers }, extra: [...saved.extra] };
+  const fromProject = existsSync(PROJECT) && !PROJECT_ERA.test(before) ? readNotes(readFileSync(PROJECT, "utf8").split(/\r?\n/)) : null;
+  if (fromProject) {
+    notes.answers = { ...fromProject.answers, ...notes.answers };
+    notes.extra.push(...fromProject.extra);
+  }
+  let text = fillNotes(before, notes);
+  if (fromProject) {
+    const now = {};
+    for (const line of text.split(/\r?\n/)) {
+      const m = line.match(ANSWER);
+      if (m) now[m[1]] = m[2].trim();
     }
+    if (Object.entries(fromProject.answers).every(([label, answer]) => now[label] === answer)) {
+      rmSync(PROJECT);
+      console.log("Moved your project notes from PROJECT.md into AGENTS.md and deleted PROJECT.md.");
+    } else text = fillNotes(text, { answers: {}, extra: [pointer("PROJECT.md")] });
   }
   if (text !== before) {
     writeFileSync(AGENTS, text);
-    if (Object.keys(saved.answers).length) console.log("Kept your project answers in the updated AGENTS.md.");
+    if (Object.keys(saved.answers).length || saved.extra.length) console.log("Kept your project notes in the updated AGENTS.md.");
   }
 }
 
