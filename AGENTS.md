@@ -12,16 +12,14 @@
 
 ## What this project is
 
-This project's facts live in `PROJECT.md` in this folder. Read it before any work, and keep it up to date when the facts change.
-
-**If `PROJECT.md` does not exist yet, don't write code yet.** Ask me the 4 questions below in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
+**If any line below still says `<to fill in>`, don't write code yet.** Ask me the 4 questions in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
 
 1. Who is this for? (e.g. "the 5 people on my customer service team")
 2. What is the most annoying, time-wasting task right now? (e.g. "we keep forgetting to follow up with customers")
 3. Once it's built, what does success look like? (e.g. "every morning I can see at a glance who to follow up with today")
 4. Do they usually use it on a phone or a computer?
 
-When you're done asking, create `PROJECT.md` with these lines filled in with my answers, then show it to me for a quick check.
+When you're done asking, replace each `<to fill in>` with my answer, then show me this section for a quick check. Keep these lines up to date when the facts change.
 
 - **Who uses it**: <to fill in>
 - **What it solves**: <to fill in>
