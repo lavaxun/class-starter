@@ -47,6 +47,5 @@ supabase/
 # course page log written by npm run finish / doctor
 class-dev.log
 
-# course project answers, written by the agent; doctor backup of an old AGENTS.md
-PROJECT.md
+# doctor backup of an old AGENTS.md
 AGENTS.before-update*.md

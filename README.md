@@ -42,4 +42,4 @@ Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy -
 
 ## Continue this project
 
-Use the same project folder and chat for later lessons or changes. Read `PROJECT.md` for the project's notes and `AGENTS.md` for the ground rules.
+Use the same project folder and chat for later lessons or changes. Read `AGENTS.md` for the project's notes and the ground rules.
