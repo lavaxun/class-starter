@@ -13,11 +13,13 @@ what students' agents read, so keep developer notes out of its student sections.
 - Every merge to `main` reaches students: `npm run doctor` runs `git pull --ff-only` in their copy first.
   During class days, merge only what students may load at once.
 - Students' agents write their project answers into the "What this project is" section of `AGENTS.md`. Before
-  pulling, `doctor` keeps those answers, saves any other edits as a new `AGENTS.before-update*.md` that `AGENTS.md`
-  then points to, and restores `AGENTS.md`. After the pull it puts the answers back into the new `AGENTS.md`. When
-  the pull still fails, it checks out main's `AGENTS.md` alone and puts the answers back. Offline, it leaves
-  `AGENTS.md` untouched. A copy from the time answers went into `PROJECT.md` gets them moved into `AGENTS.md`, and
-  `PROJECT.md` is deleted when `AGENTS.md` now holds all of it (otherwise `AGENTS.md` points to it).
+  pulling, `doctor` keeps the student's notes from that section (the 4 answers and any lines no course version had),
+  saves edits elsewhere in the file as a new `AGENTS.before-update*.md` that `AGENTS.md` then points to, and restores
+  `AGENTS.md`. After the pull it puts the notes back into the new `AGENTS.md`. When the pull still fails, it checks out
+  main's `AGENTS.md` alone and puts the notes back. Offline, it leaves `AGENTS.md` untouched.
+- A copy from the time answers went into `PROJECT.md` gets them moved into `AGENTS.md` once its `AGENTS.md` is the
+  new version, and `PROJECT.md` is deleted. When an answer there differs from the one in `AGENTS.md`, `PROJECT.md`
+  stays and `AGENTS.md` points to it. That copy's old `doctor` pulls first and moves nothing, so run `doctor` twice.
 - A copy whose `AGENTS.md` was filled in before this change runs an old `doctor` that cannot pull at all. Fix it once
   in that copy's `class-starter` folder (PowerShell or Terminal; on Windows use `npm.cmd`); later doctor runs then
   keep it current: `git fetch`, then `git checkout origin/main -- scripts/doctor.mjs`, then `npm run doctor`.
