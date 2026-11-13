@@ -26,7 +26,7 @@ Tell your coding agent what you want to build. Before writing code, it must read
 
 ## Tech stack
 
-Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
+Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
 
 ## Deploy
 
