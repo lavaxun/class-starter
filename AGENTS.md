@@ -30,12 +30,13 @@ When you're done asking, replace each `<to fill in>` with my answer, then show m
 
 You set these up and run them yourself. Don't explain them to me unless I must do something.
 
-- **Next.js 16 (App Router)** + **TypeScript**. Next.js 16 is new. When unsure, follow the patterns already in this project.
+- **Next.js 16** + **TypeScript**. Next.js 16 is new. When unsure, follow the patterns already in this project.
 - **Frontend:** Tailwind and shadcn/ui. Explore their blocks, charts and themes, and combine them into a look made for this business.
 - Design the website for both mobile and desktop view.
 - Charts can use **Recharts**.
 - **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
 - **Publishing:** Vercel, through the `vercel` CLI only (already signed in), for example `vercel deploy --prod`.
+- **Region:** Vercel functions must run in the same region as the Supabase project, so pages load fast. Find the Supabase region with `supabase projects list`. Set the closest Vercel region in `vercel.json` under `"regions"`.
 
 ## Look and feel
 
