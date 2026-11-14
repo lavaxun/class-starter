@@ -1,5 +1,5 @@
 // Setup check page: if this opens at localhost:3000, the development environment is ready.
-// What this project grows into is set by "What this project is" in AGENTS.md.
+// What this project grows into is described in "What this project is" in AGENTS.md.
 export default function Home() {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-100 px-6 font-sans">

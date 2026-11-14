@@ -12,16 +12,14 @@
 
 ## What this project is
 
-<!-- This section is still empty. -->
-
-**The first time we talk about this project, don't write code yet.** Ask me the 4 questions below in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
+**If any line below still says `<to fill in>`, don't write code yet.** Ask me the 4 questions in order, **one at a time**, and wait for my answer before asking the next. Skip any question my first message already answers.
 
 1. Who is this for? (e.g. "the 5 people on my customer service team")
 2. What is the most annoying, time-wasting task right now? (e.g. "we keep forgetting to follow up with customers")
 3. Once it's built, what does success look like? (e.g. "every morning I can see at a glance who to follow up with today")
 4. Do they usually use it on a phone or a computer?
 
-When you're done asking, fill my answers into the blanks below, **delete the comment line, the "first time" paragraph, the 4 questions and this paragraph**, then show it to me for a quick check.
+When you're done asking, replace each `<to fill in>` with my answer, then show me this section for a quick check. Keep these lines up to date when the facts change.
 
 - **Who uses it**: <to fill in>
 - **What it solves**: <to fill in>
@@ -32,19 +30,17 @@ When you're done asking, fill my answers into the blanks below, **delete the com
 
 You set these up and run them yourself. Don't explain them to me unless I must do something.
 
-- **Next.js 16 (App Router)** + **TypeScript**. Next.js 16 is new; when unsure, follow the patterns already in this project.
-- **Frontend:** use Tailwind and shadcn/ui. Use your own design skills and tools to make it look good.
+- **Next.js 16** + **TypeScript**. Follow the patterns already in this project.
+- **Frontend:** Tailwind and shadcn/ui. Explore their blocks, charts and themes, and combine them into a look made for this business.
 - Design the website for both mobile and desktop view.
 - Charts can use **Recharts**.
-- **Database:** Supabase, through the `supabase` CLI only (already signed in). Change the database with migrations and `supabase db push --remote`; run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
-- **Publishing:** Vercel, through the `vercel` CLI only (already signed in), for example `vercel deploy --prod`.
+- **Database:** Supabase, through the `supabase` CLI only (make sure it's signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
+- **Publishing:** Vercel, through the `vercel` CLI only (make sure it's signed in), for example `vercel deploy --prod`.
+- **Region:** put Vercel in the region closest to the Supabase project (`vercel.json` `"regions"`), so pages load fast.
 
 ## Look and feel
 
-- Make it look like a well-known app used by this kind of business, one the owner would be proud to show.
-- Before you build, choose a main colour, a font and a style that suit the business.
-- Keep it clean: a light background, dark text, and the main colour only where it matters most.
-- Show lists of items in a neat table or list, not big boxes.
+- Choose a suitable theme based on the business brand, and make it visually pleasing.
 
 ## Ground rules
 
