@@ -156,7 +156,7 @@ function claudeAppNpmFolder() {
 const programFound = {};
 export function computerProgram(name) {
   if (programFound[name]) return programFound[name];
-  useSavedWindowsPath();
+  applySavedWindowsPath();
   const win = process.platform === "win32";
   const file = win ? (name === "vercel" ? "vercel.cmd" : "supabase.exe") : name;
   const known = win
@@ -251,7 +251,7 @@ export async function serviceState(name) {
 
 // Windows installers change the saved PATH, but an AI app's open shell keeps the old one. Checking with the
 // saved PATH proves the tools work in any new window, so the student never has to open one to check.
-function useSavedWindowsPath() {
+function applySavedWindowsPath() {
   if (process.platform !== "win32") return;
   const saved = spawnSync(
     "powershell.exe",
@@ -263,7 +263,7 @@ function useSavedWindowsPath() {
 
 // Runs the five checks. Returns { code, text, state }: text is the printed box, code is 0 only when all pass.
 export async function runCheck() {
-  useSavedWindowsPath();
+  applySavedWindowsPath();
   const hasSupabase = Boolean(computerSupabase());
   const hasVercel = Boolean(computerProgram("vercel"));
   const [npmRun, supa, vercelRun, ghVersionRun, ghRun, pageUrl] = await Promise.all([
