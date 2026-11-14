@@ -2,7 +2,7 @@
 
 [Read this in Chinese → README.zh.md](README.zh.md)
 
-For an already-installed standalone starter, run the existing project, check the congratulations page, then tell your coding agent what you want to build.
+Run the project, check the congratulations page, then tell your coding agent what you want to build.
 
 ## Run the project
 
@@ -22,11 +22,11 @@ The congratulations page means the starter is running.
 
 ![What it looks like when it runs](docs/success.png)
 
-Tell your coding agent what you want to build. Before writing code, it must read the existing `AGENTS.md` and follow its project-discovery guidance: ask **one question at a time** about who it's for, what problem it solves, what success looks like, and whether people use a phone or computer. Skip questions you have already answered. It saves the answers in `PROJECT.md`.
+Tell your coding agent what you want to build. Before writing code, it reads `AGENTS.md` and asks you its 4 questions about your project, one at a time, skipping any you already answered. It writes your answers into `AGENTS.md`.
 
 ## Tech stack
 
-Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
+Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
 
 ## Deploy
 
@@ -42,4 +42,4 @@ Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy -
 
 ## Continue this project
 
-Use the same project folder and chat for later lessons or changes. Read `AGENTS.md` for the project's notes and the ground rules.
+Use the same project folder and chat for later lessons or changes. Read the existing `AGENTS.md` for the project's notes and ground rules.

@@ -62,7 +62,7 @@ in the same change.
 | Topic | Truth | Doc |
 | --- | --- | --- |
 | Run the starter and the success page | `package.json`, `next.config.ts`, `src/app/` | `README.md`, `README.zh.md` |
-| Pre-class commands (setup, check, login, doctor) | `scripts/*.mjs` | `CONTRIBUTING.md` |
+| Pre-class commands (setup, check, login, doctor, finish) | `scripts/*.mjs` | `CONTRIBUTING.md` |
 | Ready-made UI parts and theme | `components.json`, `src/components/ui/`, `src/app/globals.css` | `AGENTS.md` |
 | Sample data | `data/` | `CONTRIBUTING.md` |
-| What is live | nothing deploys from this repo, because students deploy their own copy | `CONTRIBUTING.md` |
+| How a change reaches students | nothing deploys from this repo | `CONTRIBUTING.md` |
