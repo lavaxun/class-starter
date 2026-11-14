@@ -28,7 +28,7 @@ npm run dev
 
 ## 技术栈
 
-沿用现有项目的写法和 `AGENTS.md` 中的技术栈：**Next.js 16（App Router）+ TypeScript**、**Tailwind + shadcn/ui**、**适合手机和电脑的布局**，以及用于图表的 **recharts**。
+沿用现有项目的写法和 `AGENTS.md` 中的技术栈：**Next.js 16 + TypeScript**、**Tailwind + shadcn/ui**、**适合手机和电脑的布局**，以及用于图表的 **recharts**。
 
 ## 部署
 
@@ -44,4 +44,4 @@ npm run dev
 
 ## 继续这个项目
 
-后续课程或修改继续用同一个项目文件夹和对话。阅读 `PROJECT.md` 了解项目记录，阅读 `AGENTS.md` 了解基本规则。
+后续课程或修改继续用同一个项目文件夹和对话。阅读 `AGENTS.md` 了解项目记录和基本规则。

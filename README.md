@@ -26,7 +26,7 @@ Tell your coding agent what you want to build. Before writing code, it must read
 
 ## Tech stack
 
-Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 (App Router) + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
+Follow the existing project patterns and stack notes in `AGENTS.md`: **Next.js 16 + TypeScript**, **Tailwind + shadcn/ui**, **layouts for phone and computer**, and **recharts** for charts.
 
 ## Deploy
 
@@ -42,4 +42,4 @@ Follow `AGENTS.md` and use the **Vercel CLI only**, for example `vercel deploy -
 
 ## Continue this project
 
-Use the same project folder and chat for later lessons or changes. Read `PROJECT.md` for the project's notes and `AGENTS.md` for the ground rules.
+Use the same project folder and chat for later lessons or changes. Read `AGENTS.md` for the project's notes and the ground rules.
