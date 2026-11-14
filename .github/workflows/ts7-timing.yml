@@ -1,0 +1,33 @@
+name: ts7-timing (temporary)
+on:
+  push:
+    branches: [ts7-upgrade]
+  workflow_dispatch:
+jobs:
+  time-build:
+    strategy:
+      matrix:
+        ref: [main, ts7-upgrade]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - run: npx tsc --version
+      - name: Timed next build
+        run: |
+          start=$(date +%s.%N)
+          npm run build 2>&1 | tee build.log
+          end=$(date +%s.%N)
+          echo "BUILD_WALL ${{ matrix.ref }} $(echo "$end - $start" | bc) s"
+          grep -i -E "typescript|compiled" build.log || true
+      - name: Timed tsc --noEmit (3 runs)
+        run: |
+          for i in 1 2 3; do
+            s=$(date +%s.%N); npx tsc --noEmit --incremental false -p .; e=$(date +%s.%N)
+            echo "TSC_WALL ${{ matrix.ref }} $(echo "$e - $s" | bc) s"
+          done
