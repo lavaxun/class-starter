@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "oxlint",
     "check": "node scripts/check.mjs",
     "setup": "node scripts/setup.mjs",
     "finish": "node scripts/finish.mjs",
@@ -33,8 +33,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.6",
+    "oxlint": "^1.93.0",
     "tailwindcss": "^4",
     "typescript": "^7.0.2"
   }
