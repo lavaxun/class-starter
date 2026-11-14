@@ -36,8 +36,9 @@ You set these up and run them yourself. Don't explain them to me unless I must d
 - **Frontend:** Tailwind and shadcn/ui. Explore their blocks, charts and themes, and combine them into a look made for this business.
 - Design the website for both mobile and desktop view.
 - Charts can use **Recharts**.
-- **Database:** Supabase, through the `supabase` CLI only (make sure it's signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
-- **Publishing:** Vercel, through the `vercel` CLI only (make sure it's signed in), for example `vercel deploy --prod`.
+- **Database:** Supabase, through the `supabase` CLI only (make sure I am signed in). Change the database with migrations and `supabase db push --remote`. Run one-off SQL with `supabase db query --remote`. Ask me before anything that deletes or overwrites data.
+- **Login:** Supabase Auth.
+- **Publishing:** Go live with Vercel using the `vercel` CLI only (make sure I am signed in), for example `vercel deploy --prod`.
 - **Region:** put Vercel in the region closest to the Supabase project (`vercel.json` `"regions"`), so pages load fast.
 - A one-page tool, such as a report, can be a single HTML file instead of a full web app.
 
@@ -47,7 +48,8 @@ You set these up and run them yourself. Don't explain them to me unless I must d
 
 ## Ground rules
 
-- **Secret keys** stay out of the chat, the code and GitHub. When we need one, create `.env.local` with a placeholder line and open it, so I paste the key there myself. When we publish, add it to Vercel's environment settings yourself. If I paste a key into the chat anyway, move it into `.env.local` and tell me to replace it with a new one.
+- **Secret keys** stay out of the chat, the code and GitHub. When we need one, create `.env.local` with a placeholder line and open it, so I paste the key there myself. When we go live, add it to Vercel's environment settings yourself. If I paste a key into the chat anyway, move it into `.env.local` and tell me to replace it with a new one.
+- **Going live:** before going live, make sure the app has login, so only the right people can see the data. If it has none yet, add it first. Then ask me before going live.
 - Use only libraries, fonts, images and icons that are free for business use (fonts: Google Fonts). Ask me before using anything paid.
 - Pre-class sign-ins (GitHub, Vercel, Supabase) go only through `npm run login -- <service>` in this project (Windows: `npm.cmd run login -- <service>`). Never run `supabase login`, `vercel login` or `gh auth login` yourself: without its own window Supabase refuses and asks for a token, and never use or ask for an access token. If the Supabase window shows an error or sign-in does not finish, run `npm run doctor` (Windows: `npm.cmd run doctor`) once. It updates this project and retries the sign-in. I never type or paste commands or open PowerShell/Terminal. Pasting the Supabase code into the window the script opens is fine.
 - On a Mac, a Supabase command can make macOS ask whether `supabase` or `security` may use "Supabase CLI" in the keychain. The command waits until I answer. Tell me to click Always Allow (and type my Mac login password if it asks).
