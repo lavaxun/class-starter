@@ -188,10 +188,12 @@ export async function supabaseState() {
 // Returns the URL of the lowest port where a Next.js page answers, or "". Any HTTP status
 // counts: students may change the page. The first answer can take a minute while Next.js
 // builds the page, so a slow answer is waited for, not taken as "not running".
+// `npm run dev` listens on 127.0.0.1 only (no Windows firewall box), so ask there: on Windows
+// "localhost" can resolve to ::1 first. The browser gets localhost, which it retries on 127.0.0.1.
 export async function findPage() {
   const answers = await Promise.all(
     ports.map((port) =>
-      fetch(`http://localhost:${port}/`, { redirect: "manual", signal: AbortSignal.timeout(120_000) }).then(
+      fetch(`http://127.0.0.1:${port}/`, { redirect: "manual", signal: AbortSignal.timeout(120_000) }).then(
         (response) => /next\.js/i.test(response.headers.get("x-powered-by") ?? ""),
         () => false,
       ),
